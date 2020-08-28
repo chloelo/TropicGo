@@ -16,13 +16,13 @@
           <img src="@/assets/images/logo.png" />
         </a> -->
       <div class="d-flex order-lg-2 justify-content-around icon-link-wrap">
-        <router-link
+        <!-- <router-link
           class="nav-link nav_jq icon-link"
           to="/about"
         >
           <span><i class="fas fa-heart"></i></span>
 
-        </router-link>
+        </router-link> -->
         <!-- <router-link
           class="nav-link nav_jq cart-link icon-link"
           to="/cart"

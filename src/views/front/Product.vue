@@ -21,13 +21,7 @@
           </div>
           <div class="col-lg-5">
             <div class="product-wrap">
-              <div
-                class="icon-popular"
-                v-if="product.options.popular"
-              >
-                <span class="icon"><i class="fas fa-fire"></i></span>
-                <span class="txt">Hot</span>
-              </div>
+
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item">
@@ -42,9 +36,36 @@
                   >{{ product.title }}</li>
                 </ol>
               </nav>
-              <h2 class="mb-lg-3 mb-4">{{ product.title }}</h2>
+              <h2 class="mb-lg-3 mb-4">
+                {{ product.title }}</h2>
               <p>{{ product.content }}</p>
-              <p>出發城市：{{ product.options.departureCity}}</p>
+              <ul class="list-unstyled">
+                <li v-if="product.options.popular">
+                  <span class="icon icon-popular">
+                    <i class="fas fa-fire"></i>
+                  </span>
+                  熱門商品
+                </li>
+                <li>
+                  <span class="icon">
+                    <i class="fas fa-plane-departure"></i>
+                  </span>
+                  出發城市：{{ product.options.departureCity}}
+                </li>
+                <li>
+                  <span class="icon">
+                    <i class="fas fa-dollar-sign"></i>
+                  </span>
+                  費用已含：機場稅、燃油費
+                </li>
+                <li>
+                  <span class="icon">
+                    <i class="fas fa-users"></i>
+                  </span>
+                  成團人數：15 人
+                </li>
+              </ul>
+
               <div class="d-flex justify-content-between align-items-baseline">
                 <div>
                   <del class="text-black-50">原價 {{ product.origin_price | money }}</del>
@@ -56,7 +77,7 @@
 
               </div>
               <form>
-                <div class="form-row my-3">
+                <div class="form-row mt-3">
                   <div class="form-group col-md-6">
                     <div class="input-group">
                       <div class="input-group-prepend">
@@ -100,7 +121,7 @@
                         <i class="fas fa-shopping-cart"></i>
                       </span>
 
-                      加到購物車
+                      立即報名
                     </button>
                   </div>
                 </div>
@@ -113,14 +134,14 @@
                   小計
                   <strong>{{ product.quantity * product.price || 0 | money }}</strong> 元
                 </div>
-                <button
+                <!-- <button
                   type="button"
                   class="btn btn-outline-secondary btn-sm"
                 >
                   <span><i class="far fa-heart "></i></span>
 
                   加入收藏
-                </button>
+                </button> -->
               </div>
 
             </div>
@@ -128,11 +149,47 @@
           </div>
 
           <div class="col-12  mt-5">
-            <h3 class="mb-3">行程詳述：</h3>
-            <div
-              class="description"
-              v-html="product.description"
-            ></div>
+            <div class="description">
+              <h4 class="mb-3">產品特色：</h4>
+              <div v-html="product.description"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <section class="zones zone_maylike">
+      <div class="container">
+        <h3 class="mb-3">猜您可能會喜歡</h3>
+        <div class="row">
+          <div
+            class="col-md-4"
+            v-for="filterProduct in filterCategory"
+            :key="filterProduct.id"
+          >
+            <div class="card border-0 shadow-sm">
+              <img
+                :src="filterProduct.imageUrl[0]"
+                class="card-img-top"
+              >
+              <div class="card-body">
+                <h5 class="card-title">{{ filterProduct.title }}</h5>
+                <p class="card-text">{{ filterProduct.content }}</p>
+                <p class="ellipsis">{{ filterProduct.content }}</p>
+                <p class="prices d-flex justify-content-between align-items-center">
+                  <span class="price_origin">{{ filterProduct.origin_price | money }}/人</span>
+                  <span class="price_discount">{{ filterProduct.price | money }}/人</span>
+                </p>
+                <button
+                  type="button"
+                  class=" mt-3 btn btn-outline-secondary btn-addTocart btn-block"
+                  @click.prevent.stop="toProduct(filterProduct.id)"
+                >
+
+                  前往查看 <span><i class="fas fa-chevron-right"></i></span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -149,13 +206,47 @@ export default {
         options: {},
         quantity: 1,
       },
+      products: [],
       status: {
         loadingItem: '',
       },
       // tempQuantity: 1,
     };
   },
+  computed: {
+    filterCategory() {
+      // forEach 寫法
+      const ary = [];
+      this.products.forEach((item) => {
+        if (this.$route.params.id !== item.id) {
+          if (item.category === this.product.category) {
+            ary.push(item);
+          }
+        }
+      });
+      return ary;
+    },
+  },
   methods: {
+    toProduct(id) {
+      this.$router.replace(`/product/${id}`);
+      // console.log(id);
+      // console.log(this.$router);
+    },
+    getProducts() {
+      this.isLoading = true;
+      this.$http
+        .get(
+          `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/products`,
+        )
+        .then((res) => {
+          this.isLoading = false;
+          this.products = res.data.data;
+        })
+        .catch(() => {
+          this.isLoading = false;
+        });
+    },
     getProduct() {
       this.isLoading = true;
 
@@ -214,6 +305,7 @@ export default {
   },
   created() {
     this.getProduct();
+    this.getProducts();
   },
 };
 </script>

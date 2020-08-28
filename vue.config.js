@@ -4,4 +4,16 @@ module.exports = {
   // 因此需要多設置該屬性
   // 官方文件：https://cli.vuejs.org/zh/config/#publicpath
   publicPath: './',
+  chainWebpack: config => {
+    config.plugin('html').tap(args => {
+      const [obj] = args;
+      obj.title = 'TropicGo 回遊';
+      obj.meta = {
+        keywords: 'Vue, JavaScript, 電商網站',
+        description: 'TropicGo 回遊, 藏在回歸線裡的熱情面紗，等你來一探究竟！',
+      };
+      // obj.icon = '123.png';
+      return args;
+    });
+  }
 };

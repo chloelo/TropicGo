@@ -25,8 +25,8 @@
                 <button
                   type="button"
                   class="btn shadow d-flex flex-column justify-content-center align-items-center"
-                  :class="`btn-${item.category}`"
-                  @click="filterCategory(item.category)"
+                  :class="'btn-' + item.category | lowerCase"
+                  @click="filterProducts(item.category )"
                 >
 
                   <img
@@ -49,7 +49,7 @@
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
           <div
             class="col mb-4"
-            v-for="product of products"
+            v-for="product of filterCategories"
             :key="product.id"
           >
             <!-- :class="`border-${product.category}`" -->
@@ -109,42 +109,54 @@ export default {
       categoryBtns: [
         {
           zh: '全部',
-          category: 'world',
+          category: 'World',
           imgUrl: 'icon-world.png',
         },
         {
           zh: '亞洲',
-          category: 'asia',
+          category: 'Asia',
           imgUrl: 'icon-asia.png',
         },
         {
           zh: '美洲',
-          category: 'america',
+          category: 'America',
           imgUrl: 'icon-america.png',
         },
         {
           zh: '非洲',
-          category: 'africa',
+          category: 'Africa',
           imgUrl: 'icon-africa.png',
         },
         {
           zh: '大洋洲',
-          category: 'oceania',
+          category: 'Oceania',
           imgUrl: 'icon-oceania.png',
         },
       ],
+      filterCategories: '',
     };
   },
   created() {
     this.getProducts();
   },
   computed: {
-    // filterCategory() {
-    //   const filterProducts = [];
-    //   this.products.filter((item) => {});
+    // filterProducts() {
+    //   return this.products.filter((item) => {
+    //     const str = item.category;
+    //     if (this.filterCategories) {
+    //       return item.category === this.filterCategories;
+    //     }
+    //     return this.products;
+    //   });
     // },
   },
   methods: {
+    filterProducts(el) {
+      this.filterCategories = this.products.filter((item) => {
+        if (el === 'World') return this.products;
+        return item.category === el;
+      });
+    },
     getProducts() {
       this.isLoading = true;
       this.$http
@@ -154,6 +166,7 @@ export default {
         .then((res) => {
           this.isLoading = false;
           this.products = res.data.data;
+          this.filterCategories = this.products;
         })
         .catch(() => {
           this.isLoading = false;
