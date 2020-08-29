@@ -231,11 +231,9 @@ export default {
   },
   methods: {
     toProduct(id) {
-      this.$router.replace(`/product/${id}`);
+      this.$router.push(`/product/${id}`);
       this.getProduct();
       this.winScroll();
-      // console.log(id);
-      // console.log(this.$router);
     },
     getProducts() {
       this.isLoading = true;
