@@ -182,7 +182,7 @@
                 <button
                   type="button"
                   class=" mt-3 btn btn-outline-secondary btn-addTocart btn-block"
-                  @click.prevent.stop="toProduct(filterProduct.id)"
+                  @click.prevent="toProduct(filterProduct.id)"
                 >
 
                   前往查看 <span><i class="fas fa-chevron-right"></i></span>
