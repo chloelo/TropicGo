@@ -25,13 +25,13 @@
                 <button
                   type="button"
                   class="btn shadow d-flex flex-column justify-content-center align-items-center"
-                  :class="'btn-' + item.category | lowerCase"
+                  :class="'btn-' + item.category"
                   @click="filterProducts(item.category )"
                 >
 
                   <img
                     class="icon"
-                    :src="`./images/icon-${item.category}.png`"
+                    :src="'./images/' + item.iconImg"
                     :alt="item.zh"
                   >
                   <h4>{{ item.zh }}</h4>
@@ -60,7 +60,7 @@
             >
               <span
                 class="badge badge-pill"
-                :class="'badge-' + product.category | lowerCase"
+                :class="'badge-' + product.category"
               > {{product.category}}</span>
 
               <div class="img-wrap">
@@ -109,28 +109,28 @@ export default {
       categoryBtns: [
         {
           zh: '全部',
-          category: 'World',
-          imgUrl: 'icon-world.png',
+          category: 'world',
+          iconImg: 'icon-world.png',
         },
         {
           zh: '亞洲',
-          category: 'Asia',
-          imgUrl: 'icon-asia.png',
+          category: 'asia',
+          iconImg: 'icon-asia.png',
         },
         {
           zh: '美洲',
-          category: 'America',
-          imgUrl: 'icon-america.png',
+          category: 'america',
+          iconImg: 'icon-america.png',
         },
         {
           zh: '非洲',
-          category: 'Africa',
-          imgUrl: 'icon-africa.png',
+          category: 'africa',
+          iconImg: 'icon-africa.png',
         },
         {
           zh: '大洋洲',
-          category: 'Oceania',
-          imgUrl: 'icon-oceania.png',
+          category: 'oceania',
+          iconImg: 'icon-oceania.png',
         },
       ],
       filterCategories: '',

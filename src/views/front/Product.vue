@@ -175,7 +175,6 @@
               <div class="card-body">
                 <h5 class="card-title">{{ filterProduct.title }}</h5>
                 <p class="card-text">{{ filterProduct.content }}</p>
-                <p class="ellipsis">{{ filterProduct.content }}</p>
                 <p class="prices d-flex justify-content-between align-items-center">
                   <span class="price_origin">{{ filterProduct.origin_price | money }}/人</span>
                   <span class="price_discount">{{ filterProduct.price | money }}/人</span>
@@ -197,6 +196,7 @@
   </div>
 </template>
 <script>
+/* global $ */
 export default {
   data() {
     return {
@@ -215,21 +215,25 @@ export default {
   },
   computed: {
     filterCategory() {
+      return this.products.filter((item) => item.id !== this.product.id
+        && item.category === this.product.category);
       // forEach 寫法
-      const ary = [];
-      this.products.forEach((item) => {
-        if (this.$route.params.id !== item.id) {
-          if (item.category === this.product.category) {
-            ary.push(item);
-          }
-        }
-      });
-      return ary;
+      // const ary = [];
+      // this.products.forEach((item) => {
+      //   if (this.$route.params.id !== item.id) {
+      //     if (item.category === this.product.category) {
+      //       ary.push(item);
+      //     }
+      //   }
+      // });
+      // return ary;
     },
   },
   methods: {
     toProduct(id) {
       this.$router.replace(`/product/${id}`);
+      this.getProduct();
+      this.winScroll();
       // console.log(id);
       // console.log(this.$router);
     },
@@ -302,10 +306,33 @@ export default {
           // alert(err.response.data.errors[0]);
         });
     },
+    winScroll() {
+      const scroll = $(window).scrollTop();
+      if (scroll >= 10) {
+        $('html,body').animate(
+          {
+            scrollTop: 0,
+          },
+          700,
+        );
+      }
+
+      // const scroll = $(window).scrollTop();
+      // if (scroll >= 10) {
+      //   $('#front-nav').addClass('shadows');
+      // } else {
+      //   $('#front-nav').removeClass('shadows');
+      // }
+    },
   },
   created() {
     this.getProduct();
     this.getProducts();
+    this.winScroll();
+    // window.addEventListener('scroll', this.winScroll);
+  },
+  destroyed() {
+    // window.removeEventListener('scroll', this.winScroll);
   },
 };
 </script>

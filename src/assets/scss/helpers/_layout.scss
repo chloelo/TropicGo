@@ -325,6 +325,7 @@ h2 {
       object-fit: cover;
     }
     .badge {
+      text-transform: capitalize;
       position: absolute;
       right: -5px;
       bottom: 8px;
@@ -505,6 +506,7 @@ h2 {
       }
 
       .badge {
+        text-transform: capitalize;
         position: absolute;
         right: -5px;
         top: 160px;

@@ -86,10 +86,16 @@
                   </tr>
                 </tfoot>
               </table>
-              <router-link
+              <!-- <router-link
                 class="nav_jq bg-primary text-white text-center dropdown-item mt-2"
                 to="/cart"
-              >前往結帳</router-link>
+              >前往結帳</router-link> -->
+              <button
+                type="button"
+                class="btn btn-block btn-primary"
+                :disabled="carts.length === 0"
+                @click.prevent="toPageCart"
+              >前往結帳</button>
             </div>
           </div>
         </div>
@@ -133,79 +139,8 @@
               to="/products"
             >產品列表</router-link>
           </li>
-
-          <!-- <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle nav-link-cart"
-              href="#"
-              id="navbarDropdownMenuLink"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <span class="icon-cart-wrap">
-                <span>
-                  <i class="fas fa-shopping-cart"></i>
-                </span>
-                <span class="cart-num">{{ totalQuantity }}</span>
-              </span>
-            </a>
-            <div
-              class="cart-popup dropdown-menu dropdown-menu-right"
-              aria-labelledby="navbarDropdownMenuLink"
-            >
-              <div class="table-responsive dropdown-cart-list">
-                <table class="table table-sm table-striped">
-                  <caption>已選擇商品</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">品名</th>
-                      <th scope="col">數量</th>
-                      <th scope="col">單價</th>
-                    </tr>
-                  </thead>
-                  <tbody v-if="carts.length">
-                    <tr
-                      v-for="item in carts"
-                      :key="item.product.id"
-                    >
-                      <td>{{ item.product.title }}</td>
-                      <td>{{ item.quantity }}</td>
-                      <td>{{ item.product.price | money }}</td>
-                    </tr>
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <td
-                        colspan="3"
-                        class="text-right"
-                      >總計：{{ totalPrice | money }}</td>
-                    </tr>
-                  </tfoot>
-                </table>
-                <router-link
-                  class="nav_jq bg-primary text-white text-center dropdown-item mt-2"
-                  to="/cart"
-                >前往結帳</router-link>
-              </div>
-            </div>
-          </li> -->
         </ul>
-
       </div>
-
-      <!-- <a
-        href=""
-        class="nav-link-cart"
-      >
-        <span class="icon-cart-wrap">
-          <span>
-            <i class="fas fa-shopping-cart"></i>
-          </span>
-          <span class="cart-num">{{ totalQuantity }}</span>
-        </span>
-      </a> -->
     </nav>
 
   </div>
@@ -257,6 +192,9 @@ export default {
       } else {
         $('#front-nav').removeClass('shadows');
       }
+    },
+    toPageCart() {
+      this.$router.push('/cart');
     },
     // navClick() {
     //   $('.nav_jq').on('click', () => {
