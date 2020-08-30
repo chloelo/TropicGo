@@ -3,6 +3,7 @@
     <loading :active.sync="isLoading"></loading>
     <section
       class="zones zone_detail_bg"
+      v-if="product.imageUrl[0]"
       :style="`background-image:url(${product.imageUrl[0]})`"
     >
 
@@ -314,23 +315,13 @@ export default {
           700,
         );
       }
-
-      // const scroll = $(window).scrollTop();
-      // if (scroll >= 10) {
-      //   $('#front-nav').addClass('shadows');
-      // } else {
-      //   $('#front-nav').removeClass('shadows');
-      // }
     },
   },
   created() {
     this.getProduct();
     this.getProducts();
     this.winScroll();
-    // window.addEventListener('scroll', this.winScroll);
   },
-  destroyed() {
-    // window.removeEventListener('scroll', this.winScroll);
-  },
+
 };
 </script>
