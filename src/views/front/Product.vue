@@ -53,17 +53,17 @@
                   </span>
                   出發城市：{{ product.options.departureCity}}
                 </li>
+                 <li>
+                  <span class="icon">
+                    <i class="fas fa-users"></i>
+                  </span>
+                  成團人數：15 人
+                </li>
                 <li>
                   <span class="icon">
                     <i class="fas fa-dollar-sign"></i>
                   </span>
                   費用已含：機場稅、燃油費
-                </li>
-                <li>
-                  <span class="icon">
-                    <i class="fas fa-users"></i>
-                  </span>
-                  成團人數：15 人
                 </li>
               </ul>
 

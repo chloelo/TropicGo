@@ -24,7 +24,52 @@
             <p>還沒有想法的話，來這裡找找吧，也許會有意外的驚奇。</p>
           </div>
           <div class="col-lg-8">
-            <ProductsFilter></ProductsFilter>
+            <div class="row">
+              <div class="col-lg-3 col-md-6">
+                <div class="wrap bg-asia asia">
+                  <img src="@/assets/images/icon-asia.png" />
+                  <h3 class="my-3">亞洲</h3>
+                  <p>最熟悉的陌生人，想靠近卻又不敢太近，是愛情嗎？</p>
+                  <router-link
+                    class="link text-asia"
+                    to="/products"
+                  >立即前往</router-link>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 ">
+                <div class="wrap bg-america america">
+                  <img src="@/assets/images/icon-america.png" />
+                  <h3 class="my-3">美洲</h3>
+                  <p>瑪雅文化、哈瓦那夕陽、熱帶雨林，如此豐富多變的景色，try it！</p>
+                  <router-link
+                    class="link text-america"
+                    to="/products"
+                  >立即前往</router-link>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 ">
+                <div class="wrap bg-africa africa">
+                  <img src="@/assets/images/icon-africa.png" />
+                  <h3 class="my-3">非洲</h3>
+                  <p>神秘又狂野，充滿刺激的冒險，給你不同體驗。</p>
+                  <router-link
+                    class="link text-africa"
+                    to="/products"
+                  >立即前往</router-link>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 ">
+                <div class="wrap bg-oceania oceania">
+                  <img src="@/assets/images/icon-oceania.png" />
+                  <h3 class="my-3">大洋洲</h3>
+                  <p>南半球，與我們過著相反季節的國度，很是浪漫。</p>
+                  <router-link
+                    class="link text-oceania"
+                    to="/products"
+                  >立即前往</router-link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -169,12 +214,7 @@
   </div>
 </template>
 <script>
-import ProductsFilter from '@/components/ProductsFilter.vue';
-
 export default {
-  components: {
-    ProductsFilter,
-  },
   data() {
     return {
       isLoading: false,

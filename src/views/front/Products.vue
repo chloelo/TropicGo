@@ -19,7 +19,7 @@
             <div class="wrap d-flex justify-content-center ">
               <div
                 class="category"
-                v-for="item in categoryBtns"
+                v-for="item in categories"
                 :key="item.category"
               >
                 <button
@@ -106,7 +106,7 @@ export default {
       status: {
         loadingItem: '',
       },
-      categoryBtns: [
+      categories: [
         {
           zh: '全部',
           category: 'world',
@@ -153,7 +153,7 @@ export default {
   methods: {
     filterProducts(el) {
       this.filterCategories = this.products.filter((item) => {
-        if (el === 'World') return this.products;
+        if (el === 'world' || el === '') return this.products;
         return item.category === el;
       });
     },
@@ -164,9 +164,15 @@ export default {
           `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/products`,
         )
         .then((res) => {
+          const { pathCategory } = this.$route.params;
           this.isLoading = false;
           this.products = res.data.data;
-          this.filterCategories = this.products;
+
+          if (pathCategory) {
+            this.filterProducts(pathCategory);
+          } else {
+            this.filterCategories = this.products;
+          }
         })
         .catch(() => {
           this.isLoading = false;
