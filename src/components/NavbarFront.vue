@@ -95,7 +95,7 @@
                 class="btn btn-block btn-primary"
                 :disabled="carts.length === 0"
                 @click.prevent="toPageCart"
-              >前往結帳</button>
+              >查看購物車</button>
             </div>
           </div>
         </div>
@@ -164,7 +164,6 @@ export default {
         .get(api)
         .then((res) => {
           this.isLoading = false;
-
           this.carts = res.data.data;
 
           this.totalPrice = 0;

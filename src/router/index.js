@@ -35,7 +35,11 @@ const routes = [
         name: 'Cart',
         component: () => import('../views/front/Cart.vue'),
       },
-
+      {
+        path: 'checkout',
+        name: 'Checkout',
+        component: () => import('../views/front/Checkout.vue'),
+      },
     ],
 
   },
@@ -75,6 +79,7 @@ const routes = [
     path: '*', // 亂填路徑 無法判別的時候
     redirect: '/', // 重新導向首頁
   },
+
   // {
   //   path: '/products',
   //   name: 'Products',
@@ -85,6 +90,9 @@ const routes = [
 
 const router = new VueRouter({
   routes,
+  scrollBehavior() {
+    return { x: 0, y: 0 };
+  },
 });
 
 export default router;

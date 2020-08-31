@@ -58,8 +58,8 @@
                       <div class="d-flex justify-content-end">
                         <router-link
                           class="link bg-secondary"
-                          to="/products"
-                        >查看更多
+                          to="/product/bBkMTu7Y8UuP3X8G1iGPvNepz2B7uNyF3jfC5GE5ZQz7baZsUGmnqSrCfmiG6Kn9"
+                        >了解更多
                           <span><i class="fas fa-chevron-right"></i></span>
                         </router-link>
                       </div>
@@ -94,8 +94,8 @@
                       <div class="d-flex justify-content-end">
                         <router-link
                           class="link bg-secondary"
-                          to="/products"
-                        >查看更多
+                          to="/product/1cVlQi9evx4jB3HFRFCx3xotrXnfVeC65LNGPjRzi4GcUXF8ZCAGVZodVP29Bcj9"
+                        >了解更多
                           <span><i class="fas fa-chevron-right"></i></span>
                         </router-link>
                       </div>
@@ -120,45 +120,28 @@
     <section class="zones zone_shared">
       <div class="container">
         <div class="row">
-          <div class="col-sm-4">
+          <div
+            class="col-sm-4"
+            v-for="item in viewShared"
+            :key="item.title"
+          >
             <div class="img-wrap my-3">
               <img
                 class="img-fluid"
-                src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/BtzZuzhtPHapZ951ZBFpCRoKolRtQHGvhpClX0anU5uU2VtC3lN38ZqcpYnaXiQZNWKkZ9Lb3qJl5KZm0LaTquvAd1pUa8p3cwk9tECuyZZr6nfJTJjL0hwA6cK51LmF.png"
-                alt=""
+                :src="item.img"
+                :alt="item.title"
               >
-              <span class="title">享生活</span>
+              <span class="title">{{item.title}}</span>
             </div>
           </div>
-          <div class="col-sm-4">
-            <div class="img-wrap my-3">
-              <img
-                class="img-fluid"
-                src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/gnl2stpPR9dClkQulbc7OwS6NxUJs6XBpjUE3sZ0AX5Jfr38oVkuONfiJs0JpAhfJqK2GclhikAuHgIX1yjX95f2ezHRRnpKk5A0rtQwuQwJyc5pnSdydMaXibZQoCZF.png"
-                alt=""
-              >
-              <span class="title">享美食</span>
-            </div>
 
-          </div>
-          <div class="col-sm-4">
-            <div class="img-wrap my-3">
-              <img
-                class="img-fluid"
-                src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/olNIR8PBmOv9UD8228oefzzncRMofRnRQfH7vc68BdGhCG4zH9RK0Xwbec5u9iBFzPzWmUTp3QVN2t49sr661CuC0Z6Rrq0DRieKH606qdO0b0Q3Vak0lhssVpqTPiAt.png"
-                alt=""
-              >
-              <span class="title">享樂</span>
-            </div>
-
-          </div>
           <div class="col-12">
             <p>你在等我嗎？我一直都在阿！以上精彩行程我們通通都你安排好了，還不手刀報名參加嗎？</p>
             <div class="d-flex justify-content-end">
               <router-link
                 class="link bg-secondary"
                 to="/products"
-              >立即前往
+              >立即查看
                 <span><i class="fas fa-chevron-right"></i></span>
               </router-link>
             </div>
@@ -178,6 +161,23 @@ export default {
   data() {
     return {
       isLoading: false,
+      viewShared: [
+        {
+          title: '享生活',
+          img:
+            'https://hexschool-api.s3.us-west-2.amazonaws.com/custom/BtzZuzhtPHapZ951ZBFpCRoKolRtQHGvhpClX0anU5uU2VtC3lN38ZqcpYnaXiQZNWKkZ9Lb3qJl5KZm0LaTquvAd1pUa8p3cwk9tECuyZZr6nfJTJjL0hwA6cK51LmF.png',
+        },
+        {
+          title: '享美食',
+          img:
+            'https://hexschool-api.s3.us-west-2.amazonaws.com/custom/gnl2stpPR9dClkQulbc7OwS6NxUJs6XBpjUE3sZ0AX5Jfr38oVkuONfiJs0JpAhfJqK2GclhikAuHgIX1yjX95f2ezHRRnpKk5A0rtQwuQwJyc5pnSdydMaXibZQoCZF.png',
+        },
+        {
+          title: '享樂',
+          img:
+            'https://hexschool-api.s3.us-west-2.amazonaws.com/custom/olNIR8PBmOv9UD8228oefzzncRMofRnRQfH7vc68BdGhCG4zH9RK0Xwbec5u9iBFzPzWmUTp3QVN2t49sr661CuC0Z6Rrq0DRieKH606qdO0b0Q3Vak0lhssVpqTPiAt.png',
+        },
+      ],
     };
   },
 };

@@ -1,246 +1,79 @@
 <template>
-  <div>
+  <div class="front front-cart">
     <loading :active.sync="isLoading"></loading>
-    <section class="cart_zone">
-      <div class="container my-5">
-        <div class="row">
-          <div class="col-lg-7">
-            <div class="form-cart-list">
-              <h3 class="text-info">購物車清單</h3>
-              <table class="table table-responsive-sm table-cart">
-                <!-- <caption class="text-info">購物車清單</caption> -->
-                <thead>
-                  <tr>
-                    <th
-                      scope="col"
-                      width="60px"
-                    >移除</th>
-                    <th scope="col">品名</th>
-                    <th scope="col">單價</th>
-                    <th
-                      scope="col"
-                      width="150px"
-                    >數量</th>
-                    <th scope="col">小計</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="item in carts"
-                    :key="item.product.id"
-                  >
-                    <td>
+    <KV :title="title"></KV>
+    <section class="zones zone_cartList">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-10">
+            <div
+              class="d-flex bg-light align-items-center mb-4"
+              v-for="item in carts"
+              :key="item.product.id"
+            >
+              <div class="img-wrap pl-3">
+                <img :src="item.product.imageUrl[0]">
+              </div>
+
+              <div class="w-100 p-3 position-relative">
+                <a
+                  href="#"
+                  class="position-absolute close"
+                  style="top: 16px; right: 16px;"
+                  @click.prevent="removeCart(item.product.id)"
+                ><i class="fas fa-times"></i></a>
+                <p class="mb-0 font-weight-bold pr-4 text-africa">{{ item.product.title }}</p>
+                <p
+                  class="mb-1 text-muted"
+                  style="font-size: 14px;"
+                >{{ item.product.price | money }} / {{ item.product.unit }}</p>
+                <div class="input-group-wrap mt-2">
+                  <div class="input-group align-items-center">
+                    <div class="input-group-prepend">
                       <button
+                        :disabled="item.quantity === 1"
+                        class="btn btn-outline-secondary "
                         type="button"
-                        class="btn btn-outline-danger btn-del"
-                        @click="removeCart(item.product.id)"
+                        @click.prevent="updateQuantity(item.product.id, item.quantity - 1)"
                       >
-                        <span>
-                          <i class="fas fa-trash-alt"></i>
-                          <!-- <i class="fas fa-trash-alt"></i> -->
-                        </span>
+                        <span><i class="fas fa-minus"></i></span>
                       </button>
-                    </td>
-                    <td>{{ item.product.title }}</td>
-                    <td>{{ item.product.price | money }}</td>
-                    <td>
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-                          <button
-                            :disabled="item.quantity === 1"
-                            class="btn btn-outline-info"
-                            type="button"
-                            @click="
-                              updateQuantity(item.product.id, item.quantity - 1)
-                            "
-                          >-</button>
-                        </div>
-                        <input
-                          v-model="item.quantity"
-                          type="number"
-                          min="1"
-                          class="form-control"
-                          aria-describedby="basic-addon1"
-                          @change="
+                    </div>
+                    <input
+                      v-model="item.quantity"
+                      type="number"
+                      min="1"
+                      class="form-control text-center pl-3 text-secondary "
+                      aria-describedby="basic-addon1"
+                      @change="
                             updateQuantity(item.product.id, item.quantity)
                           "
-                        />
-                        <div class="input-group-append">
-                          <button
-                            class="btn btn-outline-info"
-                            type="button"
-                            @click="
-                              updateQuantity(item.product.id, item.quantity + 1)
-                            "
-                          >+</button>
-                        </div>
-                      </div>
-                    </td>
-                    <td>{{ (item.product.price * item.quantity) | money }}</td>
-                  </tr>
-                  <tr v-if="carts.length === 0">
-                    <td
-                      colspan="5"
-                      class="text-center"
-                    >您尚未選擇任何行程喔！</td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td
-                      colspan="3"
-                      class="text-left"
-                    >
+                    />
+                    <div class="input-group-append">
                       <button
+                        class="btn btn-outline-secondary "
                         type="button"
-                        class="btn btn-outline-danger btn-del"
-                        @click="removeAllCart"
+                        @click.prevent="updateQuantity(item.product.id, item.quantity + 1)"
                       >
-                        <span>
-                          <i class="fas fa-trash-alt"></i>
-                          <!-- <font-awesome-icon icon="trash-alt" /> -->
-                        </span>
-                        全部清空
+                        <span><i class="fas fa-plus"></i></span>
                       </button>
-                    </td>
-                    <td
-                      colspan="2"
-                      class="text-right"
-                    >總計：{{ totalPrice | money }}</td>
-                  </tr>
-                </tfoot>
-              </table>
+                    </div>
+
+                  </div>
+                  <p class="mb-0 ml-auto">小計：{{ (item.product.price * item.quantity) | money }}</p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="col-lg-5">
-            <div class="order-info">
-              <h3 class="text-info">填寫訂單資訊</h3>
-              <validation-observer v-slot="{ invalid }">
-                <form @submit.prevent="createOrder">
-                  <div class="form-row">
-                    <div class="col form-group">
-                      <validation-provider
-                        rules="required"
-                        v-slot="{ errors, classes }"
-                      >
-                        <label for="username">收件人姓名</label>
-                        <input
-                          type="text"
-                          name="username"
-                          class="form-control"
-                          id="username"
-                          placeholder="收件人姓名"
-                          :class="classes"
-                          v-model="order.name"
-                        />
-                        <span class="invalid-feedback">{{ errors[0] }}</span>
-                      </validation-provider>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="col form-group">
-                      <validation-provider
-                        rules="required|email"
-                        v-slot="{ errors, classes }"
-                      >
-                        <label for="email">Email</label>
-                        <input
-                          type="email"
-                          class="form-control"
-                          id="email"
-                          placeholder="Email"
-                          :class="classes"
-                          v-model="order.email"
-                        />
-                        <span class="invalid-feedback">{{ errors[0] }}</span>
-                      </validation-provider>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="col form-group">
-                      <validation-provider
-                        rules="required|numeric|min:8"
-                        v-slot="{ errors, classes }"
-                      >
-                        <label for="tel">電話</label>
-                        <input
-                          type="tel"
-                          class="form-control"
-                          id="tel"
-                          placeholder="電話"
-                          :class="classes"
-                          v-model="order.tel"
-                        />
-                        <span class="invalid-feedback">{{ errors[0] }}</span>
-                      </validation-provider>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="col form-group">
-                      <validation-provider
-                        rules="required"
-                        v-slot="{ errors, classes }"
-                      >
-                        <label for="address">地址</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="address"
-                          placeholder="地址"
-                          :class="classes"
-                          v-model="order.address"
-                        />
-                        <span class="invalid-feedback">{{ errors[0] }}</span>
-                      </validation-provider>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="col form-group">
-                      <label for="waytopay">購買方式</label>
-                      <select
-                        name="購買方式"
-                        id="waytopay"
-                        class="form-control"
-                        v-model="order.payment"
-                        required
-                      >
-                        <option
-                          value
-                          disabled
-                        >請選擇付款方式</option>
-                        <option value="WebATM">WebATM</option>
-                        <option value="ATM">ATM</option>
-                        <option value="CVS">CVS</option>
-                        <option value="Barcode">Barcode</option>
-                        <option value="Credit">Credit</option>
-                        <option value="ApplePay">ApplePay</option>
-                        <option value="GooglePay">GooglePay</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="col form-group">
-                      <label for="message">留言</label>
-                      <textarea
-                        id="message"
-                        class="form-control"
-                        cols="30"
-                        rows="3"
-                        v-model="order.message"
-                      ></textarea>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="col form-group text-right">
-                      <button
-                        type="submit"
-                        class="btn btn-info"
-                        :disabled="invalid"
-                      >送出表單</button>
-                    </div>
-                  </div>
-                </form>
-              </validation-observer>
+            <p class="text-right pr-3 py-3">總計：<span class="text-danger count-total">{{ totalPrice | money }}</span></p>
+            <div class="d-flex justify-content-between align-items-center">
+              <router-link
+                class="text-secondary"
+                to="/products"
+              > <span><i class="fas fa-chevron-left"></i></span> 繼續購物</router-link>
+              <router-link
+                class="bg-secondary text-white px-4 py-2 link-next"
+                to="/Checkout"
+              >前往結帳 <span><i class="fas fa-chevron-right"></i></span></router-link>
             </div>
           </div>
         </div>
@@ -249,9 +82,15 @@
   </div>
 </template>
 <script>
+import KV from '@/components/KV.vue';
+
 export default {
+  components: {
+    KV,
+  },
   data() {
     return {
+      title: '購物清單',
       isLoading: false,
       totalPrice: 0,
       totalQuantity: 0,
@@ -294,6 +133,7 @@ export default {
     //     });
     // },
     updateQuantity(id, quantity) {
+      this.isLoading = true;
       if (quantity < 1) return;
       const api = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping`;
       const editCart = {
@@ -303,33 +143,44 @@ export default {
       this.$http
         .patch(api, editCart)
         .then(() => {
+          this.isLoading = false;
           this.$bus.$emit('get-cart');
+          this.$bus.$emit('msg:push', '成功更改商品數量囉', 'success');
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          this.isLoading = false;
+          this.$bus.$emit('msg:push', '登愣~~出現錯誤', 'danger');
         });
     },
     removeCart(id) {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping/${id}`;
       this.$http
         .delete(api)
         .then(() => {
+          this.isLoading = false;
           this.$bus.$emit('get-cart');
+          this.$bus.$emit('msg:push', 'QQ~成功刪除', 'success');
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          this.isLoading = false;
+          this.$bus.$emit('msg:push', '登愣~~出現錯誤', 'danger');
         });
     },
     removeAllCart() {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping/all/product`;
       this.$http
         .delete(api)
         .then(() => {
+          this.isLoading = false;
           this.carts = [];
           this.$bus.$emit('get-cart');
+          this.$bus.$emit('msg:push', 'QQ~成功清除購物車', 'success');
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          this.isLoading = false;
+          this.$bus.$emit('msg:push', '登愣~~出現錯誤', 'danger');
         });
     },
     createOrder() {

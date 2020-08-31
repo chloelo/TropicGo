@@ -1,17 +1,7 @@
 <template>
   <div class="front front-products">
     <loading :active.sync="isLoading"></loading>
-    <section class="kv">
-      <div class="title">
-        <div class="container">
-          <div class="row justify-content-end">
-            <div class="col-md-6">
-              <h2>用心為您規劃的精美行程</h2>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <KV :title="title"></KV>
     <section class="zones zone_category">
       <div class="container">
         <div class="row">
@@ -98,9 +88,15 @@
   </div>
 </template>
 <script>
+import KV from '@/components/KV.vue';
+
 export default {
+  components: {
+    KV,
+  },
   data() {
     return {
+      title: '用心為您規劃的精美行程',
       isLoading: false,
       products: [],
       status: {

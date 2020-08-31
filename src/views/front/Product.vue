@@ -87,13 +87,15 @@
                           class="btn btn-outline-secondary"
                           type="button"
                           @click="product.quantity -= 1"
-                        >-</button>
+                        >
+                        <span><i class="fas fa-minus"></i></span>
+                        </button>
                       </div>
                       <input
                         v-model.number="product.quantity"
                         type="number"
                         min="1"
-                        class="form-control text-center"
+                        class="form-control text-center pl-4"
                         aria-describedby="basic-addon1"
                       />
                       <div class="input-group-append">
@@ -101,7 +103,9 @@
                           class="btn btn-outline-secondary "
                           type="button"
                           @click="product.quantity += 1"
-                        >+</button>
+                        >
+                        <span><i class="fas fa-plus"></i></span>
+                        </button>
                       </div>
 
                     </div>

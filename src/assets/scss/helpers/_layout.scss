@@ -422,12 +422,152 @@ h2 {
     }
   }
 }
+.front-checkout {
+  .kv {
+    background: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/hoMWHJe6cWVhf5XI33wb4B2jyTS2VoKsnhoDBHoOP4FNzpEBJ6TdmztuP92DPXrPSmZGAOL94qQ4vnzmCx29vAlBU2YxXwZaCq9FaSXNIHBdWB0PD4TZlXncjQHosHgl.png')
+      no-repeat;
+    background-position: 70% 95%;
+    background-size: cover;
+    height: 450px;
+    position: relative;
+    .title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 10%;
+    }
+    h2 {
+      text-align: right;
+    }
+  }
+  @include pad-767 {
+    .kv {
+      background: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/aAYu3pgz0SG8ZBnegvuCz5mYBKMCPVXsFzuM9tSHkfUGsTqiVXObhrXIZkLoiDuTrQcnl87kKrtbsYgFIm9lLeExLzTQmUtQ2O51U1RySBsfoDVQ2pCKeOUCvqM5Fpsj.png');
+      height: 300px;
+      background-position: 50% 28%;
+      background-size: cover;
+    }
+  }
+  .zone_process {
+    .step-wrap {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      // .bar {
+      //   position: absolute;
+      //   width: 100%;
+      //   height: 3px;
+      //   background-color: $secondary;
+      //   top: 50%;
+      //   transform: translateY(-50%);
+      // }
+    }
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: $secondary;
+      color: $white;
+      border-radius: 50%;
+      width: 5.5rem;
+      height: 5.5rem;
+      // & + .step {
+      //   position: relative;
+      //   &::before {
+      //     content: '';
+      //     position: absolute;
+      //     width: 200%;
+      //     right: 0px;
+      //     height: 2px;
+      //     background-color: $secondary;
+      //   }
+      // }
+    }
+    .progress {
+      height: 5px;
+      margin-top: -48px;
+      margin-left: 44px;
+      margin-right: 44px;
+    }
+  }
+}
+.front-cart {
+  .kv {
+    background: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/f9FFnUdaTIPR5BQxqbdHrRVczO7ZefQofe2h8VwXlS7SmDyq7SlotuZAp9nnY7rv1QU5dMVjr8TPjbdpzjjndqBQ03aDLPxDjj7qkaDKI6QOU3Wk50syN0gzXFTSoucF.png')
+      no-repeat;
+    background-position: 70% 95%;
+    background-size: cover;
+    height: 450px;
+    position: relative;
+    .title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 10%;
+    }
+    h2 {
+      text-align: right;
+    }
+  }
+  @include pad-767 {
+    .kv {
+      background: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/L06GK2uu2cXd8gY1fWtgCaq2qmxdSJvhTE4S1DzJefw4lbVi5DuOz2tPb4HyoCTWsx6o5LkO2QKb4Kngc3K4j8hwNXEiEK96jHx624IlyZjDaoNWB7EMrUR715rLjGdw.png');
+      height: 300px;
+      background-position: 50% 28%;
+      background-size: cover;
+    }
+  }
+  .input-group-wrap {
+    display: flex;
+    align-items: center;
+  }
+  .form-control {
+    border: 1px solid $secondary;
+    color: $secondary;
+  }
+  .zone_cartList {
+    .link-next {
+      font-size: 20px;
+    }
+    .close {
+      color: $gray-500;
+      font-size: 20px;
+    }
+    .img-wrap {
+      padding-left: 5px;
+      img {
+        width: 120px;
+        height: auto;
+      }
+    }
+
+    .input-group {
+      width: 50%;
+    }
+    .count-total {
+      // margin-bottom: 15px;
+      // border-bottom: 2px solid $gray-500;
+      font-size: 20px;
+    }
+    @include pad-767 {
+      .input-group-wrap {
+        flex-wrap: wrap;
+      }
+      .input-group {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
 .front-products {
   .kv {
     background: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/XWZDLzyVuddDyBcWT5bLG50OKpqb2FUnnVY8FLz4s2bWYiCTXSbzoFb7YHXqqd4CA284ccVhXuPSIHBlnXmdwamJsQGo7OKVOwO7mGJ28KLXjMpp9Qh5ENxXqVoF0kXP.png')
       no-repeat;
-    background-position: top center;
-    height: 650px;
+    background-size: cover;
+    background-position: 50% 95%;
+    height: 450px;
     position: relative;
     .title {
       position: absolute;
@@ -438,8 +578,10 @@ h2 {
   }
   @include pad-767 {
     .kv {
-      height: 400px;
-      background-position: 65% 85%;
+      background: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/W1KeF3YRdqevbXHhTTLP1hJd9x1uccAX19TzlbFHtP8kgR50f5OCO85OxuX7YVBQLlwMcre5CUKbPm0pYLznm0oo0h4Am7xzcSbB0MW1jOU6fq644NNdHgg99D8xlCYc.png');
+      height: 300px;
+      background-position: 50% 70%;
+      background-size: cover;
     }
   }
   .zone_category {
