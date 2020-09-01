@@ -77,7 +77,7 @@
                 <span>
                   <i class="fas fa-shopping-cart"></i>
                 </span>
-                我想報名
+                我要報名
               </button>
             </div>
           </div>
