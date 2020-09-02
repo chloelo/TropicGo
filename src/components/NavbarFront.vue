@@ -23,16 +23,10 @@
           <span><i class="fas fa-heart"></i></span>
 
         </router-link> -->
-        <!-- <router-link
-          class="nav-link nav_jq cart-link icon-link"
-          to="/cart"
-        >
-          <span><i class="fas fa-shopping-cart"></i></span>
-          <span class="cart-num">{{ totalQuantity }}</span>
-        </router-link> -->
+
         <div class="dropdown">
           <button
-            class="dropdown-toggle nav-link nav_jq cart-link icon-link"
+            class="dropdown-toggle nav-link nav_jq cart-dropdown-btn icon-link"
             id="dropdownMenuButton"
             data-toggle="dropdown"
             aria-haspopup="true"
@@ -90,6 +84,10 @@
                 class="nav_jq bg-primary text-white text-center dropdown-item mt-2"
                 to="/cart"
               >前往結帳</router-link> -->
+              <!-- <router-link
+                class="btn btn-block btn-primary"
+                to="/cart"
+              >查看購物車</router-link> -->
               <button
                 type="button"
                 class="btn btn-block btn-primary"
@@ -99,6 +97,18 @@
             </div>
           </div>
         </div>
+        <!-- <router-link
+          v-else
+          class="nav-link nav_jq icon-link icon-link-alone"
+          to="/cart"
+        >
+          <span class="position-relative wrap"><i class="fas fa-shopping-cart"></i>
+            <span
+              class="cart-num"
+              v-if="carts.length > 0"
+            >{{ totalQuantity }}</span>
+          </span>
+        </router-link> -->
       </div>
 
       <button
@@ -139,6 +149,22 @@
               to="/products"
             >產品列表</router-link>
           </li>
+          <!-- <li
+            class="nav-item"
+            v-if="$route.path ==='/cart'"
+          >
+            <router-link
+              class="nav-link nav_jq"
+              to="/cart"
+            >
+              <span class="position-relative"><i class="fas fa-shopping-cart"></i>
+                <span
+                  class="cart-num"
+                  v-if="carts.length > 0"
+                >{{ totalQuantity }}</span>
+              </span>
+            </router-link>
+          </li> -->
         </ul>
       </div>
     </nav>
@@ -193,6 +219,7 @@ export default {
       }
     },
     toPageCart() {
+      if (this.$route.path === '/cart') return;
       this.$router.push('/cart');
     },
     // navClick() {

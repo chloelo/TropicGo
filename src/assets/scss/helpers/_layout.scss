@@ -45,7 +45,7 @@ button:focus {
       color: $asia-light;
     }
   }
-  .cart-link {
+  .cart-dropdown-btn {
     background-color: transparent;
     border: none;
 
@@ -63,6 +63,20 @@ button:focus {
       top: -8px;
       right: -5px;
     }
+  }
+  .cart-num {
+    position: absolute;
+    background-color: $color-third;
+    color: $white;
+    border-radius: 50%;
+    display: flex;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    justify-content: center;
+    align-items: center;
+    top: -8px;
+    right: -5px;
   }
   &.shadows {
     // background-color: rgba($africaLight, $alpha: 0.9);
@@ -104,6 +118,13 @@ button:focus {
     .icon-link {
       padding-left: 10px;
       padding-right: 10px;
+    }
+    .icon-link-alone {
+      padding-right: 20px;
+      .wrap {
+        display: inline-block;
+        margin-top: 5px;
+      }
     }
     .icon-link-wrap {
       margin-left: auto;
@@ -544,7 +565,7 @@ h2 {
       // }
     }
     .num {
-      font-size: 120%;
+      font-size: 110%;
     }
     .txt {
       border-top: 1px solid;
@@ -560,6 +581,7 @@ h2 {
       border-radius: 50%;
       width: 5rem;
       height: 5rem;
+      transition: all 0.5s 0.4s;
       &.done {
         background-color: $secondary;
         color: $white;
@@ -640,6 +662,7 @@ h2 {
     .count-total {
       font-size: 20px;
     }
+
     @include pad-767 {
       .input-group-wrap {
         flex-wrap: wrap;
@@ -650,10 +673,27 @@ h2 {
       }
     }
   }
+  .totalPrice-wrap {
+    border: 2px dotted $gray-300;
+  }
+  .border-dashed-top {
+    border-top: 1px dashed $gray-300;
+    padding-top: 1rem;
+  }
   .zone_form {
+    padding-top: 30px;
     .form-wrap {
-      background-color: $gray-100;
-      padding: 30px;
+      // background-color: $gray-100;
+
+      // padding: 30px;
+      .form-control {
+        background-color: #f4f7f6;
+
+        border: 0;
+        &::placeholder {
+          color: $gray-500;
+        }
+      }
     }
   }
 }

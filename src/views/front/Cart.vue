@@ -2,6 +2,7 @@
   <div class="front front-cart">
     <loading :active.sync="isLoading"></loading>
     <KV :title="title"></KV>
+    <!-- 流程三步驟 -->
     <section class="zones zone_process">
       <div class="container ">
         <div class="row justify-content-center">
@@ -9,11 +10,11 @@
             <div class="step-wrap">
               <div class="step step1 done">
                 <span class="num">1</span>
-                <span class="txt">確認訂單</span>
+                <span class="txt">確認清單</span>
               </div>
               <div
                 class="step step2"
-                :class="{done:step === 2}"
+                :class="{done:step === 2 || step === 3 }"
               >
                 <span class="num">2</span>
                 <span class="txt">填寫資料</span>
@@ -23,7 +24,7 @@
                 :class="{done:step === 3}"
               >
                 <span class="num">3</span>
-                <span class="txt">完成訂單</span>
+                <span class="txt">確認付款</span>
               </div>
               <!-- <div class="bar"></div> -->
             </div>
@@ -45,7 +46,7 @@
     <!-- 流程 1 確認購物車 -->
     <section
       class="zones zone_cartList"
-      v-if="step === 1"
+      v-show="step === 1"
     >
       <div class="container">
         <div class="row justify-content-center">
@@ -143,44 +144,55 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="border p-3 mb-3">
-              <h4 class="font-weight-bold mb-2 border-bottom pb-2">訂單明細</h4>
-              <div class="d-flex justify-content-between mt-4">
-                <span>商品總額</span><span>{{ totalPrice | money }}</span>
+            <div class="p-3 mb-3 border">
+              <!-- <h4 class="font-weight-bold mb-2 border-bottom pb-2">合計</h4> -->
+              <div class="d-flex justify-content-between">
+                <span class="font-weight-bold">商品總額</span><span>{{ totalPrice | money }}</span>
               </div>
-              <div class="d-flex justify-content-between mt-4">
-                <div class="input-group input-group-sm coupon-wrap">
-
-                  <input
-                    v-model="couponCode"
-                    type="text"
-                    class="form-control"
-                    aria-label="請輸入折扣碼"
-                    placeholder="請輸入折扣碼"
-                    aria-describedby="inputGroup-sizing-sm"
-                  >
-                  <div class="input-group-append">
-                    <button
-                      class="btn btn-outline-secondary"
-                      type="button"
-                      id="inputGroup-sizing-sm"
-                      @click.prevent="findCoupon"
-                    >套用</button>
+              <form @submit.prevent="findCoupon">
+                <div class="d-flex justify-content-between mt-3">
+                  <div class="input-group input-group-sm coupon-wrap">
+                    <input
+                      v-model="couponCode"
+                      type="text"
+                      class="form-control"
+                      aria-label="請輸入折扣碼"
+                      placeholder="請輸入折扣碼"
+                      aria-describedby="inputGroup-sizing-sm"
+                    >
+                    <div class="input-group-append">
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="submit"
+                        id="inputGroup-sizing-sm"
+                      >套用</button>
+                    </div>
 
                   </div>
+
                 </div>
+              </form>
+              <div
+                class="d-flex justify-content-between mt-3"
+                v-if="coupon.enabled"
+              >
+                <span class="font-weight-bold">折扣</span>
+                <span class="text-danger">- {{ totalPrice - totalPriceWithDiscount | money}}</span>
               </div>
               <div
-                class="d-flex justify-content-between mt-4"
-                v-if="coupon.percent"
+                class="d-flex justify-content-between mt-3"
+                v-else
               >
-                <p class="mb-0 font-weight-bold ">折扣後總計</p>
-                <p class="mb-0 h4 font-weight-bold text-secondary">{{ totalPrice * (coupon.percent / 100) | money }}</p>
+                <span class="font-weight-bold">折扣</span><span class="text-danger">- {{ 0 | money}}</span>
+              </div>
+              <div class="d-flex justify-content-between mt-3 border-dashed-top">
+                <p class="mb-0 font-weight-bold ">應付金額</p>
+                <p class="mb-0 h4 font-weight-bold text-secondary">{{ totalPriceWithDiscount | money }}</p>
               </div>
               <button
                 class="btn btn-secondary mt-3 btn-block"
                 :disabled="!carts.length"
-                @click.prevent="step = 2"
+                @click.prevent="step = 2; winScroll();"
               >前往結帳 <span><i class="fas fa-chevron-right"></i></span>
               </button>
 
@@ -192,13 +204,13 @@
     <!-- 流程 2 填寫表單 -->
     <section
       class="zones zone_form"
-      v-if="step === 2"
+      v-show="step === 2"
     >
       <div class="container">
         <div class="row flex-row-reverse">
           <div class="col-md-6 col-lg-4">
-            <div class="border p-4 mb-4">
-              <h4 class="mb-4">訂單明細</h4>
+            <div class="p-3 mb-5 border">
+              <!-- <h4 class="mb-4 border-bottom pb-2 text-center">訂單明細</h4> -->
               <div
                 class="d-flex mb-3"
                 v-for="item in carts"
@@ -211,29 +223,26 @@
                 >
                 <div class="w-100">
                   <div class="d-flex justify-content-between">
-                    <p class="mb-0 font-weight-bold">{{ item.product.title }}</p>
+                    <p class="mb-0 mr-2 font-weight-bold">{{ item.product.title }}</p>
                     <p class="mb-0">{{ item.product.price | money }}</p>
                   </div>
                   <p class="mb-0 font-weight-bold">x {{ item.quantity }}</p>
                 </div>
               </div>
-              <div class="d-flex justify-content-between mt-4">
-                <p class="mb-0 h4 font-weight-bold">總計</p>
-                <p class="mb-0 h4 font-weight-bold">{{ totalPrice | money }}</p>
+              <div class="d-flex justify-content-between align-items-center mt-4 border-dashed-top">
+                <p class="mb-0 font-weight-bold">總計</p>
+                <p class="mb-0 h4 font-weight-bold text-secondary">{{ totalPriceWithDiscount | money }}</p>
               </div>
-              <a
-                href="./checkout.html"
-                class="btn btn-secondary btn-block mt-4"
-              >確認訂單</a>
+
             </div>
           </div>
           <div class="col-lg-8 col-md-6">
             <div class="form-wrap">
-              <h3 class="mb-3 font-weight-bold">客戶資訊</h3>
+              <h3 class="mb-4 text-center text-primary pb-3 border-bottom">客戶訂單資訊</h3>
               <validation-observer v-slot="{ invalid }">
                 <form @submit.prevent="createOrder">
                   <div class="form-row">
-                    <div class="col form-group">
+                    <div class="col-md-6 form-group">
                       <validation-provider
                         rules="required"
                         v-slot="{ errors, classes }"
@@ -241,12 +250,30 @@
                         <label for="username">收件人姓名</label>
                         <input
                           type="text"
-                          name="username"
+                          name="收件人姓名"
                           class="form-control"
                           id="username"
-                          placeholder="收件人姓名"
+                          placeholder="請輸入收件人姓名"
                           :class="classes"
-                          v-model="order.name"
+                          v-model="form.name"
+                        />
+                        <span class="invalid-feedback">{{ errors[0] }}</span>
+                      </validation-provider>
+                    </div>
+                    <div class="col-md-6 form-group">
+                      <validation-provider
+                        rules="required|numeric|min:8"
+                        v-slot="{ errors, classes }"
+                      >
+                        <label for="tel">電話</label>
+                        <input
+                          type="tel"
+                          name="電話"
+                          class="form-control"
+                          id="tel"
+                          placeholder="請輸入電話"
+                          :class="classes"
+                          v-model="form.tel"
                         />
                         <span class="invalid-feedback">{{ errors[0] }}</span>
                       </validation-provider>
@@ -258,52 +285,36 @@
                         rules="required|email"
                         v-slot="{ errors, classes }"
                       >
-                        <label for="email">Email</label>
+                        <label for="email">E-mail</label>
                         <input
                           type="email"
                           class="form-control"
                           id="email"
-                          placeholder="Email"
+                          name="E-mail"
+                          placeholder="請輸入 E-mail"
                           :class="classes"
-                          v-model="order.email"
+                          v-model="form.email"
                         />
                         <span class="invalid-feedback">{{ errors[0] }}</span>
                       </validation-provider>
                     </div>
                   </div>
-                  <div class="form-row">
-                    <div class="col form-group">
-                      <validation-provider
-                        rules="required|numeric|min:8"
-                        v-slot="{ errors, classes }"
-                      >
-                        <label for="tel">電話</label>
-                        <input
-                          type="tel"
-                          class="form-control"
-                          id="tel"
-                          placeholder="電話"
-                          :class="classes"
-                          v-model="order.tel"
-                        />
-                        <span class="invalid-feedback">{{ errors[0] }}</span>
-                      </validation-provider>
-                    </div>
-                  </div>
+
                   <div class="form-row">
                     <div class="col form-group">
                       <validation-provider
                         rules="required"
                         v-slot="{ errors, classes }"
                       >
-                        <label for="address">地址</label>
+                        <label for="address">收件人地址</label>
                         <input
                           type="text"
                           class="form-control"
+                          name="收件人地址"
                           id="address"
-                          placeholder="地址"
+                          placeholder="請輸入收件人地址"
                           :class="classes"
-                          v-model="order.address"
+                          v-model="form.address"
                         />
                         <span class="invalid-feedback">{{ errors[0] }}</span>
                       </validation-provider>
@@ -316,7 +327,7 @@
                         name="購買方式"
                         id="waytopay"
                         class="form-control"
-                        v-model="order.payment"
+                        v-model="form.payment"
                         required
                       >
                         <option
@@ -335,23 +346,32 @@
                   </div>
                   <div class="form-row">
                     <div class="col form-group">
-                      <label for="message">留言</label>
+                      <label for="message">備註留言</label>
                       <textarea
                         id="message"
                         class="form-control"
                         cols="30"
                         rows="3"
-                        v-model="order.message"
+                        v-model="form.message"
                       ></textarea>
                     </div>
                   </div>
-                  <div class="form-row">
+                  <div class="form-row align-items-center">
+                    <div class="col form-group">
+                      <a
+                        href="#"
+                        class="text-secondary"
+                        :disabled="!carts.length"
+                        @click.prevent="step = 1; winScroll();"
+                      ><span><i class="fas fa-chevron-left"></i></span> 回上一步
+                      </a>
+                    </div>
                     <div class="col form-group text-right">
                       <button
                         type="submit"
-                        class="btn btn-info"
+                        class="btn btn-secondary"
                         :disabled="invalid"
-                      >送出表單</button>
+                      >確認送出</button>
                     </div>
                   </div>
                 </form>
@@ -362,9 +382,81 @@
         </div>
       </div>
     </section>
+    <section
+      class="zones zone_order"
+      v-show="step === 3"
+    >
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="p-3 mb-5 border">
+              <h4 class="mb-4 border-bottom pb-2 text-center">訂單明細</h4>
+              <div
+                class="d-flex mb-3"
+                v-for="(item,idx) in order.products"
+                :key="idx+1"
+              >
+                <img
+                  :src="item.product.imageUrl[0]"
+                  class="mr-2"
+                  style="width: 48px; height: 48px; object-fit: cover"
+                >
+                <div class="w-100">
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-0 mr-2 font-weight-bold">{{ item.product.title }}</p>
+                    <p class="mb-0 text-right">{{ (item.product.price) * item.quantity | money }}</p>
+
+                  </div>
+                  <p class="mb-0 font-weight-bold">{{ item.quantity }} {{item.product.unit }}</p>
+
+                </div>
+
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-4 border-dashed-top">
+                <p class="mb-0 mr-3">收件人姓名</p>
+                <p class="mb-0 text-primary font-weight-bold">{{ order.user.name }}</p>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <p class="mb-0 mr-3">收件人電話</p>
+                <p class="mb-0 text-primary font-weight-bold">{{ order.user.tel }}</p>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <p class="mb-0 mr-3">收件人信箱</p>
+                <p class="mb-0 text-primary font-weight-bold">{{ order.user.email }}</p>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <p class="mb-0 mr-3">收件人地址</p>
+                <p class="mb-0 text-primary font-weight-bold">{{ order.user.address }}</p>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <p class="mb-0 mr-3">付款方式</p>
+                <p class="mb-0 text-primary font-weight-bold">{{ order.payment }}</p>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <p class="mb-0 mr-3">付款狀態</p>
+                <p
+                  class="mb-0 text-primary font-weight-bold text-secondary"
+                  v-if="order.paid"
+                >已付款</p>
+                <p
+                  class="mb-0 text-primary font-weight-bold text-danger"
+                  v-else
+                >尚未付款</p>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-4 border-dashed-top">
+                <p class="mb-0 font-weight-bold">訂單金額</p>
+                <p class="mb-0 h4 font-weight-bold text-secondary">{{ order.amount | money }}</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 <script>
+/* global $ */
 import KV from '@/components/KV.vue';
 
 export default {
@@ -375,7 +467,7 @@ export default {
     return {
       title: '建立訂單',
       isLoading: false,
-      step: 1,
+      step: 3,
       couponCode: '',
       totalPrice: 0,
       totalQuantity: 0,
@@ -384,7 +476,7 @@ export default {
         imageUrl: [],
         quantity: 1,
       },
-      order: {
+      form: {
         name: '',
         email: '',
         tel: '',
@@ -392,8 +484,21 @@ export default {
         payment: '',
         message: '',
       },
+      orderID:
+        'YCT9y4oNyA23NZgCMIu8XcuWJSENPLpCG9kZqfpbIkyFdCqeuYPTw5z0oGw1gg9l',
+      order: {
+        user: {},
+      },
       coupon: {},
     };
+  },
+  computed: {
+    totalPriceWithDiscount() {
+      return this.coupon.enabled
+        ? this.totalPrice * (this.coupon.percent / 100)
+        : this.totalPrice;
+      // return this.totalPrice * (this.coupon.percent / 100);
+    },
   },
   methods: {
     // getCart() {
@@ -488,11 +593,16 @@ export default {
     createOrder() {
       this.isLoading = true;
       const api = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/orders`;
+      const formData = { ...this.form };
+      if (this.coupon.enabled) {
+        formData.coupon = this.coupon.code;
+      }
       this.$http
-        .post(api, this.order)
-        .then(() => {
+        .post(api, formData)
+        .then((res) => {
           this.isLoading = false;
-          this.order = {
+          this.orderID = res.data.data.id;
+          this.form = {
             name: '',
             email: '',
             tel: '',
@@ -501,14 +611,38 @@ export default {
             message: '',
           };
           this.$bus.$emit('get-cart');
+          this.step = 3;
+          this.getOrder(this.orderID);
           // alert('您已完成訂單，我們會盡快與您聯繫，謝謝。');
           // window.location = 'products.html';
-          this.$router.push('/products');
+          // this.$router.push('/products');
         })
-        .catch((err) => {
+        .catch(() => {
+          this.$bus.$emit('msg:push', '登愣~~建立訂單失敗', 'danger');
           this.isLoading = false;
-          console.log(err);
         });
+    },
+    getOrder() {
+      this.isLoading = true;
+      const api = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/orders/${this.orderID}`;
+      this.$http
+        .get(api)
+        .then((res) => {
+          this.order = res.data.data;
+          this.isLoading = false;
+        })
+        .catch();
+    },
+    winScroll() {
+      const scroll = $(window).scrollTop();
+      if (scroll >= 10) {
+        $('html,body').animate(
+          {
+            scrollTop: 250,
+          },
+          700,
+        );
+      }
     },
   },
   created() {
@@ -518,6 +652,7 @@ export default {
       this.totalQuantity = amount;
       this.carts = carts;
     });
+    this.getOrder();
   },
 };
 </script>

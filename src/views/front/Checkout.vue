@@ -234,30 +234,16 @@ export default {
     };
   },
   methods: {
-    createOrder() {
+    getOrder(id) {
       this.isLoading = true;
-      const api = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/orders`;
+      const api = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/orders/${id}`;
       this.$http
-        .post(api, this.order)
-        .then(() => {
+        .get(api)
+        .then((res) => {
+          this.order = res.data.data;
           this.isLoading = false;
-          this.order = {
-            name: '',
-            email: '',
-            tel: '',
-            address: '',
-            payment: '',
-            message: '',
-          };
-          this.$bus.$emit('get-cart');
-          // alert('您已完成訂單，我們會盡快與您聯繫，謝謝。');
-          // window.location = 'products.html';
-          this.$router.push('/products');
         })
-        .catch((err) => {
-          this.isLoading = false;
-          console.log(err);
-        });
+        .catch();
     },
   },
 };
