@@ -18,7 +18,26 @@ a:hover {
 button:focus {
   outline: none;
 }
+.title-dec {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
+  .circle {
+    width: 35px;
+    height: 35px;
+    margin-right: 1rem;
+    display: inline-block;
+    border-radius: 50%;
+    background-image: linear-gradient(
+      90deg,
+      rgba(245, 155, 32, 1) 0%,
+      rgba(245, 155, 32, 1) 50%,
+      rgba(218, 115, 39, 1) 51%,
+      rgba(218, 115, 39, 1) 100%
+    );
+  }
+}
 #front-nav {
   .custom-toggler .navbar-toggler-icon {
     background-image: none;
@@ -145,6 +164,8 @@ button:focus {
 }
 
 .front-footer {
+  padding-top: 30px;
+  padding-bottom: 30px;
   @include pad-767 {
     .logo {
       max-width: 130px;
@@ -564,8 +585,8 @@ h2 {
       //   transform: translateY(-50%);
       // }
     }
-    .num {
-      font-size: 110%;
+    .icon {
+      font-size: 1.4rem;
     }
     .txt {
       border-top: 1px solid;
@@ -579,8 +600,8 @@ h2 {
       background-color: #e9ecef;
       color: $gray-500;
       border-radius: 50%;
-      width: 5rem;
-      height: 5rem;
+      width: 5.5rem;
+      height: 5.5rem;
       transition: all 0.5s 0.4s;
       &.done {
         background-color: $secondary;
@@ -597,6 +618,11 @@ h2 {
       //     background-color: $secondary;
       //   }
       // }
+      @include pad-767 {
+        border-radius: 5%;
+        width: 4.2rem;
+        height: 4.2rem;
+      }
     }
     .progress {
       height: 5px;
@@ -607,9 +633,12 @@ h2 {
     .progress-bar {
       width: 0%;
       &.step2 {
-        width: 50%;
+        width: 33.333%;
       }
       &.step3 {
+        width: 66.666%;
+      }
+      &.step4 {
         width: 100%;
       }
     }
@@ -694,6 +723,22 @@ h2 {
           color: $gray-500;
         }
       }
+    }
+  }
+  .order-infos {
+    // box-shadow: 0px 0px 6px rgba($secondary, $alpha: 0.2);
+    background-color: #f4f7f6;
+    .list {
+      padding: 10px 0px;
+      &:first-of-type {
+        padding-top: 0;
+      }
+      &:last-of-type {
+        padding-bottom: 0;
+      }
+    }
+    .list + .list {
+      border-top: 1px dashed $gray-300;
     }
   }
 }
@@ -905,12 +950,7 @@ h2 {
     // h2 {
     //   color: $white;
     // }
-    .description {
-      background-color: rgba($africa, $alpha: 0.1);
-      outline: 1px solid #eee;
-      padding: 15px;
-      outline-offset: 5px;
-    }
+
     .form-control {
       border: 1px solid $secondary;
       color: $secondary;
@@ -932,9 +972,21 @@ h2 {
       }
     }
   }
-  .zone_maylike {
+  .description {
+    // background-color: rgba($africa, $alpha: 0.1);
+    // outline: 1px solid #eee;
+    padding: 15px;
+    outline-offset: 5px;
+  }
+  .description-wrap {
+    position: relative;
+    background: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/xYrpRVrZGA5ouW5TtURPqu5MLt5T9H343aKxlyO4cA39X848tSEVYIRJqzt0Od6rJAcE8H9SHCb1l6XQaQ8QF1rHl8jCU0LVbHpKm42lqUrtjnMl5B21JOHsdupSBcLi.png')
+      no-repeat 90% 90%;
     background-color: #fffbf9;
   }
+  // .zone_maylike {
+  //   background-color: #fffbf9;
+  // }
 }
 .front-index {
   .kv {
@@ -1029,25 +1081,7 @@ h2 {
     background: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/VQFdh5KLECKlzeOOODHYedxU2t0tHUaZUP2RtDJ3K65sb14TBknQa1PDCUSAFBLKU8gJTsauPdb6gB8Snahaj8XzYJx9gMUup7b7KECkBN1YQsvvPBFMc3oAUCysvYsI.png')
       no-repeat center;
     background-color: #fffbf9;
-    h2 {
-      display: flex;
-      align-items: center;
 
-      .circle {
-        width: 35px;
-        height: 35px;
-        margin-right: 1rem;
-        display: inline-block;
-        border-radius: 50%;
-        background-image: linear-gradient(
-          90deg,
-          rgba(245, 155, 32, 1) 0%,
-          rgba(245, 155, 32, 1) 50%,
-          rgba(218, 115, 39, 1) 51%,
-          rgba(218, 115, 39, 1) 100%
-        );
-      }
-    }
     ul {
       padding-left: 20px;
     }

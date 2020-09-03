@@ -128,7 +128,7 @@
               <input
                 v-model="tempCoupon.code"
                 id="coupon_code"
-                type="number"
+                type="text"
                 class="form-control"
                 placeholder="請輸入優惠碼"
                 required

@@ -6,32 +6,39 @@
     <section class="zones zone_process">
       <div class="container ">
         <div class="row justify-content-center">
-          <div class="col-12">
+          <div class="col-md-10">
             <div class="step-wrap">
               <div class="step step1 done">
-                <span class="num">1</span>
+                <span class="icon"><i class="fas fa-luggage-cart"></i></span>
                 <span class="txt">確認清單</span>
               </div>
               <div
                 class="step step2"
-                :class="{done:step === 2 || step === 3 }"
+                :class="{done:step === 2 || step === 3 || step === 4}"
               >
-                <span class="num">2</span>
+                <span class="icon"><i class="fas fa-list-alt"></i></span>
                 <span class="txt">填寫資料</span>
               </div>
               <div
                 class="step step3"
-                :class="{done:step === 3}"
+                :class="{done:step === 3 || step === 4}"
               >
-                <span class="num">3</span>
+                <span class="icon"><i class="fas fa-money-check-alt"></i></span>
                 <span class="txt">確認付款</span>
+              </div>
+              <div
+                class="step step4"
+                :class="{done:step === 4}"
+              >
+                <span class="icon"><i class="fas fa-address-card"></i></span>
+                <span class="txt">完成訂單</span>
               </div>
               <!-- <div class="bar"></div> -->
             </div>
             <div class="progress">
               <div
                 class="progress-bar bg-secondary"
-                :class="{step2:step === 2,step3:step === 3}"
+                :class="{step2:step === 2,step3:step === 3, step4:step === 4}"
                 role="progressbar"
                 aria-valuenow="50"
                 aria-valuemin="0"
@@ -238,7 +245,7 @@
           </div>
           <div class="col-lg-8 col-md-6">
             <div class="form-wrap">
-              <h3 class="mb-4 text-center text-primary pb-3 border-bottom">客戶訂單資訊</h3>
+              <h3 class="mb-4 text-center pb-3 border-bottom">客戶訂單資訊</h3>
               <validation-observer v-slot="{ invalid }">
                 <form @submit.prevent="createOrder">
                   <div class="form-row">
@@ -247,13 +254,13 @@
                         rules="required"
                         v-slot="{ errors, classes }"
                       >
-                        <label for="username">收件人姓名</label>
+                        <label for="username">聯絡人姓名</label>
                         <input
                           type="text"
-                          name="收件人姓名"
+                          name="聯絡人姓名"
                           class="form-control"
                           id="username"
-                          placeholder="請輸入收件人姓名"
+                          placeholder="請輸入聯絡人姓名"
                           :class="classes"
                           v-model="form.name"
                         />
@@ -306,13 +313,13 @@
                         rules="required"
                         v-slot="{ errors, classes }"
                       >
-                        <label for="address">收件人地址</label>
+                        <label for="address">聯絡人地址</label>
                         <input
                           type="text"
                           class="form-control"
-                          name="收件人地址"
+                          name="聯絡人地址"
                           id="address"
-                          placeholder="請輸入收件人地址"
+                          placeholder="請輸入聯絡人地址"
                           :class="classes"
                           v-model="form.address"
                         />
@@ -382,72 +389,167 @@
         </div>
       </div>
     </section>
+    <!-- 流程 3 確認付款 -->
     <section
       class="zones zone_order"
       v-show="step === 3"
     >
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-md-6">
+          <div class="col-md-8">
             <div class="p-3 mb-5 border">
               <h4 class="mb-4 border-bottom pb-2 text-center">訂單明細</h4>
-              <div
-                class="d-flex mb-3"
-                v-for="(item,idx) in order.products"
-                :key="idx+1"
-              >
-                <img
-                  :src="item.product.imageUrl[0]"
-                  class="mr-2"
-                  style="width: 48px; height: 48px; object-fit: cover"
+              <div class="row">
+                <div
+                  class="col-12"
+                  v-for="(item,idx) in order.products"
+                  :key="idx+1"
                 >
-                <div class="w-100">
-                  <div class="d-flex justify-content-between">
-                    <p class="mb-0 mr-2 font-weight-bold">{{ item.product.title }}</p>
-                    <p class="mb-0 text-right">{{ (item.product.price) * item.quantity | money }}</p>
+                  <div class="d-flex mb-3">
+                    <img
+                      :src="item.product.imageUrl[0]"
+                      class="mr-2"
+                      style="width: 48px; height: 48px; object-fit: cover"
+                    >
+                    <div class="w-100">
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0 mr-2 font-weight-bold">{{ item.product.title }}</p>
+                        <p class="mb-0 text-right">{{ (item.product.price) * item.quantity | money }}</p>
 
+                      </div>
+                      <p class="mb-0 font-weight-bold">{{ item.quantity }} {{item.product.unit }}</p>
+
+                    </div>
                   </div>
-                  <p class="mb-0 font-weight-bold">{{ item.quantity }} {{item.product.unit }}</p>
-
+                  <div class="d-flex justify-content-between mt-4">
+                    <p class="mb-0 font-weight-bold">折扣金額</p>
+                    <p class="mb-0">- {{ ((item.product.price) * item.quantity) - order.amount | money }}</p>
+                  </div>
                 </div>
+              </div>
 
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-4 border-dashed-top">
-                <p class="mb-0 mr-3">收件人姓名</p>
-                <p class="mb-0 text-primary font-weight-bold">{{ order.user.name }}</p>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="mb-0 mr-3">收件人電話</p>
-                <p class="mb-0 text-primary font-weight-bold">{{ order.user.tel }}</p>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="mb-0 mr-3">收件人信箱</p>
-                <p class="mb-0 text-primary font-weight-bold">{{ order.user.email }}</p>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="mb-0 mr-3">收件人地址</p>
-                <p class="mb-0 text-primary font-weight-bold">{{ order.user.address }}</p>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="mb-0 mr-3">付款方式</p>
-                <p class="mb-0 text-primary font-weight-bold">{{ order.payment }}</p>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="mb-0 mr-3">付款狀態</p>
-                <p
-                  class="mb-0 text-primary font-weight-bold text-secondary"
-                  v-if="order.paid"
-                >已付款</p>
-                <p
-                  class="mb-0 text-primary font-weight-bold text-danger"
-                  v-else
-                >尚未付款</p>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-4 border-dashed-top">
+              <div class="d-flex justify-content-between align-items-center mt-3 border-dashed-top">
                 <p class="mb-0 font-weight-bold">訂單金額</p>
                 <p class="mb-0 h4 font-weight-bold text-secondary">{{ order.amount | money }}</p>
               </div>
 
+            </div>
+            <form @submit.prevent="payOrder">
+              <div class="p-3 mb-5 order-infos">
+                <h4 class="mb-4 border-bottom pb-2 text-center">聯絡人資料</h4>
+                <div class="d-flex justify-content-between align-items-center list">
+                  <p class="mb-0 mr-3">聯絡人姓名</p>
+                  <p class="mb-0 font-weight-bold">{{ order.user.name }}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center list">
+                  <p class="mb-0 mr-3">聯絡人電話</p>
+                  <p class="mb-0 font-weight-bold">{{ order.user.tel }}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center list">
+                  <p class="mb-0 mr-3">聯絡人信箱</p>
+                  <p class="mb-0 font-weight-bold">{{ order.user.email }}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center list">
+                  <p class="mb-0 mr-3">聯絡人地址</p>
+                  <p class="mb-0 font-weight-bold">{{ order.user.address }}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center list">
+                  <p class="mb-0 mr-3">付款方式</p>
+                  <p class="mb-0 font-weight-bold">{{ order.payment }}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center list">
+                  <p class="mb-0 mr-3">付款狀態</p>
+                  <p
+                    class="mb-0 font-weight-bold text-secondary"
+                    v-if="order.paid"
+                  >已付款</p>
+                  <p
+                    class="mb-0 font-weight-bold text-danger"
+                    v-else
+                  >尚未付款</p>
+                </div>
+                <button
+                  type="submit"
+                  class="btn btn-secondary btn-block mt-3"
+                >確認付款</button>
+              </div>
+            </form>
+          </div>
+          <!-- <div class="col-md-6">
+
+          </div> -->
+        </div>
+      </div>
+    </section>
+    <section
+      class="zones zone_checkout"
+      v-show="step === 4"
+    >
+      <div class="container">
+        <!-- <div class="d-flex"></div> -->
+        <div class="row align-items-center justify-content-center">
+
+          <div class="col-md-8 mt-5">
+            <div class="wrap text-center">
+              <h3>
+                恭喜您，已完成付款！
+              </h3>
+              <p>感謝您對 TropicGo 的信任，我們會盡快與您聯絡，請耐心等候。</p>
+              <div class="d-flex justify-content-around mb-5 mt-4">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  data-toggle="collapse"
+                  href="#multiCollapseExample1"
+                  role="button"
+                  aria-expanded="false"
+                  aria-controls="multiCollapseExample1"
+                >查看訂單</button>
+                <router-link
+                  class="btn btn-secondary"
+                  to="/products"
+                >再去逛逛 <span><i class="fas fa-chevron-right"></i></span></router-link>
+              </div>
+            </div>
+            <div
+              class="wrap collapse multi-collapse"
+              id="multiCollapseExample1"
+            >
+              <div class="p-3 mb-5 order-infos">
+                <h4 class="mb-4 border-bottom pb-2 text-center">聯絡人資料</h4>
+                <div class="d-flex justify-content-between align-items-center list">
+                  <p class="mb-0 mr-3">聯絡人姓名</p>
+                  <p class="mb-0 font-weight-bold">{{ order.user.name }}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center list">
+                  <p class="mb-0 mr-3">聯絡人電話</p>
+                  <p class="mb-0 font-weight-bold">{{ order.user.tel }}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center list">
+                  <p class="mb-0 mr-3">聯絡人信箱</p>
+                  <p class="mb-0 font-weight-bold">{{ order.user.email }}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center list">
+                  <p class="mb-0 mr-3">聯絡人地址</p>
+                  <p class="mb-0 font-weight-bold">{{ order.user.address }}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center list">
+                  <p class="mb-0 mr-3">付款方式</p>
+                  <p class="mb-0 font-weight-bold">{{ order.payment }}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center list">
+                  <p class="mb-0 mr-3">付款狀態</p>
+                  <p
+                    class="mb-0 font-weight-bold text-secondary"
+                    v-if="order.paid"
+                  >已付款</p>
+                  <p
+                    class="mb-0 font-weight-bold text-danger"
+                    v-else
+                  >尚未付款</p>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
@@ -467,7 +569,7 @@ export default {
     return {
       title: '建立訂單',
       isLoading: false,
-      step: 3,
+      step: 1,
       couponCode: '',
       totalPrice: 0,
       totalQuantity: 0,
@@ -484,8 +586,7 @@ export default {
         payment: '',
         message: '',
       },
-      orderID:
-        'YCT9y4oNyA23NZgCMIu8XcuWJSENPLpCG9kZqfpbIkyFdCqeuYPTw5z0oGw1gg9l',
+      orderID: '',
       order: {
         user: {},
       },
@@ -501,28 +602,6 @@ export default {
     },
   },
   methods: {
-    // getCart() {
-    //   this.isLoading = true;
-    //   const api = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping`;
-    //   this.$http
-    //     .get(api)
-    //     .then((res) => {
-    //       this.isLoading = false;
-    //       this.carts = res.data.data;
-
-    //       this.totalPrice = 0;
-    //       this.totalQuantity = 0;
-    //       // 計算總金額
-    //       this.carts.forEach((item) => {
-    //         this.totalPrice += item.product.price * item.quantity;
-    //         this.totalQuantity += item.quantity;
-    //       });
-    //     })
-    //     .catch((err) => {
-    //       this.isLoading = false;
-    //       console.log(err);
-    //     });
-    // },
     updateQuantity(id, quantity) {
       this.isLoading = true;
       if (quantity < 1) return;
@@ -631,7 +710,26 @@ export default {
           this.order = res.data.data;
           this.isLoading = false;
         })
-        .catch();
+        .catch(() => {
+          this.$bus.$emit('msg:push', '登愣~~該訂單不存在', 'danger');
+        });
+    },
+    payOrder() {
+      this.isLoading = true;
+      const api = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/orders/${this.orderID}/paying`;
+      this.$http
+        .post(api)
+        .then((res) => {
+          if (res.data.data.paid) {
+            this.step = 4;
+            this.getOrder(this.orderID);
+            this.isLoading = false;
+          }
+        })
+        .catch(() => {
+          this.$bus.$emit('msg:push', '登愣~~該訂單不存在', 'danger');
+          this.isLoading = false;
+        });
     },
     winScroll() {
       const scroll = $(window).scrollTop();
@@ -652,7 +750,6 @@ export default {
       this.totalQuantity = amount;
       this.carts = carts;
     });
-    this.getOrder();
   },
 };
 </script>

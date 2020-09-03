@@ -152,20 +152,24 @@
             </div>
 
           </div>
-
-          <div class="col-12  mt-5">
+        </div>
+      </div>
+    </section>
+    <section class="description-wrap zones">
+      <div class="container ">
+        <div class="row justify-content-center">
+          <div class="col-12">
             <div class="description">
-              <h4 class="mb-3">產品特色：</h4>
+              <h3 class="mb-5 title-dec"><span class="circle"></span><span class="txt text-primary">產品特色</span></h3>
               <div v-html="product.description"></div>
             </div>
           </div>
-
         </div>
       </div>
     </section>
     <section class="zones zone_maylike">
       <div class="container">
-        <h3 class="mb-3">猜您可能會喜歡</h3>
+        <h3 class="mb-4">猜您可能會喜歡...</h3>
         <div class="row">
           <div
             class="col-md-4"

@@ -1,11 +1,17 @@
 <template>
   <div class="home">
     <navbar></navbar>
-    <div class="wrapper">
+    <main class="wrapper">
       <router-view></router-view>
+    </main>
+    <div class="footer-img">
+      <img
+        class="img-fluid"
+        src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/MVVJBSB0TzoF41iUkFtzvSgkLuQwAkphMoFA4u1DxnkWbDqsUj8IAnZaNqDFEvX1aDVfdxOzTNKd19fwknBHV46YW4GoO3bEZ6uPwX6KiriiKRtc7w3JoEJKm2OuABt6.png"
+        alt=""
+      >
     </div>
-
-    <footer class="front-footer py-5 bg-africa text-white">
+    <footer class="front-footer bg-africa text-white">
       <div class="container">
         <div class="d-flex align-items-center
         justify-content-between text-white mb-md-7 mb-4">

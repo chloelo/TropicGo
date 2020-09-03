@@ -32,7 +32,7 @@
     <section class="zones zone_selected">
       <div class="container-fluid">
         <div class="row">
-          <h2 class="mx-auto"><span class="circle"></span><span class="txt">特別精選</span></h2>
+          <h2 class="mx-auto title-dec"><span class="circle"></span><span class="txt">特別精選</span></h2>
           <div class="col-12">
             <div class="row mt-5">
               <div class="col-md-6">
