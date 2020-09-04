@@ -56,7 +56,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .page-item.active .page-link {
-  background-color: #17a2b8;
-  border-color: #17a2b8;
+  background-color: #4fb0a6;
+  border-color: #409c93;
 }
 </style>

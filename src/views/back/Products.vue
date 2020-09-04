@@ -59,7 +59,7 @@
                     >
                       <button
                         type="button"
-                        class="btn btn-outline-info"
+                        class="btn btn-outline-secondary"
                         @click="openModal('edit', item)"
                         :disabled="btnLoading === item.id"
                       >

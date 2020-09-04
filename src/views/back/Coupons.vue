@@ -50,7 +50,7 @@
                     >
                       <button
                         type="button"
-                        class="btn btn-outline-info"
+                        class="btn btn-outline-secondary"
                         @click="openModal('edit', item)"
                         :disabled="btnLoading === item.id"
                       >
@@ -184,12 +184,12 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-outline-secondary"
               data-dismiss="modal"
             >取消</button>
             <button
               type="button"
-              class="btn btn-primary"
+              class="btn btn-secondary"
               @click="updateCoupons"
             >確認</button>
           </div>
@@ -234,7 +234,7 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-outline-secondary"
+              class="btn btn-outline-danger"
               data-dismiss="modal"
             >
               取消

@@ -5,10 +5,14 @@
         <h2>藏在回歸線裡的<span class="text-asia">熱情</span>面紗，
           等你來一探究竟！</h2>
         <div class="links d-flex justify-content-around">
-          <router-link
-            class="link link-second"
-            to="/products"
-          >查優惠</router-link>
+          <button
+            type="button"
+            class="btn link link-second"
+            data-toggle="modal"
+            data-target="#idxModal"
+          >
+            查優惠
+          </button>
           <router-link
             class="link link-main"
             to="/products"
@@ -149,14 +153,18 @@
         </div>
       </div>
     </section>
+    <IndexModal></IndexModal>
+
   </div>
 </template>
 <script>
 import ProductsFilter from '@/components/ProductsFilter.vue';
+import IndexModal from '@/components/IndexModal.vue';
 
 export default {
   components: {
     ProductsFilter,
+    IndexModal,
   },
   data() {
     return {
@@ -179,6 +187,9 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    openModel() {},
   },
 };
 </script>

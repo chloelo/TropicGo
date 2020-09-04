@@ -140,14 +140,14 @@
           <li class="nav-item">
             <router-link
               class="nav-link nav_jq"
-              to="/about"
-            >關於我們</router-link>
+              to="/products"
+            >產品列表</router-link>
           </li>
           <li class="nav-item">
             <router-link
               class="nav-link nav_jq"
-              to="/products"
-            >產品列表</router-link>
+              to="/about"
+            >關於我們</router-link>
           </li>
           <!-- <li
             class="nav-item"

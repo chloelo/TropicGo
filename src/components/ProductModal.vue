@@ -228,7 +228,7 @@
           >取消</button>
           <button
             type="button"
-            class="btn bg-info text-white"
+            class="btn bg-secondary text-white"
             @click="updateProduct()"
           >確認</button>
         </div>

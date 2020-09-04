@@ -4,9 +4,9 @@
     <header>
       <nav
         id="back-nav"
-        class="navbar navbar-expand-lg navbar-dark bg-info"
+        class="navbar navbar-expand-lg navbar-dark bg-primary"
       >
-        <span class="navbar-brand">後臺管理</span>
+        <span class="navbar-brand">TropicGo 後臺管理</span>
         <button
           class="navbar-toggler"
           type="button"

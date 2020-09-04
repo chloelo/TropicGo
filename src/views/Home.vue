@@ -24,25 +24,28 @@
 
           <ul class="d-flex list-unstyled mb-0 h4">
             <li>
-              <router-link
-                to="/"
+              <a
+                target="_blank"
+                href="https://github.com/chloelo"
+                class="text-white mx-3"
+              ><i class="fab fa-github-square"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                target="_blank"
+                href="https://medium.com/chloelo925"
+                class="text-white mx-3"
+              ><i class="fab fa-medium"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                target="_blank"
+                href="https://facebook.com/chloelo0925"
                 class="text-white mx-3"
               ><i class="fab fa-facebook"></i>
-              </router-link>
-            </li>
-            <li>
-              <router-link
-                to="/"
-                class="text-white mx-3"
-              ><i class="fab fa-instagram"></i>
-              </router-link>
-            </li>
-            <li>
-              <router-link
-                to="/"
-                class="text-white mx-3"
-              ><i class="fab fa-line"></i>
-              </router-link>
+              </a>
             </li>
           </ul>
         </div>
