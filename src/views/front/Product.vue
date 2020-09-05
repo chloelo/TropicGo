@@ -139,14 +139,20 @@
                   小計
                   <strong>{{ product.quantity * product.price || 0 | money }}</strong> 元
                 </div>
-                <!-- <button
+                <button
                   type="button"
                   class="btn btn-outline-secondary btn-sm"
+                  @click="updateFavorites(product.id)"
                 >
-                  <span><i class="far fa-heart "></i></span>
-
+                <span v-if="favorites.indexOf(product.id) === -1">
+                  <span ><i class="far fa-heart "></i></span>
                   加入收藏
-                </button> -->
+                </span>
+                <span v-else>
+                  <span ><i class="fas fa-heart"></i></span>
+                  已加入收藏
+                </span>
+                </button>
               </div>
 
             </div>
@@ -172,7 +178,7 @@
         <h3 class="mb-4">猜您可能會喜歡...</h3>
         <div class="row">
           <div
-            class="col-md-4"
+            class="col-md-4 mb-4"
             v-for="filterProduct in filterCategory"
             :key="filterProduct.id"
           >
@@ -219,6 +225,7 @@ export default {
       status: {
         loadingItem: '',
       },
+      favorites: JSON.parse(localStorage.getItem('favoritesID')) || [],
       // tempQuantity: 1,
     };
   },
@@ -279,10 +286,8 @@ export default {
           this.product = res.data.data;
           this.$set(this.product, 'quantity', 1);
         })
-        .catch((err) => {
+        .catch(() => {
           this.isLoading = false;
-
-          console.log(err);
         });
     },
     addToCart(id, quantity = 1) {
@@ -312,6 +317,17 @@ export default {
           // response 為 axios 回傳的固有寫法
           // alert(err.response.data.errors[0]);
         });
+    },
+    updateFavorites(id) {
+      const favoriteId = this.favorites.indexOf(id);
+      if (favoriteId === -1) {
+        this.favorites.push(id);
+        this.$bus.$emit('msg:push', '已新增此筆收藏', 'success');
+      } else {
+        this.favorites.splice(favoriteId, 1);
+        this.$bus.$emit('msg:push', '已取消此筆收藏', 'danger');
+      }
+      localStorage.setItem('favoritesID', JSON.stringify(this.favorites));
     },
     winScroll() {
       const scroll = $(window).scrollTop();

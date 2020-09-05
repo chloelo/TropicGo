@@ -4,6 +4,7 @@
     <nav
       id="front-nav"
       class="navbar navbar-expand-lg navbar-light fixed-top align-items-center"
+      :class="{shadows:isShow}"
     >
       <router-link
         class="navbar-brand"
@@ -12,17 +13,14 @@
         <img src="@/assets/images/logo.png" />
         <span class="sr-only">(current)</span>
       </router-link>
-      <!-- <a class="navbar-brand">
-          <img src="@/assets/images/logo.png" />
-        </a> -->
       <div class="d-flex order-lg-2 justify-content-around icon-link-wrap">
-        <!-- <router-link
+        <router-link
           class="nav-link nav_jq icon-link"
-          to="/about"
+          to="/favorite"
         >
           <span><i class="fas fa-heart"></i></span>
 
-        </router-link> -->
+        </router-link>
 
         <div class="dropdown">
           <button
@@ -80,14 +78,6 @@
                   </tr>
                 </tfoot>
               </table>
-              <!-- <router-link
-                class="nav_jq bg-primary text-white text-center dropdown-item mt-2"
-                to="/cart"
-              >前往結帳</router-link> -->
-              <!-- <router-link
-                class="btn btn-block btn-primary"
-                to="/cart"
-              >查看購物車</router-link> -->
               <button
                 type="button"
                 class="btn btn-block btn-primary"
@@ -97,18 +87,6 @@
             </div>
           </div>
         </div>
-        <!-- <router-link
-          v-else
-          class="nav-link nav_jq icon-link icon-link-alone"
-          to="/cart"
-        >
-          <span class="position-relative wrap"><i class="fas fa-shopping-cart"></i>
-            <span
-              class="cart-num"
-              v-if="carts.length > 0"
-            >{{ totalQuantity }}</span>
-          </span>
-        </router-link> -->
       </div>
 
       <button
@@ -149,22 +127,6 @@
               to="/about"
             >關於我們</router-link>
           </li>
-          <!-- <li
-            class="nav-item"
-            v-if="$route.path ==='/cart'"
-          >
-            <router-link
-              class="nav-link nav_jq"
-              to="/cart"
-            >
-              <span class="position-relative"><i class="fas fa-shopping-cart"></i>
-                <span
-                  class="cart-num"
-                  v-if="carts.length > 0"
-                >{{ totalQuantity }}</span>
-              </span>
-            </router-link>
-          </li> -->
         </ul>
       </div>
     </nav>
@@ -180,6 +142,7 @@ export default {
       carts: [],
       totalPrice: 0,
       totalQuantity: 0,
+      isShow: false,
     };
   },
   methods: {
@@ -213,9 +176,9 @@ export default {
     winScroll() {
       const scroll = $(window).scrollTop();
       if (scroll >= 10) {
-        $('#front-nav').addClass('shadows');
+        this.isShow = true;
       } else {
-        $('#front-nav').removeClass('shadows');
+        this.isShow = false;
       }
     },
     toPageCart() {

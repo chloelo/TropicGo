@@ -2,9 +2,17 @@
   <div class="front front-index">
     <section class="kv">
       <div class="txt-wrap">
-        <h2>藏在回歸線裡的<span class="text-asia">熱情</span>面紗，
+        <h2
+          data-aos="zoom-in"
+          data-aos-duration="1000"
+          data-aos-delay="50"
+        >藏在回歸線裡的<span class="text-asia">熱情</span>面紗，
           等你來一探究竟！</h2>
-        <div class="links d-flex justify-content-around">
+        <div
+          class="links d-flex justify-content-around"
+          data-aos="fade-up"
+          data-aos-delay="500"
+        >
           <button
             type="button"
             class="btn link link-second"
@@ -46,7 +54,10 @@
                     <h3 class="text-primary">墨西哥</h3>
                   </div>
                   <div class="col-lg-7">
-                    <div class="txt">
+                    <div
+                      class="txt"
+                      data-aos="fade-down"
+                    >
                       <p>一生必去墨西哥的三大理由：
                       </p>
                       <ul>
@@ -76,6 +87,7 @@
               <div class="col-md-6">
                 <img
                   class="img-fluid"
+                  data-aos="fade-down"
                   src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/A7vYL8Gos0SJCedDIUiBF7CVCeGrgtLsewYcOa2UHgreUMcWC7mC14Uxb6piMs1TWY7dIdeynUQFfnjUBxixWd5wdwYu7UR6zfw8cmCcAdNVo43cXiec8WoovdumMSzQ.png"
                   alt=""
                 >
@@ -90,7 +102,10 @@
                     <h3 class="text-primary">埃及</h3>
                   </div>
                   <div class="col-lg-7">
-                    <div class="txt">
+                    <div
+                      class="txt"
+                      data-aos="fade-down"
+                    >
                       <p>神秘而多樣化的金字塔，乃至奇幻的紅海風光；夢想中的尼羅河乘船泛遊，
                         更有那三千年歷史的阿布辛貝世界級遺跡！Tropic Go 精心安排搭配多段埃及國內線班機，
                         省卻艷陽下長途行車或搭乘夜間火車之苦，讓您的埃及之旅於輕鬆悠閒中 ，絕無遺珠之憾！
@@ -111,6 +126,7 @@
               <div class="col-md-6 order-md-1">
                 <img
                   class="img-fluid"
+                  data-aos="fade-down"
                   src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/4jsSHHll13CnKeswuD91bY4ErHR8vmBV5WEt1b2QuFuAn5dLp5z9MzhVtAkQx8ndYGnPbuTZJzOwqZtMSSeAqGZQvNBY9kfFY7wezUbUOEfoOOYNkCdo4hlYCkJjkYoG.png"
                   alt=""
                 >
@@ -126,6 +142,7 @@
         <div class="row">
           <div
             class="col-sm-4"
+            data-aos="fade-down"
             v-for="item in viewShared"
             :key="item.title"
           >

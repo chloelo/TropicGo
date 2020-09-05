@@ -99,9 +99,8 @@ export default {
           //   this.deadline_time = '';
           // }
         })
-        .catch((err) => {
+        .catch(() => {
           this.isLoading = false;
-          console.log(err);
         });
     },
     setPaidStatus(item) {

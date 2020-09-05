@@ -9,6 +9,8 @@ import {
   ValidationObserver, ValidationProvider, localize, configure,
 } from 'vee-validate/dist/vee-validate.full';
 import TW from 'vee-validate/dist/locale/zh_TW.json';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 import App from './App.vue';
 import router from './router';
@@ -33,6 +35,11 @@ configure({
 Vue.config.productionTip = false;
 
 new Vue({
+  created() {
+    AOS.init({
+      duration: 600,
+    });
+  },
   router,
   render: (h) => h(App),
 }).$mount('#app');

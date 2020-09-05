@@ -163,7 +163,6 @@ export default {
           const { pathCategory } = this.$route.params;
           this.isLoading = false;
           this.products = res.data.data;
-
           if (pathCategory) {
             this.filterProducts(pathCategory);
           } else {

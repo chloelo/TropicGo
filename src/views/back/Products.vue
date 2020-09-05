@@ -175,9 +175,8 @@ export default {
             };
           }
         })
-        .catch((err) => {
+        .catch(() => {
           this.isLoading = false;
-          console.log(err);
         });
     },
     openModal(status, item) {
@@ -202,9 +201,8 @@ export default {
               this.tempProduct = res.data.data;
               $('#productModal').modal('show');
             })
-            .catch((err) => {
+            .catch(() => {
               this.btnLoading = '';
-              console.log(err);
             });
           break;
         }

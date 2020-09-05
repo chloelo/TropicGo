@@ -160,9 +160,8 @@ export default {
           this.storages = res.data.data;
           this.tempStorage = {};
         })
-        .catch((err) => {
+        .catch(() => {
           this.isLoading = false;
-          console.log(err);
         });
     },
     deleteStorage() {

@@ -301,9 +301,8 @@ export default {
             this.deadline_time = '';
           }
         })
-        .catch((err) => {
+        .catch(() => {
           this.isLoading = false;
-          console.log(err);
         });
     },
     openModal(status, item) {
@@ -333,9 +332,8 @@ export default {
               ] = this.tempCoupon.deadline.datetime.split(' ');
               $('#couponModal').modal('show');
             })
-            .catch((err) => {
+            .catch(() => {
               this.btnLoading = '';
-              console.log(err);
             });
           break;
         }
