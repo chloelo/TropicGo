@@ -157,8 +157,7 @@ button:focus {
   }
   @include pad-767 {
     .icon-link {
-      padding-left: 5px;
-      padding-right: 5px;
+      padding-right: 8px;
     }
   }
 }
@@ -1076,6 +1075,7 @@ h2 {
       padding: 6px 15px;
     }
     @include pad-991 {
+      padding-top: 60px;
       .wrap {
         margin-bottom: 15px;
       }
@@ -1305,7 +1305,7 @@ h2 {
   position: fixed;
   display: flex;
   opacity: 0;
-  bottom: 50px;
+  bottom: 30px;
   right: 15px;
   width: 40px;
   height: 40px;
