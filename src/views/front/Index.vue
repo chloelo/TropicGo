@@ -56,7 +56,7 @@
                   <div class="col-lg-7">
                     <div
                       class="txt"
-                      data-aos="fade-down"
+                      data-aos="zoom-in"
                     >
                       <p>一生必去墨西哥的三大理由：
                       </p>
@@ -87,7 +87,7 @@
               <div class="col-md-6">
                 <img
                   class="img-fluid"
-                  data-aos="fade-down"
+                  data-aos="zoom-in"
                   src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/A7vYL8Gos0SJCedDIUiBF7CVCeGrgtLsewYcOa2UHgreUMcWC7mC14Uxb6piMs1TWY7dIdeynUQFfnjUBxixWd5wdwYu7UR6zfw8cmCcAdNVo43cXiec8WoovdumMSzQ.png"
                   alt=""
                 >
@@ -104,7 +104,7 @@
                   <div class="col-lg-7">
                     <div
                       class="txt"
-                      data-aos="fade-down"
+                      data-aos="zoom-in"
                     >
                       <p>神秘而多樣化的金字塔，乃至奇幻的紅海風光；夢想中的尼羅河乘船泛遊，
                         更有那三千年歷史的阿布辛貝世界級遺跡！Tropic Go 精心安排搭配多段埃及國內線班機，
@@ -126,7 +126,7 @@
               <div class="col-md-6 order-md-1">
                 <img
                   class="img-fluid"
-                  data-aos="fade-down"
+                  data-aos="zoom-in"
                   src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/4jsSHHll13CnKeswuD91bY4ErHR8vmBV5WEt1b2QuFuAn5dLp5z9MzhVtAkQx8ndYGnPbuTZJzOwqZtMSSeAqGZQvNBY9kfFY7wezUbUOEfoOOYNkCdo4hlYCkJjkYoG.png"
                   alt=""
                 >
@@ -142,7 +142,7 @@
         <div class="row">
           <div
             class="col-sm-4"
-            data-aos="fade-down"
+            data-aos="zoom-in"
             v-for="item in viewShared"
             :key="item.title"
           >

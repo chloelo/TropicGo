@@ -7,16 +7,19 @@
 
         <div class="row">
           <div class="col-md-6">
-            <div class="img-wrap" >
+            <div class="img-wrap">
               <img
-              data-aos="fade-up"
+                data-aos="fade-up"
                 class="img-fluid"
                 src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/i4mXi8E6EwKBjH7nfnRF1vrXrLmVsOzdNsig8d72cNVgAc103KqIbTl4uFfoCDXK8tQpap096VZBxar7fforwsyNivsGoajnTrvoTxgDdEhtXIgcgiLFCqyqPVruDbie.png"
               >
             </div>
           </div>
           <div class="col-md-6">
-            <div class="txt-wrap p-3" data-aos="fade-down">
+            <div
+              class="txt-wrap p-3"
+              data-aos="fade-down"
+            >
               <h2 class="my-3">關於 TropicGo</h2>
               <p>不管做什麼事情，有熱情才有持之以恆的動力，曾經我們也尋尋覓覓，關於自己、未來、生活...在追求什麼？每個人都有自己認定的答案，也許終其一生都不一定找的到。</p>
               <p>
@@ -52,7 +55,10 @@
         <h2 class="mb-5 title-dec"><span class="circle"></span><span class="txt text-primary">TropicGo 成員</span></h2>
         <div class="row h-100">
           <div class="col-lg-3 col-md-6">
-            <div class="wrap" data-aos="fade-down">
+            <div
+              class="wrap"
+              data-aos="zoom-in"
+            >
               <div class="img-wrap">
                 <img
                   class="img-fluid"
@@ -66,7 +72,10 @@
             </div>
           </div>
           <div class="col-lg-3 col-md-6">
-            <div class="wrap" data-aos="fade-down">
+            <div
+              class="wrap"
+              data-aos="zoom-in"
+            >
               <div class="img-wrap">
                 <img
                   class="img-fluid"
@@ -80,7 +89,10 @@
             </div>
           </div>
           <div class="col-lg-3 col-md-6">
-            <div class="wrap" data-aos="fade-down">
+            <div
+              class="wrap"
+              data-aos="zoom-in"
+            >
               <div class="img-wrap">
                 <img
                   class="img-fluid"
@@ -94,7 +106,10 @@
             </div>
           </div>
           <div class="col-lg-3 col-md-6">
-            <div class="wrap" data-aos="fade-down">
+            <div
+              class="wrap"
+              data-aos="zoom-in"
+            >
               <div class="img-wrap">
                 <img
                   class="img-fluid"

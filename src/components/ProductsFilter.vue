@@ -7,7 +7,7 @@
     >
       <div
         class="wrap"
-        data-aos="fade-down"
+        data-aos="zoom-in"
         :class="['bg-'+item.category,item.category]"
       >
         <img :src="'./images/' + item.iconImg" />
