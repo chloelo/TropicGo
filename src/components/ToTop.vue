@@ -2,7 +2,7 @@
   <div>
     <a
       href="#"
-      class="btn btn-secondary toTop justify-content-center align-items-center"
+      class="btn btn-world toTop justify-content-center align-items-center"
       :class="{show:isShow}"
       @click.prevent="toTop"
     >
