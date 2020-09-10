@@ -1,6 +1,6 @@
 <template>
   <div class="backpage backpage-products">
-    <loading :active.sync="isLoading"></loading>
+    <loading :active.sync="isLoading" />
     <div class="container">
       <div class="row">
         <div class="col-12">
@@ -17,13 +17,27 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">分類</th>
-                  <th scope="col">產品圖</th>
-                  <th scope="col">產品名稱</th>
-                  <th scope="col">原價</th>
-                  <th scope="col">售價</th>
-                  <th scope="col">是否啟用</th>
-                  <th scope="col">編輯</th>
+                  <th scope="col">
+                    分類
+                  </th>
+                  <th scope="col">
+                    產品圖
+                  </th>
+                  <th scope="col">
+                    產品名稱
+                  </th>
+                  <th scope="col">
+                    原價
+                  </th>
+                  <th scope="col">
+                    售價
+                  </th>
+                  <th scope="col">
+                    是否啟用
+                  </th>
+                  <th scope="col">
+                    編輯
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -31,12 +45,14 @@
                   v-for="item in products"
                   :key="item.id"
                 >
-                  <th scope="row">{{ item.category }}</th>
+                  <th scope="row">
+                    {{ item.category }}
+                  </th>
                   <td>
                     <img
                       class="sm-img"
                       :src="item.imageUrl[0]"
-                    />
+                    >
                   </td>
                   <td>{{ item.title }}</td>
                   <td>{{ item.origin_price }}</td>
@@ -47,8 +63,8 @@
                         type="checkbox"
                         disabled
                         :checked="item.enabled"
-                      />
-                      <span class="slider round"></span>
+                      >
+                      <span class="slider round" />
                     </label>
                   </td>
                   <td>
@@ -60,8 +76,8 @@
                       <button
                         type="button"
                         class="btn btn-outline-secondary"
-                        @click="openModal('edit', item)"
                         :disabled="btnLoading === item.id"
+                        @click="openModal('edit', item)"
                       >
                         編輯
                         <span
@@ -69,7 +85,7 @@
                           class="spinner-border spinner-border-sm"
                           role="status"
                           aria-hidden="true"
-                        ></span>
+                        />
                       </button>
                       <button
                         type="button"
@@ -88,34 +104,21 @@
             :is-new="isNew"
             :temp-product="tempProduct"
             @update="getProducts"
-          ></ProductModal>
+          />
           <ProductModalDel
             :temp-product="tempProduct"
             @update="getProducts"
-          ></ProductModalDel>
+          />
           <Pagination
             :pages="pagination"
             @emitpage="getProducts"
-          ></Pagination>
-          <!-- <pagination :pages="pagination" @emitpage="getProducts"></pagination>
-          <product-modal
-            :uuid="uuid"
-            :url="url"
-            :is-new="isNew"
-            :temp-product="tempProduct"
-            @update="getProducts"
-          ></product-modal>
-          <product-modal-del
-            :uuid="uuid"
-            :url="url"
-            :temp-product="tempProduct"
-            @update="getProducts"
-          ></product-modal-del> -->
+          />
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 /* global $ */
 import ProductModal from '@/components/ProductModal.vue';
@@ -123,7 +126,6 @@ import ProductModalDel from '@/components/ProductModalDel.vue';
 import Pagination from '@/components/Pagination.vue';
 
 export default {
-  props: ['token'],
   components: {
     ProductModal,
     ProductModalDel,
@@ -132,22 +134,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      products: [
-        // {
-        //   id: '',
-        //   title: '',
-        //   category: '',
-        //   content: '',
-        //   description: '',
-        //   imageUrl: [],
-        //   enabled: true,
-        //   origin_price: 0,
-        //   price: 0,
-        //   unit: "",
-        //   options: {
-        //   },
-        // },
-      ],
+      products: [],
       pagination: {},
       tempProduct: {
         // 第二層結構要先定義，才能雙向綁定
@@ -157,6 +144,9 @@ export default {
       isNew: false,
       btnLoading: '',
     };
+  },
+  created() {
+    this.getProducts();
   },
   methods: {
     getProducts(page = 1) {
@@ -215,9 +205,6 @@ export default {
           break;
       }
     },
-  },
-  created() {
-    this.getProducts();
   },
 };
 </script>

@@ -53,6 +53,7 @@
     </div>
   </div>
 </template>
+
 <script>
 /* global $ */
 export default {

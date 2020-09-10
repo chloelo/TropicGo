@@ -1,6 +1,6 @@
 <template>
   <div class="backpage backpage-storage">
-    <loading :active.sync="isLoading"></loading>
+    <loading :active.sync="isLoading" />
     <div class="container">
       <div class="row">
         <div class="col-12 d-flex align-items-center mb-5">
@@ -10,7 +10,7 @@
               v-if="imgUploading"
               class="mr-2"
             >
-              <i class="fas fa-spinner fa-spin"></i>
+              <i class="fas fa-spinner fa-spin" />
             </span>
           </label>
           <input
@@ -18,8 +18,7 @@
             type="file"
             class="form-control"
             @change="uploadFile"
-          />
-
+          >
         </div>
         <div class="col-12">
           <h2>圖片列表</h2>
@@ -30,12 +29,18 @@
                   <th
                     scope="col"
                     width="15%"
-                  >圖片縮圖</th>
-                  <th scope="col">圖片路徑</th>
+                  >
+                    圖片縮圖
+                  </th>
+                  <th scope="col">
+                    圖片路徑
+                  </th>
                   <th
                     scope="col"
                     width="10%"
-                  >操作</th>
+                  >
+                    操作
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -44,7 +49,9 @@
                   :key="item.id"
                 >
                   <td><img :src="item.path"></td>
-                  <td class="path">{{ item.path }}</td>
+                  <td class="path">
+                    {{ item.path }}
+                  </td>
                   <td>
                     <div class="btn-group">
                       <button
@@ -62,7 +69,7 @@
           <Pagination
             :pages="pagination"
             @emitpage="getStorages"
-          ></Pagination>
+          />
 
           <!-- Modal del -->
           <div
@@ -124,6 +131,7 @@
     </div>
   </div>
 </template>
+
 <script>
 /* global $ */
 import Pagination from '@/components/Pagination.vue';

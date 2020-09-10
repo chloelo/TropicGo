@@ -1,67 +1,70 @@
 <template>
   <div class="front front-product">
-    <loading :active.sync="isLoading"></loading>
+    <loading :active.sync="isLoading" />
     <section
-      class="zones zone_detail_bg"
       v-if="product.imageUrl[0]"
+      class="zones zone_detail_bg"
       :style="`background-image:url(${product.imageUrl[0]})`"
-    >
-
-    </section>
+    />
     <section class="zones zone_detail">
       <div class="container">
         <div class="row">
           <div class="col-lg-7">
-
             <div class="img-wrap mb-3">
               <img
                 :src="product.imageUrl[0]"
                 class="img-fluid"
-              />
+              >
             </div>
           </div>
           <div class="col-lg-5">
             <div class="product-wrap">
-
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item">
-                    <router-link to="/">首頁</router-link>
+                    <router-link to="/">
+                      首頁
+                    </router-link>
                   </li>
                   <li class="breadcrumb-item">
-                    <router-link to="/products">產品列表</router-link>
+                    <router-link to="/products">
+                      產品列表
+                    </router-link>
                   </li>
                   <li
                     class="breadcrumb-item active"
                     aria-current="page"
-                  >{{ product.title }}</li>
+                  >
+                    {{ product.title }}
+                  </li>
                 </ol>
               </nav>
               <h2 class="mb-lg-3 mb-4">
-                {{ product.title }}</h2>
+                {{ product.title }}
+              </h2>
               <p>{{ product.content }}</p>
               <ul class="list-unstyled">
                 <li v-if="product.options.popular">
                   <span class="icon icon-popular">
-                    <i class="fas fa-fire"></i>
+                    <i class="fas fa-fire" />
                   </span>
                   熱門商品
                 </li>
                 <li>
                   <span class="icon">
-                    <i class="fas fa-plane-departure"></i>
+                    <i class="fas fa-plane-departure" />
                   </span>
-                  出發城市：{{ product.options.departureCity}}
+                  出發城市：{{ product.options.departureCity }}
                 </li>
-                 <li>
+                <li>
                   <span class="icon">
-                    <i class="fas fa-users"></i>
+                    <i class="fas fa-users" />
                   </span>
                   成團人數：15 人
                 </li>
                 <li>
                   <span class="icon">
-                    <i class="fas fa-dollar-sign"></i>
+                    <i class="fas fa-dollar-sign" />
                   </span>
                   費用已含：機場稅、燃油費
                 </li>
@@ -75,7 +78,6 @@
                   特價
                   <span class="h4">{{ product.price | money }}</span>
                 </div>
-
               </div>
               <form>
                 <div class="form-row mt-3">
@@ -88,7 +90,7 @@
                           type="button"
                           @click="product.quantity -= 1"
                         >
-                        <span><i class="fas fa-minus"></i></span>
+                          <span><i class="fas fa-minus" /></span>
                         </button>
                       </div>
                       <input
@@ -97,17 +99,16 @@
                         min="1"
                         class="form-control text-center pl-4"
                         aria-describedby="basic-addon1"
-                      />
+                      >
                       <div class="input-group-append">
                         <button
                           class="btn btn-outline-secondary "
                           type="button"
                           @click="product.quantity += 1"
                         >
-                        <span><i class="fas fa-plus"></i></span>
+                          <span><i class="fas fa-plus" /></span>
                         </button>
                       </div>
-
                     </div>
                   </div>
                   <div class="form-group col-md-6">
@@ -121,9 +122,9 @@
                         class="spinner-border spinner-border-sm"
                         role="status"
                         aria-hidden="true"
-                      ></span>
+                      />
                       <span v-else>
-                        <i class="fas fa-shopping-cart"></i>
+                        <i class="fas fa-shopping-cart" />
                       </span>
 
                       立即報名
@@ -144,19 +145,17 @@
                   class="btn btn-outline-secondary btn-sm"
                   @click="updateFavorites(product.id)"
                 >
-                <span v-if="favorites.indexOf(product.id) === -1">
-                  <span ><i class="far fa-heart "></i></span>
-                  加入收藏
-                </span>
-                <span v-else>
-                  <span ><i class="fas fa-heart"></i></span>
-                  已加入收藏
-                </span>
+                  <span v-if="favorites.indexOf(product.id) === -1">
+                    <span><i class="far fa-heart " /></span>
+                    加入收藏
+                  </span>
+                  <span v-else>
+                    <span><i class="fas fa-heart" /></span>
+                    已加入收藏
+                  </span>
                 </button>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>
@@ -166,8 +165,10 @@
         <div class="row justify-content-center">
           <div class="col-12">
             <div class="description">
-              <h3 class="mb-5 title-dec"><span class="circle"></span><span class="txt text-primary">產品特色</span></h3>
-              <div v-html="product.description"></div>
+              <h3 class="mb-5 title-dec">
+                <span class="circle" /><span class="txt text-primary">產品特色</span>
+              </h3>
+              <div v-html="product.description" />
             </div>
           </div>
         </div>
@@ -175,12 +176,14 @@
     </section>
     <section class="zones zone_maylike">
       <div class="container">
-        <h3 class="mb-4">猜您可能會喜歡...</h3>
+        <h3 class="mb-4">
+          猜您可能會喜歡...
+        </h3>
         <div class="row">
           <div
-            class="col-md-4 mb-4"
             v-for="filterProduct in filterCategory"
             :key="filterProduct.id"
+            class="col-md-4 mb-4"
           >
             <div class="card border-0 shadow-sm">
               <img
@@ -188,8 +191,12 @@
                 class="card-img-top"
               >
               <div class="card-body">
-                <h5 class="card-title">{{ filterProduct.title }}</h5>
-                <p class="card-text">{{ filterProduct.content }}</p>
+                <h5 class="card-title">
+                  {{ filterProduct.title }}
+                </h5>
+                <p class="card-text">
+                  {{ filterProduct.content }}
+                </p>
                 <p class="prices d-flex justify-content-between align-items-center">
                   <span class="price_origin">{{ filterProduct.origin_price | money }}/人</span>
                   <span class="price_discount">{{ filterProduct.price | money }}/人</span>
@@ -199,8 +206,7 @@
                   class=" mt-3 btn btn-outline-secondary btn-addTocart btn-block"
                   @click.prevent="toProduct(filterProduct.id)"
                 >
-
-                  前往查看 <span><i class="fas fa-chevron-right"></i></span>
+                  前往查看 <span><i class="fas fa-chevron-right" /></span>
                 </button>
               </div>
             </div>
@@ -210,6 +216,7 @@
     </section>
   </div>
 </template>
+
 <script>
 /* global $ */
 export default {
@@ -226,24 +233,18 @@ export default {
         loadingItem: '',
       },
       favorites: JSON.parse(localStorage.getItem('favoritesID')) || [],
-      // tempQuantity: 1,
     };
   },
   computed: {
     filterCategory() {
       return this.products.filter((item) => item.id !== this.product.id
         && item.category === this.product.category);
-      // forEach 寫法
-      // const ary = [];
-      // this.products.forEach((item) => {
-      //   if (this.$route.params.id !== item.id) {
-      //     if (item.category === this.product.category) {
-      //       ary.push(item);
-      //     }
-      //   }
-      // });
-      // return ary;
     },
+  },
+  created() {
+    this.getProduct();
+    this.getProducts();
+    this.winScroll();
   },
   methods: {
     toProduct(id) {
@@ -314,8 +315,6 @@ export default {
             `登愣~~出現錯誤！ ${err.response.data.errors[0]}`,
             'danger',
           );
-          // response 為 axios 回傳的固有寫法
-          // alert(err.response.data.errors[0]);
         });
     },
     updateFavorites(id) {
@@ -340,11 +339,6 @@ export default {
         );
       }
     },
-  },
-  created() {
-    this.getProduct();
-    this.getProducts();
-    this.winScroll();
   },
 
 };

@@ -6,8 +6,10 @@
           data-aos="zoom-in"
           data-aos-duration="1000"
           data-aos-delay="50"
-        >藏在回歸線裡的<span class="text-asia">熱情</span>面紗，
-          等你來一探究竟！</h2>
+        >
+          藏在回歸線裡的<span class="text-sun">熱情</span>面紗，
+          等你來一探究竟！
+        </h2>
         <div
           class="links d-flex justify-content-around"
           data-aos="fade-up"
@@ -24,7 +26,9 @@
           <router-link
             class="link link-main"
             to="/products"
-          >找行程</router-link>
+          >
+            找行程
+          </router-link>
         </div>
       </div>
     </section>
@@ -36,7 +40,7 @@
             <p>還沒有想法的話，來這裡找找吧，也許會有意外的驚奇。</p>
           </div>
           <div class="col-lg-8">
-            <ProductsFilter></ProductsFilter>
+            <ProductsFilter />
           </div>
         </div>
       </div>
@@ -44,45 +48,57 @@
     <section class="zones zone_selected">
       <div class="container-fluid">
         <div class="row">
-          <h2 class="mx-auto title-dec"><span class="circle"></span><span class="txt">特別精選</span></h2>
+          <h2 class="mx-auto title-dec">
+            <span class="circle" /><span class="txt">特別精選</span>
+          </h2>
           <div class="col-12">
             <div class="row mt-5">
               <div class="col-md-6">
-                <div class="num-wrap num-wrap01"><span class="num">01</span></div>
+                <div class="num-wrap num-wrap01">
+                  <span class="num">01</span>
+                </div>
                 <div class="row justify-content-md-between">
                   <div class="col-lg-5">
-                    <h3 class="text-primary">墨西哥</h3>
+                    <h3 class="text-primary">
+                      墨西哥
+                    </h3>
                   </div>
                   <div class="col-lg-7">
                     <div
                       class="txt"
                       data-aos="zoom-in"
                     >
-                      <p>一生必去墨西哥的三大理由：
+                      <p>
+                        一生必去墨西哥的三大理由：
                       </p>
                       <ul>
-                        <li>墨式美味：
+                        <li>
+                          墨式美味：
                           墨西哥料理可以說是拉丁美洲的翹楚，莫蕾醬巧克力嫩雞和仙人掌料理等其他地方吃不到的獨特美味，
-                          是世界上少數可以吃的下肚的世界文化遺產！</li>
-                        <li>拉美古文明的搖籃：
+                          是世界上少數可以吃的下肚的世界文化遺產！
+                        </li>
+                        <li>
+                          拉美古文明的搖籃：
                           千年來璀燦奪目孕育無數美洲古文明如馬雅、阿茲特克和托爾特克，不僅被譽為世界上最偉大、
-                          也是拉美國家中少數能同時保存西班牙殖民和美洲古文明的國度之一。</li>
-                        <li>世界文化遺產大國：
-                          截至 2017 年 9 月，墨國境內就囊括 27 項世界文化遺產、6 項自然遺產，總數量美洲排名第一！</li>
+                          也是拉美國家中少數能同時保存西班牙殖民和美洲古文明的國度之一。
+                        </li>
+                        <li>
+                          世界文化遺產大國：
+                          截至 2017 年 9 月，墨國境內就囊括 27 項世界文化遺產、6 項自然遺產，總數量美洲排名第一！
+                        </li>
                       </ul>
                       <div class="d-flex justify-content-end">
                         <router-link
                           class="link bg-secondary"
                           to="/product/bBkMTu7Y8UuP3X8G1iGPvNepz2B7uNyF3jfC5GE5ZQz7baZsUGmnqSrCfmiG6Kn9"
-                        >了解更多
-                          <span><i class="fas fa-chevron-right"></i></span>
+                        >
+                          了解更多
+                          <span><i class="fas fa-chevron-right" /></span>
                         </router-link>
                       </div>
-
                     </div>
                   </div>
                 </div>
-
               </div>
               <div class="col-md-6">
                 <img
@@ -92,21 +108,25 @@
                   alt=""
                 >
               </div>
-
             </div>
             <div class="row mt-5">
               <div class="col-md-6 order-md-2">
-                <div class="num-wrap num-wrap02"><span class="num">02</span></div>
+                <div class="num-wrap num-wrap02">
+                  <span class="num">02</span>
+                </div>
                 <div class="row justify-content-md-between">
                   <div class="col-lg-5">
-                    <h3 class="text-primary">埃及</h3>
+                    <h3 class="text-primary">
+                      埃及
+                    </h3>
                   </div>
                   <div class="col-lg-7">
                     <div
                       class="txt"
                       data-aos="zoom-in"
                     >
-                      <p>神秘而多樣化的金字塔，乃至奇幻的紅海風光；夢想中的尼羅河乘船泛遊，
+                      <p>
+                        神秘而多樣化的金字塔，乃至奇幻的紅海風光；夢想中的尼羅河乘船泛遊，
                         更有那三千年歷史的阿布辛貝世界級遺跡！Tropic Go 精心安排搭配多段埃及國內線班機，
                         省卻艷陽下長途行車或搭乘夜間火車之苦，讓您的埃及之旅於輕鬆悠閒中 ，絕無遺珠之憾！
                       </p>
@@ -114,14 +134,14 @@
                         <router-link
                           class="link bg-secondary"
                           to="/product/1cVlQi9evx4jB3HFRFCx3xotrXnfVeC65LNGPjRzi4GcUXF8ZCAGVZodVP29Bcj9"
-                        >了解更多
-                          <span><i class="fas fa-chevron-right"></i></span>
+                        >
+                          了解更多
+                          <span><i class="fas fa-chevron-right" /></span>
                         </router-link>
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
               <div class="col-md-6 order-md-1">
                 <img
@@ -133,7 +153,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -141,10 +160,10 @@
       <div class="container">
         <div class="row">
           <div
-            class="col-sm-4"
-            data-aos="zoom-in"
             v-for="item in viewShared"
             :key="item.title"
+            class="col-sm-4"
+            data-aos="zoom-in"
           >
             <div class="img-wrap my-3">
               <img
@@ -152,7 +171,7 @@
                 :src="item.img"
                 :alt="item.title"
               >
-              <span class="title">{{item.title}}</span>
+              <span class="title">{{ item.title }}</span>
             </div>
           </div>
 
@@ -162,18 +181,19 @@
               <router-link
                 class="link bg-secondary"
                 to="/products"
-              >立即查看
-                <span><i class="fas fa-chevron-right"></i></span>
+              >
+                立即查看
+                <span><i class="fas fa-chevron-right" /></span>
               </router-link>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <IndexModal></IndexModal>
-
+    <IndexModal />
   </div>
 </template>
+
 <script>
 import ProductsFilter from '@/components/ProductsFilter.vue';
 import IndexModal from '@/components/IndexModal.vue';

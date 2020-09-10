@@ -1,17 +1,19 @@
 <template>
   <div class="row">
     <div
-      class="col-lg-3 col-md-6"
       v-for="item in categories"
       :key="item.zh"
+      class="col-lg-3 col-md-6"
     >
       <div
         class="wrap"
         data-aos="zoom-in"
         :class="['bg-'+item.category,item.category]"
       >
-        <img :src="'./images/' + item.iconImg" />
-        <h3 class="my-3">{{ item.zh }}</h3>
+        <img :src="'./images/' + item.iconImg">
+        <h3 class="my-3">
+          {{ item.zh }}
+        </h3>
         <p>{{ item.txt }}</p>
         <a
           class="link"
@@ -22,6 +24,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   props: [],

@@ -1,16 +1,15 @@
 <template>
-  <!-- <div>123</div> -->
   <div>
     <!-- Position toasts -->
     <div style="position: fixed; top: 15px; right: 15px; z-index:10000;">
       <div
+        v-for="(msg,idx) in msgs"
+        :id="`toast-${idx}`"
+        :key="msg.timestamp"
         class="toast fade show"
         role="alert"
         aria-live="assertive"
         aria-atomic="true"
-        v-for="(msg,idx) in msgs"
-        :key="msg.timestamp"
-        :id="`toast-${idx}`"
       >
         <div class="toast-header">
           <strong
@@ -18,7 +17,7 @@
             :class="`text-${msg.status}`"
           >
             <span>
-              <i class="fas fa-comments"></i>
+              <i class="fas fa-comments" />
             </span> Tropic Go
           </strong>
           <small class="text-muted ml-3">現在</small>
@@ -40,6 +39,7 @@
     </div>
   </div>
 </template>
+
 <script>
 /* global $ */
 export default {
@@ -54,6 +54,11 @@ export default {
         // },
       ],
     };
+  },
+  created() {
+    this.$bus.$on('msg:push', (msg, status = 'warning') => {
+      this.updateMsg(msg, status);
+    });
   },
   methods: {
     updateMsg(msg, status) {
@@ -78,11 +83,6 @@ export default {
       // 隱藏 Toast
       $(`#${el}`).toast('hide');
     },
-  },
-  created() {
-    this.$bus.$on('msg:push', (msg, status = 'warning') => {
-      this.updateMsg(msg, status);
-    });
   },
 };
 </script>

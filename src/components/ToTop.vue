@@ -6,10 +6,11 @@
       :class="{show:isShow}"
       @click.prevent="toTop"
     >
-      <span class="icon"><i class="fas fa-chevron-up"></i></span>
+      <span class="icon"><i class="fas fa-chevron-up" /></span>
     </a>
   </div>
 </template>
+
 <script>
 /* global $ */
 export default {
@@ -17,6 +18,12 @@ export default {
     return {
       isShow: false,
     };
+  },
+  created() {
+    window.addEventListener('scroll', this.winScroll);
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.winScroll);
   },
   methods: {
     toTop() {
@@ -35,12 +42,6 @@ export default {
         this.isShow = false;
       }
     },
-  },
-  created() {
-    window.addEventListener('scroll', this.winScroll);
-  },
-  destroyed() {
-    window.removeEventListener('scroll', this.winScroll);
   },
 };
 </script>

@@ -1,19 +1,21 @@
 <template>
   <div class="front front-favorite">
-    <loading :active.sync="isLoading"></loading>
-    <KV :title="title"></KV>
+    <loading :active.sync="isLoading" />
+    <HeroBanner :title="title" />
     <section class="zones zone_favorites">
       <div class="container">
         <div class="row justify-content-center">
           <div
-            class="col-md-8"
             v-if="favoriteList.length"
+            class="col-md-8"
           >
-            <h3 class="border-bottom pb-3 mb-3">收藏清單列表</h3>
+            <h3 class="border-bottom pb-3 mb-3">
+              收藏清單列表
+            </h3>
             <div
-              class="d-flex bg-light align-items-center mb-4"
               v-for="item in favoriteList"
               :key="item.id"
+              class="d-flex bg-light align-items-center mb-4"
             >
               <div class="img-wrap pl-3">
                 <img :src="item.imageUrl[0]">
@@ -25,51 +27,60 @@
                   class="position-absolute close"
                   style="top: 16px; right: 16px;"
                   @click.prevent="delFavorite(item.id)"
-                ><i class="fas fa-times"></i></a>
-                <p class="mb-0 font-weight-bold pr-4 text-africa">{{ item.title }}</p>
-                <p class="prices"><span class="price_origin"> 原價：{{ item.origin_price | money }}/人</span></p>
+                ><i class="fas fa-times" /></a>
+                <p class="mb-0 font-weight-bold pr-4 text-africa">
+                  {{ item.title }}
+                </p>
+                <p class="prices">
+                  <span class="price_origin"> 原價：{{ item.origin_price | money }}/人</span>
+                </p>
                 <p
                   class="mb-1 text-muted"
                   style="font-size: 14px;"
-                >特價：{{ item.price | money }} / {{ item.unit }}</p>
+                >
+                  特價：{{ item.price | money }} / {{ item.unit }}
+                </p>
                 <div class="d-flex justify-content-end">
                   <button
                     type="button"
                     class=" mt-2 btn btn-secondary"
                     @click.prevent="toProduct(item.id)"
                   >
-
-                    了解更多 <span><i class="fas fa-chevron-right"></i></span>
+                    了解更多 <span><i class="fas fa-chevron-right" /></span>
                   </button>
                 </div>
               </div>
             </div>
-
           </div>
           <div
-            class="col-md-8"
             v-else
+            class="col-md-8"
           >
-            <h3 class="border-bottom pb-3 mb-3">您尚未有任何收藏行程喔！</h3>
+            <h3 class="border-bottom pb-3 mb-3">
+              您尚未有任何收藏行程喔！
+            </h3>
             <div class="d-flex justify-content-end">
               <router-link
                 class="btn btn-secondary"
                 to="/products"
-              >前去逛逛 <span><i class="fas fa-chevron-right"></i></span></router-link>
+              >
+                前去逛逛 <span><i class="fas fa-chevron-right" /></span>
+              </router-link>
             </div>
-
           </div>
         </div>
       </div>
     </section>
     <section class="zones zone_popular">
       <div class="container">
-        <h3 class="mb-5 title-dec"><span class="circle"></span><span class="txt text-primary">熱門推薦</span></h3>
+        <h3 class="mb-5 title-dec">
+          <span class="circle" /><span class="txt text-primary">熱門推薦</span>
+        </h3>
         <div class="row">
           <div
-            class="col-md-4 mb-4"
             v-for="filterProduct in populars"
             :key="filterProduct.id"
+            class="col-md-4 mb-4"
           >
             <div class="card border-0 shadow-sm">
               <img
@@ -77,8 +88,12 @@
                 class="card-img-top"
               >
               <div class="card-body">
-                <h5 class="card-title">{{ filterProduct.title }}</h5>
-                <p class="card-text">{{ filterProduct.content }}</p>
+                <h5 class="card-title">
+                  {{ filterProduct.title }}
+                </h5>
+                <p class="card-text">
+                  {{ filterProduct.content }}
+                </p>
                 <p class="prices d-flex justify-content-between align-items-center">
                   <span class="price_origin">{{ filterProduct.origin_price | money }}/人</span>
                   <span class="price_discount">{{ filterProduct.price | money }}/人</span>
@@ -88,8 +103,7 @@
                   class=" mt-3 btn btn-outline-secondary btn-addTocart btn-block"
                   @click.prevent="toProduct(filterProduct.id)"
                 >
-
-                  前往查看 <span><i class="fas fa-chevron-right"></i></span>
+                  前往查看 <span><i class="fas fa-chevron-right" /></span>
                 </button>
               </div>
             </div>
@@ -99,12 +113,13 @@
     </section>
   </div>
 </template>
+
 <script>
-import KV from '@/components/KV.vue';
+import HeroBanner from '@/components/HeroBanner.vue';
 
 export default {
   components: {
-    KV,
+    HeroBanner,
   },
   data() {
     return {
@@ -122,6 +137,9 @@ export default {
     populars() {
       return this.products.filter((item) => item.options.popular);
     },
+  },
+  created() {
+    this.getProducts();
   },
   methods: {
     getProducts() {
@@ -156,9 +174,6 @@ export default {
       localStorage.setItem('favoritesID', JSON.stringify(this.favorites));
       this.getProducts();
     },
-  },
-  created() {
-    this.getProducts();
   },
 };
 </script>

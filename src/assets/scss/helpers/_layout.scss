@@ -61,7 +61,7 @@ button:focus {
     }
 
     &.router-link-exact-active {
-      color: $asia-light;
+      color: $sunbright;
     }
   }
   .cart-dropdown-btn {
@@ -98,17 +98,16 @@ button:focus {
     right: -5px;
   }
   &.shadows {
-    // background-color: rgba($africaLight, $alpha: 0.9);
     background-color: $white;
     box-shadow: 0 4px 8px 0px rgba(36, 36, 36, 0.2);
     .nav-link {
-      color: $africa;
+      color: $gray-700;
       &:hover,
-      &[aria-expanded='true'] {
-        color: $asia;
+      &[aria-expanded="true"] {
+        color: $sun;
       }
       &.router-link-exact-active {
-        color: $america;
+        color: $africa;
       }
     }
   }
@@ -127,7 +126,7 @@ button:focus {
       padding-bottom: 10px;
       color: $africa;
       &:hover,
-      &[aria-expanded='true'] {
+      &[aria-expanded="true"] {
         color: $america;
       }
       &.router-link-exact-active {
@@ -183,7 +182,7 @@ h2 {
 }
 
 .login {
-  background: url('https://images.unsplash.com/photo-1440778303588-435521a205bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80')
+  background: url("https://images.unsplash.com/photo-1440778303588-435521a205bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80")
     no-repeat center / cover;
   display: flex;
   justify-content: center;
@@ -295,8 +294,6 @@ h2 {
   }
 }
 .sec_menu {
-  // display: flex;
-  // justify-content: space-around;
   a {
     font-size: 18px;
     color: $color-gray01;
@@ -374,13 +371,6 @@ h2 {
   }
 }
 .cart_zone {
-  // caption {
-  //   caption-side: top;
-  //   text-align: center;
-  //   font-size: 1.75rem;
-  //   border-bottom: 2px solid;
-  //   padding-top: 0;
-  // }
   .form-cart-list,
   .order-info {
     box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.2);
@@ -421,11 +411,6 @@ h2 {
       padding: 3px 6px;
     }
   }
-  // .form-cart-list {
-  //   // background-color: rgb(245, 245, 245);
-  // }
-  // .order-info {
-  // }
 }
 
 // front-pages
@@ -468,10 +453,19 @@ h2 {
 }
 .front-favorite {
   .kv {
-    background-image: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/TZwNZ5GC6s2IboRWHaIDcFxW7RlWZgALm3ruoqdH0sMxAbTXajsp8NbRU00VAjyeWR0tXvitvoMVQlk8qufjmFEjPvxVs6e1zEOjgZGutkeGIyDFn5Qhp4pDH52kUYmm.png');
+    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/TZwNZ5GC6s2IboRWHaIDcFxW7RlWZgALm3ruoqdH0sMxAbTXajsp8NbRU00VAjyeWR0tXvitvoMVQlk8qufjmFEjPvxVs6e1zEOjgZGutkeGIyDFn5Qhp4pDH52kUYmm.png");
     background-position: 50% 0;
     height: 450px;
     position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba($black, $alpha: 0.4);
+    }
     .title {
       position: absolute;
       left: 0;
@@ -484,7 +478,7 @@ h2 {
   }
   @include pad-767 {
     .kv {
-      background-image: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/ENjDVBKvf63SAapCoOl5Xa33f1sbpDgdmmH3d9UQsosTeLwDNZt5XCuIFF87GCgx15JIAkeGQHpeO43ZsrMm19M5YCvIBSZWFhxY8w78exe7rEx7kYNxpjGksstyin7R.png');
+      background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/ENjDVBKvf63SAapCoOl5Xa33f1sbpDgdmmH3d9UQsosTeLwDNZt5XCuIFF87GCgx15JIAkeGQHpeO43ZsrMm19M5YCvIBSZWFhxY8w78exe7rEx7kYNxpjGksstyin7R.png");
       height: 300px;
       background-position: 50% -160px;
     }
@@ -508,7 +502,7 @@ h2 {
 }
 .front-about {
   .kv {
-    background-image: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/U8YjSv6kB6Hfx6uYp42LSDTcZ6fPUvRSqzIhvWeaPGjyHqjlLFV7FSKJZijzQEFsRsgbjPfuK7M4Ai7Pvk15Gz3gyHFEa2O2lEQ0HxXysp1GEQH0MQsuNdMkXcCCvcy9.jpg');
+    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/U8YjSv6kB6Hfx6uYp42LSDTcZ6fPUvRSqzIhvWeaPGjyHqjlLFV7FSKJZijzQEFsRsgbjPfuK7M4Ai7Pvk15Gz3gyHFEa2O2lEQ0HxXysp1GEQH0MQsuNdMkXcCCvcy9.jpg");
     background-position: 50% 0;
     height: 450px;
     position: relative;
@@ -524,7 +518,7 @@ h2 {
   }
   @include pad-767 {
     .kv {
-      background-image: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/Q0jXYuP2Lg2EOD4ntKmpkSRkhblMSnNmtsU06B0SZe8907U8J8eePFjLtKRYR7ImnMDsQoVcigdYbOT78JhDTB3bBVzCj1c11NiGpDSfL8FEjcxZengUI4bRsayNOGbu.jpg');
+      background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/Q0jXYuP2Lg2EOD4ntKmpkSRkhblMSnNmtsU06B0SZe8907U8J8eePFjLtKRYR7ImnMDsQoVcigdYbOT78JhDTB3bBVzCj1c11NiGpDSfL8FEjcxZengUI4bRsayNOGbu.jpg");
       height: 300px;
       background-position: 50% -80px;
     }
@@ -539,7 +533,7 @@ h2 {
       position: relative;
 
       &::before {
-        content: '';
+        content: "";
         z-index: -1;
         position: absolute;
         width: 120%;
@@ -581,10 +575,19 @@ h2 {
 }
 .front-cart {
   .kv {
-    background-image: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/f9FFnUdaTIPR5BQxqbdHrRVczO7ZefQofe2h8VwXlS7SmDyq7SlotuZAp9nnY7rv1QU5dMVjr8TPjbdpzjjndqBQ03aDLPxDjj7qkaDKI6QOU3Wk50syN0gzXFTSoucF.png');
+    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/f9FFnUdaTIPR5BQxqbdHrRVczO7ZefQofe2h8VwXlS7SmDyq7SlotuZAp9nnY7rv1QU5dMVjr8TPjbdpzjjndqBQ03aDLPxDjj7qkaDKI6QOU3Wk50syN0gzXFTSoucF.png");
     background-position: 50% 0;
     height: 450px;
     position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba($black, $alpha: 0.2);
+    }
     .title {
       position: absolute;
       left: 0;
@@ -597,7 +600,7 @@ h2 {
   }
   @include pad-767 {
     .kv {
-      background-image: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/L06GK2uu2cXd8gY1fWtgCaq2qmxdSJvhTE4S1DzJefw4lbVi5DuOz2tPb4HyoCTWsx6o5LkO2QKb4Kngc3K4j8hwNXEiEK96jHx624IlyZjDaoNWB7EMrUR715rLjGdw.png');
+      background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/L06GK2uu2cXd8gY1fWtgCaq2qmxdSJvhTE4S1DzJefw4lbVi5DuOz2tPb4HyoCTWsx6o5LkO2QKb4Kngc3K4j8hwNXEiEK96jHx624IlyZjDaoNWB7EMrUR715rLjGdw.png");
       height: 300px;
       background-position: 50% -100px;
       // background-size: cover;
@@ -726,9 +729,6 @@ h2 {
   .zone_form {
     padding-top: 30px;
     .form-wrap {
-      // background-color: $gray-100;
-
-      // padding: 30px;
       .form-control {
         background-color: #f4f7f6;
 
@@ -740,7 +740,6 @@ h2 {
     }
   }
   .order-infos {
-    // box-shadow: 0px 0px 6px rgba($secondary, $alpha: 0.2);
     background-color: #f4f7f6;
     .list {
       padding: 10px 0px;
@@ -758,10 +757,19 @@ h2 {
 }
 .front-products {
   .kv {
-    background-image: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/XWZDLzyVuddDyBcWT5bLG50OKpqb2FUnnVY8FLz4s2bWYiCTXSbzoFb7YHXqqd4CA284ccVhXuPSIHBlnXmdwamJsQGo7OKVOwO7mGJ28KLXjMpp9Qh5ENxXqVoF0kXP.png');
+    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/XWZDLzyVuddDyBcWT5bLG50OKpqb2FUnnVY8FLz4s2bWYiCTXSbzoFb7YHXqqd4CA284ccVhXuPSIHBlnXmdwamJsQGo7OKVOwO7mGJ28KLXjMpp9Qh5ENxXqVoF0kXP.png");
     background-position: 50% -50%;
     height: 450px;
     position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba($black, $alpha: 0.4);
+    }
     .title {
       position: absolute;
       left: 0;
@@ -771,7 +779,7 @@ h2 {
   }
   @include pad-767 {
     .kv {
-      background-image: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/W1KeF3YRdqevbXHhTTLP1hJd9x1uccAX19TzlbFHtP8kgR50f5OCO85OxuX7YVBQLlwMcre5CUKbPm0pYLznm0oo0h4Am7xzcSbB0MW1jOU6fq644NNdHgg99D8xlCYc.png');
+      background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/W1KeF3YRdqevbXHhTTLP1hJd9x1uccAX19TzlbFHtP8kgR50f5OCO85OxuX7YVBQLlwMcre5CUKbPm0pYLznm0oo0h4Am7xzcSbB0MW1jOU6fq644NNdHgg99D8xlCYc.png");
       height: 300px;
       background-position: 50% -200px;
     }
@@ -826,7 +834,6 @@ h2 {
     }
     .card {
       border: none;
-      // border-bottom: 3px solid;
       position: relative;
       cursor: pointer;
       .img-wrap {
@@ -845,14 +852,8 @@ h2 {
         right: -5px;
         top: 160px;
         z-index: 15;
-        // color: $white;
       }
-      // .btn-addTocart {
-      //   opacity: 0;
-      //   transition: all 0.5s ease-in-out;
-      // }
       &:hover {
-        // background-color: $gray-200;
         img {
           transform: scale(1.2);
         }
@@ -883,7 +884,7 @@ h2 {
     width: 100%;
     position: relative;
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
@@ -891,9 +892,6 @@ h2 {
       bottom: 0;
       background-color: rgba($black, $alpha: 0.7);
     }
-    // @include pad-991 {
-    //   height: 150px;
-    // }
   }
   .zone_detail {
     padding-top: 30px;
@@ -922,27 +920,6 @@ h2 {
       background-color: $color-third;
       font-size: 16px;
     }
-    // .icon-popular {
-    //   position: absolute;
-    //   display: flex;
-    //   align-items: center;
-    //   justify-content: center;
-    //   top: -5px;
-    //   right: 5px;
-    //   background-color: $color-third;
-    //   // padding: 1px 7px;
-    //   width: 35px;
-    //   height: 35px;
-    //   border-radius: 50%;
-    //   color: $white;
-    //   .icon {
-    //     font-size: 110%;
-    //     // margin-right: 5px;
-    //   }
-    //   // .txt {
-    //   //   font-size: 14px;
-    //   // }
-    // }
     .breadcrumb {
       background-color: transparent;
       margin-right: 4em;
@@ -958,9 +935,6 @@ h2 {
     .breadcrumb-item.active {
       color: $gray-500;
     }
-    // h2 {
-    //   color: $white;
-    // }
 
     .form-control {
       border: 1px solid $secondary;
@@ -978,33 +952,36 @@ h2 {
       h2 {
         border-top: 2px dotted rgba($africa, $alpha: 0.4);
         padding-top: 10px;
-        // padding-bottom: 20px;
-        // border-bottom: 1px solid rgba($africa, $alpha: 0.4);
       }
     }
   }
 
   .description-wrap {
     position: relative;
-    background: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/xYrpRVrZGA5ouW5TtURPqu5MLt5T9H343aKxlyO4cA39X848tSEVYIRJqzt0Od6rJAcE8H9SHCb1l6XQaQ8QF1rHl8jCU0LVbHpKm42lqUrtjnMl5B21JOHsdupSBcLi.png')
+    background: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/xYrpRVrZGA5ouW5TtURPqu5MLt5T9H343aKxlyO4cA39X848tSEVYIRJqzt0Od6rJAcE8H9SHCb1l6XQaQ8QF1rHl8jCU0LVbHpKm42lqUrtjnMl5B21JOHsdupSBcLi.png")
       no-repeat 90% 95%;
     padding-bottom: 35px;
     background-color: #fffbf9;
   }
-  // .zone_maylike {
-  //   background-color: #fffbf9;
-  // }
 }
 .front-index {
   .kv {
-    background-image: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/zgosa1jQ4lMkJmx1rPuVTWO2yNsl7k3HZSf0J6IpbSTkWE0NZVnnTRbYmgbiETU2Umccm2xTFPM4jwlmM6YSUqLBGf6m2nfXRWQ4418nfOoLegVowOLr9gTBBd4edihZ.png');
+    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/zgosa1jQ4lMkJmx1rPuVTWO2yNsl7k3HZSf0J6IpbSTkWE0NZVnnTRbYmgbiETU2Umccm2xTFPM4jwlmM6YSUqLBGf6m2nfXRWQ4418nfOoLegVowOLr9gTBBd4edihZ.png");
     background-position: top center;
-
     height: 100vh;
-    // margin-top: -80px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba($black, $alpha: 0.4);
+    }
     .txt-wrap {
       color: $white;
       padding: 30px 120px;
@@ -1035,7 +1012,6 @@ h2 {
   @include pad-991 {
     .kv {
       justify-content: center;
-
       .txt-wrap {
         padding: 15px 30px;
       }
@@ -1087,7 +1063,7 @@ h2 {
     }
   }
   .zone_selected {
-    background: url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/VQFdh5KLECKlzeOOODHYedxU2t0tHUaZUP2RtDJ3K65sb14TBknQa1PDCUSAFBLKU8gJTsauPdb6gB8Snahaj8XzYJx9gMUup7b7KECkBN1YQsvvPBFMc3oAUCysvYsI.png')
+    background: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/VQFdh5KLECKlzeOOODHYedxU2t0tHUaZUP2RtDJ3K65sb14TBknQa1PDCUSAFBLKU8gJTsauPdb6gB8Snahaj8XzYJx9gMUup7b7KECkBN1YQsvvPBFMc3oAUCysvYsI.png")
       no-repeat center;
     background-color: #fffbf9;
 
@@ -1105,7 +1081,7 @@ h2 {
 
       margin-bottom: 30px;
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         width: calc(100% + 35px);
         height: 5px;
@@ -1221,7 +1197,7 @@ h2 {
 
   .slider:before {
     position: absolute;
-    content: '';
+    content: "";
     height: 21px;
     width: 21px;
     left: 4px;
@@ -1264,7 +1240,7 @@ h2 {
   }
 }
 .backpage-storage {
-  input[type='file'] {
+  input[type="file"] {
     height: auto;
   }
   h2 {
@@ -1305,7 +1281,7 @@ h2 {
   right: 15px;
   width: 40px;
   height: 40px;
-  line-height: .6;
+  line-height: 0.6;
   z-index: 20;
   border-radius: 50%;
   transition: 0.5s ease-in-out;

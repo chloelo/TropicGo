@@ -6,32 +6,35 @@
         <div class="form-group">
           <label for="inputEmail">Email address</label>
           <input
+            id="inputEmail"
+            v-model="user.email"
             type="email"
             class="form-control"
-            id="inputEmail"
             aria-describedby="emailHelp"
-            v-model="user.email"
             required
-          />
+          >
         </div>
         <div class="form-group">
           <label for="inputPassword">Password</label>
           <input
-            type="password"
-            class="form-control"
             id="inputPassword"
             v-model="user.password"
+            type="password"
+            class="form-control"
             required
-          />
+          >
         </div>
         <button
           type="submit"
           class="btn btn-login"
-        >登入</button>
+        >
+          登入
+        </button>
       </form>
     </div>
   </div>
 </template>
+
 <script>
 export default {
   data() {

@@ -15,10 +15,10 @@
         </a>
       </li>
       <li
-        :class="{ active: page === pages.current_page }"
-        class="page-item"
         v-for="page in pages.total_pages"
         :key="page.current_page"
+        :class="{ active: page === pages.current_page }"
+        class="page-item"
       >
         <a
           class="page-link"
@@ -44,6 +44,7 @@
     </ul>
   </nav>
 </template>
+
 <script>
 export default {
   props: ['pages'],

@@ -1,6 +1,6 @@
 <template>
   <div class="backpage backpage-coupons">
-    <loading :active.sync="isLoading"></loading>
+    <loading :active.sync="isLoading" />
     <div class="container">
       <div class="row">
         <div class="col-12">
@@ -17,11 +17,21 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">名稱</th>
-                  <th scope="col">折扣百分比</th>
-                  <th scope="col">到期日</th>
-                  <th scope="col">是否啟用</th>
-                  <th scope="col">編輯</th>
+                  <th scope="col">
+                    名稱
+                  </th>
+                  <th scope="col">
+                    折扣百分比
+                  </th>
+                  <th scope="col">
+                    到期日
+                  </th>
+                  <th scope="col">
+                    是否啟用
+                  </th>
+                  <th scope="col">
+                    編輯
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -29,7 +39,9 @@
                   v-for="item in coupons"
                   :key="item.id"
                 >
-                  <th scope="row">{{ item.title }}</th>
+                  <th scope="row">
+                    {{ item.title }}
+                  </th>
                   <td>{{ item.percent }}</td>
                   <td>{{ item.deadline.datetime }}</td>
                   <td>
@@ -38,8 +50,8 @@
                         type="checkbox"
                         disabled
                         :checked="item.enabled"
-                      />
-                      <span class="slider round"></span>
+                      >
+                      <span class="slider round" />
                     </label>
                   </td>
                   <td>
@@ -51,8 +63,8 @@
                       <button
                         type="button"
                         class="btn btn-outline-secondary"
-                        @click="openModal('edit', item)"
                         :disabled="btnLoading === item.id"
+                        @click="openModal('edit', item)"
                       >
                         編輯
                         <span
@@ -60,7 +72,7 @@
                           class="spinner-border spinner-border-sm"
                           role="status"
                           aria-hidden="true"
-                        ></span>
+                        />
                       </button>
                       <button
                         type="button"
@@ -78,16 +90,15 @@
           <Pagination
             :pages="pagination"
             @emitpage="getCoupons"
-          ></Pagination>
+          />
         </div>
       </div>
-
     </div>
 
     <!-- Modal -->
     <div
-      class="modal fade"
       id="couponModal"
+      class="modal fade"
       data-backdrop="static"
       data-keyboard="false"
       tabindex="-1"
@@ -98,9 +109,10 @@
         <div class="modal-content border-0">
           <div class="modal-header bg-dark text-white">
             <h5
-              class="modal-title"
               id="staticBackdropLabel"
-            ><span>{{ isNew ? '新增優惠卷' : '修改優惠卷資訊' }}</span>
+              class="modal-title"
+            >
+              <span>{{ isNew ? '新增優惠卷' : '修改優惠卷資訊' }}</span>
             </h5>
             <button
               type="button"
@@ -115,65 +127,65 @@
             <div class="form-group">
               <label for="coupon_title">標題</label>
               <input
-                v-model="tempCoupon.title"
                 id="coupon_title"
+                v-model="tempCoupon.title"
                 type="text"
                 class="form-control"
                 placeholder="請輸入標題"
                 required
-              />
+              >
             </div>
             <div class="form-group">
               <label for="coupon_code">優惠碼</label>
               <input
-                v-model="tempCoupon.code"
                 id="coupon_code"
+                v-model="tempCoupon.code"
                 type="text"
                 class="form-control"
                 placeholder="請輸入優惠碼"
                 required
-              />
+              >
             </div>
             <div class="form-group">
               <label for="due_date">到期日</label>
               <input
-                v-model="deadline_date"
                 id="due_date"
+                v-model="deadline_date"
                 type="date"
                 class="form-control"
                 required
-              />
+              >
             </div>
             <div class="form-group">
               <label for="due_time">到期時間</label>
               <input
-                v-model="deadline_time"
                 id="due_time"
+                v-model="deadline_time"
                 type="time"
                 class="form-control"
                 step="1"
                 required
-              />
+              >
             </div>
             <div class="form-group">
               <label for="discount">折扣百分比</label>
               <input
-                v-model="tempCoupon.percent"
                 id="discount"
+                v-model="tempCoupon.percent"
                 type="number"
                 class="form-control"
                 placeholder="請輸入折扣百分比"
                 required
-              />
+              >
             </div>
             <div class="form-group">
               <div class="form-check">
                 <input
-                  v-model="tempCoupon.enabled"
                   id="enabled"
+                  v-model="tempCoupon.enabled"
                   class="form-check-input"
                   type="checkbox"
-                />
+                >
                 <label
                   class="form-check-label"
                   for="enabled"
@@ -186,12 +198,16 @@
               type="button"
               class="btn btn-outline-secondary"
               data-dismiss="modal"
-            >取消</button>
+            >
+              取消
+            </button>
             <button
               type="button"
               class="btn btn-secondary"
               @click="updateCoupons"
-            >確認</button>
+            >
+              確認
+            </button>
           </div>
         </div>
       </div>
@@ -253,6 +269,7 @@
     <!-- Modal end -->
   </div>
 </template>
+
 <script>
 /* global $ */
 import Pagination from '@/components/Pagination.vue';
@@ -267,23 +284,16 @@ export default {
       isLoading: false,
       btnLoading: '',
       pagination: {},
-      coupons: [
-        // {
-        //   title: '',
-        //   code: '',
-        //   percent: 0,
-        //   enabled: true,
-        //   deadline: {
-        //     datetime: '2020',
-        //   },
-        // },
-      ],
+      coupons: [],
       tempCoupon: {
         deadline_at: '',
       },
       deadline_date: '',
       deadline_time: '',
     };
+  },
+  created() {
+    this.getCoupons();
   },
   methods: {
     getCoupons(page = 1) {
@@ -381,9 +391,6 @@ export default {
           this.$bus.$emit('msg:push', '登愣~~出現錯誤了！', 'danger');
         });
     },
-  },
-  created() {
-    this.getCoupons();
   },
 };
 </script>

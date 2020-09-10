@@ -1,6 +1,6 @@
 <template>
   <div>
-    <loading :active.sync="isLoading"></loading>
+    <loading :active.sync="isLoading" />
     <header>
       <nav
         id="back-nav"
@@ -16,12 +16,12 @@
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon" />
         </button>
 
         <div
-          class="collapse navbar-collapse"
           id="navbarSupportedContent"
+          class="collapse navbar-collapse"
         >
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -37,43 +37,53 @@
               <router-link
                 class="nav-link"
                 to="/admin/coupons"
-              >優惠券列表</router-link>
+              >
+                優惠券列表
+              </router-link>
             </li>
             <li class="nav-item">
               <router-link
                 class="nav-link"
                 to="/admin/orders"
-              >訂單列表</router-link>
+              >
+                訂單列表
+              </router-link>
             </li>
             <li class="nav-item">
               <router-link
                 class="nav-link"
                 to="/admin/storage"
-              >圖庫管理</router-link>
+              >
+                圖庫管理
+              </router-link>
             </li>
             <li class="nav-item">
               <router-link
                 class="nav-link"
                 to="/"
-              >回前台</router-link>
+              >
+                回前台
+              </router-link>
             </li>
           </ul>
           <button
             type="button"
             class="btn btn-light ml-auto"
             @click="signout"
-          >登出</button>
+          >
+            登出
+          </button>
         </div>
       </nav>
     </header>
 
     <router-view
-      class="py-5"
-      :token="token"
       v-if="checkSuccess"
+      class="py-5"
     />
   </div>
 </template>
+
 <script>
 export default {
   data() {
@@ -82,6 +92,9 @@ export default {
       checkSuccess: false,
       isLoading: false,
     };
+  },
+  created() {
+    this.checkLogin();
   },
   methods: {
     signout() {
@@ -116,9 +129,6 @@ export default {
           this.$router.push('/login');
         });
     },
-  },
-  created() {
-    this.checkLogin();
   },
 };
 </script>

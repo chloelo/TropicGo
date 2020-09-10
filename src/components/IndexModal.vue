@@ -1,7 +1,7 @@
 <template>
   <div
-    class="modal fade"
     id="idxModal"
+    class="modal fade"
     tabindex="-1"
     aria-labelledby="idxModalLabel"
     aria-hidden="true"
@@ -10,9 +10,11 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5
-            class="modal-title text-primary"
             id="idxModalLabel"
-          >最新優惠</h5>
+            class="modal-title text-primary"
+          >
+            最新優惠
+          </h5>
           <button
             type="button"
             class="close"
@@ -28,11 +30,11 @@
             :src="img"
           >
         </div>
-
       </div>
     </div>
   </div>
 </template>
+
 <script>
 export default {
   data() {

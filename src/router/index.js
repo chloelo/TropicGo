@@ -79,13 +79,6 @@ const routes = [
     path: '*', // 亂填路徑 無法判別的時候
     redirect: '/', // 重新導向首頁
   },
-
-  // {
-  //   path: '/products',
-  //   name: 'Products',
-  //   component: () =>
-  //     import('../views/front/Products.vue')
-  // }
 ];
 
 const router = new VueRouter({

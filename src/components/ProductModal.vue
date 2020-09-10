@@ -32,75 +32,72 @@
           <div class="row">
             <div class="col-sm-4">
               <div
-                class="form-group"
                 v-for="idx of 5"
                 :key="'img' + idx"
+                class="form-group"
               >
                 <label :for="'img' + idx">輸入圖片網址</label>
                 <input
                   :id="'img' + idx"
+                  v-model="tempProduct.imageUrl[idx - 1]"
                   type="text"
                   class="form-control"
                   placeholder="請輸入圖片連結"
-                  v-model="tempProduct.imageUrl[idx - 1]"
-                />
+                >
               </div>
               <div class="form-group">
                 <label for="customFile">
                   或 上傳圖片
                   <span v-if="imgUploading">
-                    <i class="fas fa-spinner fa-spin"></i>
+                    <i class="fas fa-spinner fa-spin" />
                   </span>
-                  <!-- <span v-if="imgUploading">
-                    <i class="fas fa-spinner fa-spin"></i>
-                  </span>-->
                 </label>
                 <input
                   id="customFile"
                   type="file"
                   class="form-control"
                   @change="uploadFile"
-                />
+                >
               </div>
               <img
                 class="img-fluid"
                 :src="tempProduct.imageUrl[0]"
-              />
+              >
             </div>
             <div class="col-sm-8">
               <div class="form-group">
                 <label for="title">標題</label>
                 <input
-                  v-model="tempProduct.title"
                   id="title"
+                  v-model="tempProduct.title"
                   type="text"
                   class="form-control"
                   placeholder="請輸入標題"
                   required
-                />
+                >
               </div>
 
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="category">分類</label>
                   <input
-                    v-model="tempProduct.category"
                     id="category"
+                    v-model="tempProduct.category"
                     type="text"
                     class="form-control"
                     placeholder="請輸入分類"
                     required
-                  />
+                  >
                 </div>
                 <div class="form-group col-md-6">
                   <label for="unit">單位</label>
                   <input
-                    v-model="tempProduct.unit"
                     id="unit"
+                    v-model="tempProduct.unit"
                     type="text"
                     class="form-control"
                     placeholder="請輸入單位"
-                  />
+                  >
                 </div>
               </div>
 
@@ -108,81 +105,82 @@
                 <div class="form-group col-md-6">
                   <label for="origin_price">原價</label>
                   <input
-                    v-model="tempProduct.origin_price"
                     id="origin_price"
+                    v-model="tempProduct.origin_price"
                     type="number"
                     class="form-control"
                     placeholder="請輸入原價"
-                  />
+                  >
                 </div>
                 <div class="form-group col-md-6">
                   <label for="price">售價</label>
                   <input
-                    v-model="tempProduct.price"
                     id="price"
+                    v-model="tempProduct.price"
                     type="number"
                     class="form-control"
                     placeholder="請輸入售價"
-                  />
+                  >
                 </div>
               </div>
-              <hr />
+              <hr>
 
               <div class="form-group">
                 <label for="content">產品說明</label>
 
                 <textarea
-                  v-model="tempProduct.content"
                   id="content"
+                  v-model="tempProduct.content"
                   type="text"
                   class="form-control"
                   placeholder="請輸入產品說明"
                   required
-                ></textarea>
+                />
               </div>
               <div class="form-group">
                 <label for="description">產品詳述</label>
                 <VueEditor
                   id="description"
                   v-model="tempProduct.description"
-                ></VueEditor>
-                <!-- <textarea
-                  v-model="tempProduct.description"
-                  id="description"
-                  type="text"
-                  class="form-control"
-                  placeholder="請輸入產品詳述"
-                  required
-                ></textarea> -->
+                />
               </div>
               <div class="form-group">
                 <label for="departureCity">出發城市</label>
                 <select
-                  class="form-control"
                   id="departureCity"
                   v-model="tempProduct.options.departureCity"
+                  class="form-control"
                 >
                   <option
                     disabled
                     selected
                     value=""
-                  >請選擇</option>
-                  <option value="台北">台北</option>
-                  <option value="桃園">桃園</option>
-                  <option value="台中">台中</option>
-                  <option value="高雄">高雄</option>
-
+                  >
+                    請選擇
+                  </option>
+                  <option value="台北">
+                    台北
+                  </option>
+                  <option value="桃園">
+                    桃園
+                  </option>
+                  <option value="台中">
+                    台中
+                  </option>
+                  <option value="高雄">
+                    高雄
+                  </option>
                 </select>
               </div>
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <div class="form-check">
                     <input
-                      v-model="tempProduct.enabled"
                       id="enabled"
+                      v-model="tempProduct.enabled"
                       class="form-check-input"
                       type="checkbox"
-                    />
+                    >
                     <label
                       class="form-check-label"
                       for="enabled"
@@ -193,30 +191,18 @@
                 <div class="form-group col-md-6">
                   <div class="form-check">
                     <input
-                      v-model="tempProduct.options.popular"
                       id="popular"
+                      v-model="tempProduct.options.popular"
                       class="form-check-input"
                       type="checkbox"
-                    />
+                    >
                     <label
                       class="form-check-label"
                       for="popular"
                     >是否為熱門商品</label>
                   </div>
                 </div>
-
-                <!-- <div class="form-group col-md-6">
-                  <label for="unit">單位</label>
-                  <input
-                    v-model="tempProduct.unit"
-                    id="unit"
-                    type="text"
-                    class="form-control"
-                    placeholder="請輸入單位"
-                  />
-                </div> -->
               </div>
-
             </div>
           </div>
         </div>
@@ -225,24 +211,29 @@
             type="button"
             class="btn btn-outline-secondary"
             data-dismiss="modal"
-          >取消</button>
+          >
+            取消
+          </button>
           <button
             type="button"
             class="btn bg-secondary text-white"
             @click="updateProduct()"
-          >確認</button>
+          >
+            確認
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 /* global $ */
 import { VueEditor } from 'vue2-editor';
 
 export default {
-  props: ['isNew', 'tempProduct'],
   components: { VueEditor },
+  props: ['isNew', 'tempProduct'],
   data() {
     return {
       imgUploading: false,
@@ -286,7 +277,7 @@ export default {
         .then((res) => {
           // 如果圖片傳送成功，就把照片新增到圖片的陣列中
           if (res.status === 200) {
-            // 傳送成功之後 icon就不顯示
+            // 傳送成功之後 icon 就不顯示
             this.$bus.$emit('msg:push', '上傳成功囉，ya ~', 'success');
             this.imgUploading = false;
             this.tempProduct.imageUrl.push(res.data.data.path);
