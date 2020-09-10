@@ -46,7 +46,9 @@
                 <caption>已選擇行程</caption>
                 <thead>
                   <tr>
-                    <th scope="col">
+                    <th
+                      scope="col"
+                    >
                       品名
                     </th>
                     <th scope="col">
@@ -62,7 +64,7 @@
                     v-for="item in carts"
                     :key="item.product.id"
                   >
-                    <td>{{ item.product.title }}</td>
+                    <td><span class="ellipsis">{{ item.product.title }}</span> </td>
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.product.price | money }}</td>
                   </tr>
@@ -87,13 +89,23 @@
                 </tfoot>
               </table>
               <button
+                v-if="carts.length > 0"
                 type="button"
                 class="btn btn-block btn-primary"
                 :disabled="carts.length === 0"
                 @click.prevent="toPageCart"
               >
                 查看購物車
+                <span><i class="fas fa-chevron-right" /></span>
               </button>
+              <router-link
+                v-else
+                class="btn btn-block btn-primary"
+                to="/products"
+              >
+                前去逛逛
+                <span><i class="fas fa-chevron-right" /></span>
+              </router-link>
             </div>
           </div>
         </div>

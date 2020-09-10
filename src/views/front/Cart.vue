@@ -160,7 +160,6 @@
           </div>
           <div class="col-md-4">
             <div class="p-3 mb-3 border">
-              <!-- <h4 class="font-weight-bold mb-2 border-bottom pb-2">合計</h4> -->
               <div class="d-flex justify-content-between">
                 <span class="font-weight-bold">商品總額</span><span>{{ totalPrice | money }}</span>
               </div>
@@ -277,7 +276,7 @@
                         v-slot="{ errors, classes }"
                         rules="required"
                       >
-                        <label for="username">聯絡人姓名</label>
+                        <label for="username">聯絡人姓名 <span class="text-danger">*</span></label>
                         <input
                           id="username"
                           v-model="form.name"
@@ -295,7 +294,7 @@
                         v-slot="{ errors, classes }"
                         rules="required|numeric|min:8"
                       >
-                        <label for="tel">電話</label>
+                        <label for="tel">電話 <span class="text-danger">*</span></label>
                         <input
                           id="tel"
                           v-model="form.tel"
@@ -315,7 +314,7 @@
                         v-slot="{ errors, classes }"
                         rules="required|email"
                       >
-                        <label for="email">E-mail</label>
+                        <label for="email">E-mail <span class="text-danger">*</span></label>
                         <input
                           id="email"
                           v-model="form.email"
@@ -336,7 +335,7 @@
                         v-slot="{ errors, classes }"
                         rules="required"
                       >
-                        <label for="address">聯絡人地址</label>
+                        <label for="address">聯絡人地址 <span class="text-danger">*</span></label>
                         <input
                           id="address"
                           v-model="form.address"
@@ -352,7 +351,7 @@
                   </div>
                   <div class="form-row">
                     <div class="col form-group">
-                      <label for="waytopay">購買方式</label>
+                      <label for="waytopay">購買方式 <span class="text-danger">*</span></label>
                       <select
                         id="waytopay"
                         v-model="form.payment"
@@ -416,6 +415,7 @@
                       <button
                         type="submit"
                         class="btn btn-secondary"
+                        :class="{'btn-disabled':invalid}"
                         :disabled="invalid"
                       >
                         確認送出

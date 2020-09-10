@@ -76,22 +76,25 @@
         <h3 class="mb-5 title-dec">
           <span class="circle" /><span class="txt text-primary">熱門推薦</span>
         </h3>
-        <div class="row">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
           <div
             v-for="filterProduct in populars"
             :key="filterProduct.id"
-            class="col-md-4 mb-4"
+            class="col mb-4"
           >
-            <div class="card border-0 shadow-sm">
-              <img
-                :src="filterProduct.imageUrl[0]"
-                class="card-img-top"
-              >
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="img-wrap">
+                <img
+                  :src="filterProduct.imageUrl[0]"
+                  class="card-img-top"
+                >
+              </div>
+
               <div class="card-body">
                 <h5 class="card-title">
                   {{ filterProduct.title }}
                 </h5>
-                <p class="card-text">
+                <p class="card-text ellipsis">
                   {{ filterProduct.content }}
                 </p>
                 <p class="prices d-flex justify-content-between align-items-center">

@@ -2,11 +2,13 @@
   <div>
     <a
       href="#"
-      class="btn btn-world toTop justify-content-center align-items-center"
+      class="btn btn-dark toTop justify-content-center align-items-center"
       :class="{show:isShow}"
       @click.prevent="toTop"
     >
-      <span class="icon"><i class="fas fa-chevron-up" /></span>
+      <span class="icon">
+        <i class="fas fa-chevron-up" />
+      </span>
     </a>
   </div>
 </template>

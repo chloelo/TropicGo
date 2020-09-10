@@ -47,6 +47,7 @@ $cyan: #17a2b8 !default;
 $asia: #937033;
 $america: #9a6b46;
 $africa: #a5674b;
+// $africa: #985F45;
 $oceania: #497d8d;
 $sunbright: #ffd629;
 $sun: #fdb42d;
@@ -73,7 +74,8 @@ $colors: map-merge(
 );
 
 $primary: $blue !default;
-$secondary: #3a7778; //$gray-600 !default;
+$secondary: #3C8185; //$gray-600 !default;
+// $secondary: #3a7778;
 $success: $green !default;
 $info: $cyan !default;
 $warning: $yellow !default;

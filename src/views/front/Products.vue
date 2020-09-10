@@ -39,7 +39,6 @@
             :key="product.id"
             class="col mb-4"
           >
-            <!-- :class="`border-${product.category}`" -->
             <div
               class="card h-100"
               :disabled="product.id === status.loadingItem"

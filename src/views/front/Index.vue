@@ -46,13 +46,13 @@
       </div>
     </section>
     <section class="zones zone_selected">
-      <div class="container-fluid">
+      <div class="container">
         <div class="row">
           <h2 class="mx-auto title-dec">
             <span class="circle" /><span class="txt">特別精選</span>
           </h2>
           <div class="col-12">
-            <div class="row mt-5">
+            <div class="row mt-5 align-items-center">
               <div class="col-md-6">
                 <div class="num-wrap num-wrap01">
                   <span class="num">01</span>
@@ -156,7 +156,104 @@
         </div>
       </div>
     </section>
-    <section class="zones zone_shared">
+    <!-- <section class="zones zone-feedback">
+      <div class="container">
+        <div
+          id="carouselExampleControls"
+          class="carousel slide"
+          data-ride="carousel"
+        >
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="row justify-content-center py-7">
+                <div class="col-md-8 d-flex">
+                  <img
+                    src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/BtzZuzhtPHapZ951ZBFpCRoKolRtQHGvhpClX0anU5uU2VtC3lN38ZqcpYnaXiQZNWKkZ9Lb3qJl5KZm0LaTquvAd1pUa8p3cwk9tECuyZZr6nfJTJjL0hwA6cK51LmF.png"
+                    alt=""
+                    class="rounded-circle mr-5"
+                    style="width: 160px; height: 160px; object-fit: cover;"
+                  >
+                  <div class="d-flex flex-column">
+                    <p class="h5">
+                      “Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.”
+                    </p>
+                    <p class="mt-auto text-muted">
+                      Lorem ipsum dolor sit amet.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="row justify-content-center py-7">
+                <div class="col-md-8 d-flex">
+                  <img
+                    src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/gnl2stpPR9dClkQulbc7OwS6NxUJs6XBpjUE3sZ0AX5Jfr38oVkuONfiJs0JpAhfJqK2GclhikAuHgIX1yjX95f2ezHRRnpKk5A0rtQwuQwJyc5pnSdydMaXibZQoCZF.png"
+                    alt=""
+                    class="rounded-circle mr-5"
+                    style="width: 160px; height: 160px; object-fit: cover;"
+                  >
+                  <div class="d-flex flex-column">
+                    <p class="h5">
+                      “Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.”
+                    </p>
+                    <p class="mt-auto text-muted">
+                      Lorem ipsum dolor sit amet.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="row justify-content-center py-7">
+                <div class="col-md-8 d-flex">
+                  <img
+                    src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/olNIR8PBmOv9UD8228oefzzncRMofRnRQfH7vc68BdGhCG4zH9RK0Xwbec5u9iBFzPzWmUTp3QVN2t49sr661CuC0Z6Rrq0DRieKH606qdO0b0Q3Vak0lhssVpqTPiAt.png"
+                    alt=""
+                    class="rounded-circle mr-5"
+                    style="width: 160px; height: 160px; object-fit: cover;"
+                  >
+                  <div class="d-flex flex-column">
+                    <p class="h5">
+                      “Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.”
+                    </p>
+                    <p class="mt-auto text-muted">
+                      Lorem ipsum dolor sit amet.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a
+            class="carousel-control-prev"
+            href="#carouselExampleControls"
+            role="button"
+            data-slide="prev"
+          >
+            <span
+              class="carousel-control-prev-icon"
+              aria-hidden="true"
+            />
+            <span class="sr-only">Previous</span>
+          </a>
+          <a
+            class="carousel-control-next"
+            href="#carouselExampleControls"
+            role="button"
+            data-slide="next"
+          >
+            <span
+              class="carousel-control-next-icon"
+              aria-hidden="true"
+            />
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- <section class="zones zone_shared">
       <div class="container">
         <div class="row">
           <div
@@ -189,7 +286,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <IndexModal />
   </div>
 </template>
