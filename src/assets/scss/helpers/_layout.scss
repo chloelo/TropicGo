@@ -47,7 +47,7 @@ button:focus {
   }
 
   .custom-toggler.navbar-toggler {
-    color: $africa;
+    color: $gray-700;
     font-size: 24px;
   }
 
@@ -56,6 +56,7 @@ button:focus {
     color: $white;
     padding-left: 20px;
     padding-right: 20px;
+
     &:hover {
       color: rgba($white, $alpha: 0.8);
     }
@@ -89,6 +90,7 @@ button:focus {
     box-shadow: 0 4px 8px 0px rgba(36, 36, 36, 0.2);
     .nav-link {
       color: $gray-700;
+
       &:hover,
       &[aria-expanded="true"] {
         color: $sun;
@@ -111,13 +113,13 @@ button:focus {
       padding-right: 0px;
       padding-top: 10px;
       padding-bottom: 10px;
-      color: $africa;
+      color: $gray-700;
       &:hover,
       &[aria-expanded="true"] {
-        color: $america;
+        color: $sun;
       }
       &.router-link-exact-active {
-        color: $asia;
+        color: $africa;
       }
     }
     .icon-link {
@@ -733,7 +735,7 @@ h2 {
           color: $gray-500;
         }
       }
-      .btn-disabled{
+      .btn-disabled {
         cursor: not-allowed;
       }
     }
@@ -1177,6 +1179,67 @@ h2 {
       margin-top: 15px;
       padding-bottom: 15px;
       border-bottom: 2px dotted;
+    }
+  }
+  .zone-feedback {
+    .blockquote {
+      font-size: 18px;
+    }
+    .txt-wrap,
+    .img-wrap {
+      min-height: 220px;
+    }
+    .txt-wrap {
+      display: flex;
+      align-items: center;
+      color: $white;
+      padding: 15px;
+    }
+    .img-wrap {
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center 15%;
+    }
+    @include pad-767 {
+      .txt-wrap {
+        min-height: 150px;
+      }
+    }
+  }
+  .zone-dec {
+    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/SECr02nGgRytucMEGrp1vjIdUSLW7V6xpD3SC1RA3zHdWp0P8IQdkT6Z6rZpc1YQjJH9EnQNEoIXrg8pTFmpQ7a8eJwSweZLhkkdkaFw4HpjtQDS0oOXy5QxUW0YrJN3.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba($black, $alpha: 0.6);
+    }
+    .icon {
+      max-width: 100px;
+    }
+    .item-wrap {
+      padding: 30px 15px;
+      border: 1px solid $white;
+      text-align: center;
+
+      p {
+        color: $white;
+        font-size: 20px;
+        margin-top: 10px;
+        margin-bottom: 0px;
+      }
+      @include pad-767 {
+        margin-bottom: 15px;
+        padding: 10px 15px;
+      }
     }
   }
 }

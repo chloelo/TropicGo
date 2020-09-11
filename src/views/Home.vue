@@ -7,7 +7,7 @@
     <div class="footer-img">
       <img
         class="img-fluid"
-        src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/i8MbptiYGFzKJWP6RcnjbSMpLaTCwxOC93WHwjVuaVgqc3EuyShTVBlQAiBerePyTPXal1CQI3a77WUUTW9DCrLgmYOfK4cBLEGje9HB9DjDje6w3EN0n8cNVcOnd7IA.png"
+        src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/v7Ch2AFBfjM9Glkxu6mtIospVvwmpfcqrY2ToFNuNgN27LkGh0ZWV2PaOPvpZgPInzJDu96yj3SnDzhkTdh46wyrziM4Rfh5JdKvCd9cyxF6N55bRigw0TDVg36J8Gez.png"
         alt=""
       >
     </div>

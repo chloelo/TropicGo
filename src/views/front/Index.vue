@@ -156,102 +156,152 @@
         </div>
       </div>
     </section>
-    <!-- <section class="zones zone-feedback">
+    <section class="zones zone-dec">
       <div class="container">
-        <div
-          id="carouselExampleControls"
-          class="carousel slide"
-          data-ride="carousel"
-        >
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <div class="row justify-content-center py-7">
-                <div class="col-md-8 d-flex">
-                  <img
-                    src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/BtzZuzhtPHapZ951ZBFpCRoKolRtQHGvhpClX0anU5uU2VtC3lN38ZqcpYnaXiQZNWKkZ9Lb3qJl5KZm0LaTquvAd1pUa8p3cwk9tECuyZZr6nfJTJjL0hwA6cK51LmF.png"
-                    alt=""
-                    class="rounded-circle mr-5"
-                    style="width: 160px; height: 160px; object-fit: cover;"
-                  >
-                  <div class="d-flex flex-column">
-                    <p class="h5">
-                      “Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.”
-                    </p>
-                    <p class="mt-auto text-muted">
-                      Lorem ipsum dolor sit amet.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="row justify-content-center py-7">
-                <div class="col-md-8 d-flex">
-                  <img
-                    src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/gnl2stpPR9dClkQulbc7OwS6NxUJs6XBpjUE3sZ0AX5Jfr38oVkuONfiJs0JpAhfJqK2GclhikAuHgIX1yjX95f2ezHRRnpKk5A0rtQwuQwJyc5pnSdydMaXibZQoCZF.png"
-                    alt=""
-                    class="rounded-circle mr-5"
-                    style="width: 160px; height: 160px; object-fit: cover;"
-                  >
-                  <div class="d-flex flex-column">
-                    <p class="h5">
-                      “Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.”
-                    </p>
-                    <p class="mt-auto text-muted">
-                      Lorem ipsum dolor sit amet.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="row justify-content-center py-7">
-                <div class="col-md-8 d-flex">
-                  <img
-                    src="https://hexschool-api.s3.us-west-2.amazonaws.com/custom/olNIR8PBmOv9UD8228oefzzncRMofRnRQfH7vc68BdGhCG4zH9RK0Xwbec5u9iBFzPzWmUTp3QVN2t49sr661CuC0Z6Rrq0DRieKH606qdO0b0Q3Vak0lhssVpqTPiAt.png"
-                    alt=""
-                    class="rounded-circle mr-5"
-                    style="width: 160px; height: 160px; object-fit: cover;"
-                  >
-                  <div class="d-flex flex-column">
-                    <p class="h5">
-                      “Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.”
-                    </p>
-                    <p class="mt-auto text-muted">
-                      Lorem ipsum dolor sit amet.
-                    </p>
-                  </div>
-                </div>
-              </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div
+              class="item-wrap"
+              data-aos="zoom-in"
+            >
+              <img
+                class="img-fluid icon"
+                src="@/assets/images/icon-life.png"
+                alt=""
+              >
+              <p>享生活</p>
             </div>
           </div>
-          <a
-            class="carousel-control-prev"
-            href="#carouselExampleControls"
-            role="button"
-            data-slide="prev"
-          >
-            <span
-              class="carousel-control-prev-icon"
-              aria-hidden="true"
-            />
-            <span class="sr-only">Previous</span>
-          </a>
-          <a
-            class="carousel-control-next"
-            href="#carouselExampleControls"
-            role="button"
-            data-slide="next"
-          >
-            <span
-              class="carousel-control-next-icon"
-              aria-hidden="true"
-            />
-            <span class="sr-only">Next</span>
-          </a>
+          <div class="col-md-4">
+            <div
+              class="item-wrap"
+              data-aos="zoom-in"
+            >
+              <img
+                class="img-fluid icon"
+                src="@/assets/images/icon-food.png"
+                alt=""
+              >
+              <p>享美食</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div
+              class="item-wrap"
+              data-aos="zoom-in"
+            >
+              <img
+                class="img-fluid icon"
+                src="@/assets/images/icon-joy.png"
+                alt=""
+              >
+              <p>享樂</p>
+            </div>
+          </div>
         </div>
       </div>
-    </section> -->
+    </section>
+    <section class="zones zone-feedback">
+      <div class="container">
+        <h2 class="mx-auto title-dec">
+          <span class="circle" /><span class="txt">旅客怎麼說</span>
+        </h2>
+        <div class="row no-gutters mt-5">
+          <div class="col-md-3 order-md-1">
+            <div
+              class="img-wrap h-100"
+              data-aos="flip-up"
+              style="background-image:url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/Xujsh4eAqVyXiD1xhKZUEvUKjdVXFFzzzH2RRkBZhEqmTMhjuoLP6RfbjDu5plVBal3xMcPcJIR2NcHnE6Xa3ikokpnAGqQil3HqRdRuCGSQJaqdAY5K1Z7auRzjirqo.png')"
+            />
+          </div>
+          <div class="col-md-3 order-md-0">
+            <blockquote
+              class="blockquote p-3 text-white h-100 bg-asia d-flex flex-column justify-content-around"
+              data-aos="zoom-in"
+            >
+              <p class="mb-0">
+                有些事情現在不做，以後也做不了了，只要踏出一步，視野就會不同，為自己勇敢一次！
+              </p>
+              <footer class="blockquote-footer text-right text-white">
+                <cite title="Source Title">台中 王曉明</cite>
+              </footer>
+            </blockquote>
+          </div>
+          <div class="col-md-6 order-md-2">
+            <div
+              class="img-wrap h-100"
+              data-aos="flip-up"
+              style="background-image:url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/zhkkOJVOJwV3XjK5VrFoqbz6ZwgUMVLOjjzNuRAXV3XS6UKzQxDDCzbe3oejLpoWBYBsImxUAY24J7hk710PEL3E5msZj43KLxeiGwdRyRE6uPUudP0ZaA0IFrPSUnqy.png')"
+            />
+          </div>
+        </div>
+        <div class="row no-gutters">
+          <div class="col-md-3 col-sm-6">
+            <div
+              class="img-wrap h-100"
+              data-aos="flip-up"
+              style="background-image:url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/UoINu8PEdetwgNFhWQMoY2AUPilmNNS47cFTi7uT0az9fIt2LJpj7RBI4TCxwAda9hFEs9D1468n2WcrNNgVMt748NZ2aRs2R9twBQiWSggPnZVCZgN8RcwTxbDAA0p1.png')"
+            />
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div
+              class="img-wrap h-100"
+              data-aos="flip-up"
+              style="background-image:url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/bqVKM43SvFbh0B5Ff48ruAebaYudCzu73tI45KSGzlyYGC5PK8yWoaWwKbta8KTUFigg2bZ6Gak3yW3g8XFxsaMxXssgC6gcwybO9ovePXipnJjPedkIK2XDw3pfKPr1.png')"
+            />
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <blockquote
+              class="blockquote p-3 h-100 bg-light d-flex flex-column justify-content-around"
+              data-aos="zoom-in"
+            >
+              <p class="mb-0">
+                旅行就是一碰上就戒不掉的癮，這癮有毒但我不想戒，TropicGo 的行程真的太好玩 ~不來的不是彼得是後悔！
+              </p>
+              <footer class="blockquote-footer text-right">
+                <cite title="Source Title">花蓮 郝美麗</cite>
+              </footer>
+            </blockquote>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div
+              class="img-wrap h-100"
+              data-aos="flip-up"
+              style="background-image:url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/DHXpi2eFQIm9NFg8crQtu6jSYgcwHs7J1Lx4Eqc6xT5hMl1iJuALouToZsQogsv9tIucArwXtDHaGvGIVNYE2nMA0GU3uQOSIE7sXOkKBpCTeZdoqc1SgFeNGYU3FZa3.png')"
+            />
+          </div>
+        </div>
+        <div class="row no-gutters">
+          <div class="col-md-3">
+            <div
+              class="img-wrap h-100"
+              data-aos="flip-up"
+              style="background-image:url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/lti1yF5YP5LRNO9PnnelE6Af0S4EzJrKGNc6OHaO6jYIpElH5SGQSauFhZygtNWEGIsJDeLjtZivEbT9d2f2fu1dgE1TU64YtibRmAUjM4sIJeCQaMEdV7AdrXlCI2Iu.png')"
+            />
+          </div>
+          <div class="col-md-6">
+            <blockquote
+              class="blockquote p-3 h-100 bg-africa text-white d-flex flex-column justify-content-around"
+              data-aos="zoom-in"
+            >
+              <p class="mb-0">
+                在宇宙之間，我們是如此渺小，人生很短，你我都很珍貴，把握當下。有夢就追，熱情要及時，快樂很簡單。
+              </p>
+              <footer class="blockquote-footer text-white text-right">
+                <cite title="Source Title">台北 文清風</cite>
+              </footer>
+            </blockquote>
+          </div>
+          <div class="col-md-3">
+            <div
+              class="img-wrap h-100"
+              data-aos="flip-up"
+              style="background-image:url('https://hexschool-api.s3.us-west-2.amazonaws.com/custom/Yu5omYQYXvjuSU4BXBsOjw2zBf8F1dKhJvnRShw621OrnG7xFg2gGrtTcGWbvbqSkdA1gneKhgOu9jgMRuQxtEOSvQnLYHXoyJKDIKFYBWhIkkAustW5DgR9KiZNwvrP.png')"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- <section class="zones zone_shared">
       <div class="container">
