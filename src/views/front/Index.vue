@@ -159,10 +159,12 @@
     <section class="zones zone-dec">
       <div class="container">
         <div class="row">
-          <div class="col-md-4">
+          <div
+            class="col-md-4"
+            data-aos="zoom-in"
+          >
             <div
               class="item-wrap"
-              data-aos="zoom-in"
             >
               <img
                 class="img-fluid icon"
@@ -172,10 +174,12 @@
               <p>享生活</p>
             </div>
           </div>
-          <div class="col-md-4">
+          <div
+            class="col-md-4"
+            data-aos="zoom-in"
+          >
             <div
               class="item-wrap"
-              data-aos="zoom-in"
             >
               <img
                 class="img-fluid icon"
@@ -185,10 +189,12 @@
               <p>享美食</p>
             </div>
           </div>
-          <div class="col-md-4">
+          <div
+            class="col-md-4"
+            data-aos="zoom-in"
+          >
             <div
               class="item-wrap"
-              data-aos="zoom-in"
             >
               <img
                 class="img-fluid icon"
