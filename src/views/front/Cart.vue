@@ -155,7 +155,7 @@
               </router-link>
             </div>
             <div class="d-flex justify-content-center align-items-center mb-3">
-              <p>您尚未選擇任何行程喔 QQ，快去選購吧！</p>
+              <p>您尚未選擇任何行程喔，快去選購吧！</p>
             </div>
           </div>
           <div class="col-md-4">
@@ -561,7 +561,7 @@
         </div>
       </div>
     </section>
-    <!-- 流程 訂單完成 -->
+    <!-- 流程 4 訂單完成 -->
     <section
       v-show="step === 4"
       class="zones zone_checkout"
@@ -719,6 +719,9 @@ export default {
       this.carts = carts;
     });
   },
+  beforeDestroy() {
+    this.$bus.$off('cart-info');
+  },
   methods: {
     updateQuantity(id, quantity) {
       this.isLoading = true;
@@ -737,7 +740,7 @@ export default {
         })
         .catch(() => {
           this.isLoading = false;
-          this.$bus.$emit('msg:push', '登愣~~出現錯誤', 'danger');
+          this.$bus.$emit('msg:push', '出現錯誤', 'danger');
         });
     },
     removeCart(id) {
@@ -748,11 +751,11 @@ export default {
         .then(() => {
           this.isLoading = false;
           this.$bus.$emit('get-cart');
-          this.$bus.$emit('msg:push', 'QQ~成功刪除', 'success');
+          this.$bus.$emit('msg:push', '成功刪除購物車品項', 'success');
         })
         .catch(() => {
           this.isLoading = false;
-          this.$bus.$emit('msg:push', '登愣~~出現錯誤', 'danger');
+          this.$bus.$emit('msg:push', '出現錯誤', 'danger');
         });
     },
     removeAllCart() {
@@ -764,11 +767,11 @@ export default {
           this.isLoading = false;
           this.carts = [];
           this.$bus.$emit('get-cart');
-          this.$bus.$emit('msg:push', 'QQ~成功清除購物車', 'success');
+          this.$bus.$emit('msg:push', '成功清除購物車', 'success');
         })
         .catch(() => {
           this.isLoading = false;
-          this.$bus.$emit('msg:push', '登愣~~出現錯誤', 'danger');
+          this.$bus.$emit('msg:push', '出現錯誤', 'danger');
         });
     },
     findCoupon() {
@@ -782,7 +785,7 @@ export default {
           this.isLoading = false;
         })
         .catch(() => {
-          this.$bus.$emit('msg:push', '登愣~~折扣碼無效喔', 'danger');
+          this.$bus.$emit('msg:push', '折扣碼無效喔', 'danger');
           this.isLoading = false;
         });
       this.couponCode = '';
@@ -812,7 +815,7 @@ export default {
           this.getOrder(this.orderID);
         })
         .catch(() => {
-          this.$bus.$emit('msg:push', '登愣~~建立訂單失敗', 'danger');
+          this.$bus.$emit('msg:push', '建立訂單失敗', 'danger');
           this.isLoading = false;
         });
     },
@@ -826,7 +829,7 @@ export default {
           this.isLoading = false;
         })
         .catch(() => {
-          this.$bus.$emit('msg:push', '登愣~~該訂單不存在', 'danger');
+          this.$bus.$emit('msg:push', '該訂單不存在', 'danger');
         });
     },
     payOrder() {
@@ -842,7 +845,7 @@ export default {
           }
         })
         .catch(() => {
-          this.$bus.$emit('msg:push', '登愣~~該訂單不存在', 'danger');
+          this.$bus.$emit('msg:push', '該訂單不存在', 'danger');
           this.isLoading = false;
         });
     },

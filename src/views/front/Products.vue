@@ -182,7 +182,7 @@ export default {
           this.$bus.$emit(
             'msg:push',
             // response 為 axios 回傳的固有寫法
-            `登愣~~出現錯誤！ ${err.response.data.errors[0]}`,
+            `出現錯誤！ ${err.response.data.errors[0]}`,
             'danger',
           );
         });

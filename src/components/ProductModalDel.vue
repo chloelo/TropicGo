@@ -57,7 +57,17 @@
 <script>
 /* global $ */
 export default {
-  props: ['tempProduct'],
+  props: {
+    tempProduct: {
+      type: Object,
+      default() {
+        return {
+          imageUrl: [],
+          options: {},
+        };
+      },
+    },
+  },
   data() {
     return {};
   },

@@ -233,7 +233,22 @@ import { VueEditor } from 'vue2-editor';
 
 export default {
   components: { VueEditor },
-  props: ['isNew', 'tempProduct'],
+  // props: ['isNew', 'tempProduct'],
+  props: {
+    isNew: {
+      type: Boolean,
+      required: true,
+    },
+    tempProduct: {
+      type: Object,
+      default() {
+        return {
+          imageUrl: [],
+          options: {},
+        };
+      },
+    },
+  },
   data() {
     return {
       imgUploading: false,

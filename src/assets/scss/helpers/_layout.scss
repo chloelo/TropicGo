@@ -50,7 +50,11 @@ button:focus {
     color: $gray-700;
     font-size: 24px;
   }
-
+  .dropdown-toggle {
+    &::after {
+      display: none;
+    }
+  }
   .nav-link {
     font-size: 18px;
     color: $white;
@@ -242,7 +246,6 @@ h2 {
     width: 100%;
     display: inline-block;
     margin-bottom: 5px;
-    // padding: 5px 10px;
     &:hover {
       opacity: 0.8;
     }
@@ -1137,50 +1140,6 @@ h2 {
       }
     }
   }
-  .zone_shared {
-    .img-wrap {
-      position: relative;
-      overflow: hidden;
-      border-radius: 50%;
-      img {
-        transition: all 0.5s ease-in-out;
-      }
-      &:hover {
-        .title {
-          top: 0px;
-        }
-        img {
-          transform: scale(1.5) rotate(15deg);
-        }
-      }
-    }
-    .title {
-      transition: all 0.5s ease-in-out;
-      background-color: rgba($africa, $alpha: 0.7);
-      color: #fff;
-      position: absolute;
-      // border-radius: 50%;
-      top: 100%;
-      left: 0px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-      font-size: 24px;
-    }
-    .link {
-      color: $white;
-      padding: 6px 15px;
-      display: inline-block;
-      margin-bottom: 30px;
-    }
-    p {
-      margin-top: 15px;
-      padding-bottom: 15px;
-      border-bottom: 2px dotted;
-    }
-  }
   .zone-feedback {
     .blockquote {
       font-size: 18px;
@@ -1207,7 +1166,7 @@ h2 {
     }
   }
   .zone-dec {
-    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/SECr02nGgRytucMEGrp1vjIdUSLW7V6xpD3SC1RA3zHdWp0P8IQdkT6Z6rZpc1YQjJH9EnQNEoIXrg8pTFmpQ7a8eJwSweZLhkkdkaFw4HpjtQDS0oOXy5QxUW0YrJN3.jpg");
+    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/XtvgHS0SjTVWRFcIKGwjTbERB9bPfSOqO1VqNZIrutSYwaQQ75azaQA8wAfSemvZyp7ByCWzjpunW5C9bpQ9I1LOohpu56nnNBAF0o2xCjBlkvdCNgumFJUWiEBBPLGt.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;

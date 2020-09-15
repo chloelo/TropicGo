@@ -65,7 +65,7 @@ export default {
         .catch((err) => {
           this.$bus.$emit(
             'msg:push',
-            `登愣~~出現錯誤！${err.response.data.message}`,
+            `出現錯誤！${err.response.data.message}`,
             'danger',
           );
         });

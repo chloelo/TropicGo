@@ -183,6 +183,10 @@ export default {
     });
     window.addEventListener('scroll', this.winScroll);
   },
+  beforeDestroy() {
+    // 監聽完事件後必須手動清除事件監聽！
+    this.$bus.$off('get-cart');
+  },
   destroyed() {
     window.removeEventListener('scroll', this.winScroll);
   },

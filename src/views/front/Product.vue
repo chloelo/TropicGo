@@ -315,7 +315,7 @@ export default {
           this.status.loadingItem = '';
           this.$bus.$emit(
             'msg:push',
-            `登愣~~出現錯誤！ ${err.response.data.errors[0]}`,
+            `出現錯誤！ ${err.response.data.errors[0]}`,
             'danger',
           );
         });

@@ -60,6 +60,9 @@ export default {
       this.updateMsg(msg, status);
     });
   },
+  beforeDestroy() {
+    this.$bus.$off('msg:push');
+  },
   methods: {
     updateMsg(msg, status) {
       const timestamp = Math.floor(new Date() / 1000);

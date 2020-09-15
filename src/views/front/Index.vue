@@ -308,41 +308,6 @@
         </div>
       </div>
     </section>
-
-    <!-- <section class="zones zone_shared">
-      <div class="container">
-        <div class="row">
-          <div
-            v-for="item in viewShared"
-            :key="item.title"
-            class="col-sm-4"
-            data-aos="zoom-in"
-          >
-            <div class="img-wrap my-3">
-              <img
-                class="img-fluid"
-                :src="item.img"
-                :alt="item.title"
-              >
-              <span class="title">{{ item.title }}</span>
-            </div>
-          </div>
-
-          <div class="col-12">
-            <p>你在等我嗎？我一直都在阿！以上精彩行程我們通通都你安排好了，還不手刀報名參加嗎？</p>
-            <div class="d-flex justify-content-end">
-              <router-link
-                class="link bg-secondary"
-                to="/products"
-              >
-                立即查看
-                <span><i class="fas fa-chevron-right" /></span>
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section> -->
     <IndexModal />
   </div>
 </template>
@@ -359,27 +324,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      viewShared: [
-        {
-          title: '享生活',
-          img:
-            'https://hexschool-api.s3.us-west-2.amazonaws.com/custom/BtzZuzhtPHapZ951ZBFpCRoKolRtQHGvhpClX0anU5uU2VtC3lN38ZqcpYnaXiQZNWKkZ9Lb3qJl5KZm0LaTquvAd1pUa8p3cwk9tECuyZZr6nfJTJjL0hwA6cK51LmF.png',
-        },
-        {
-          title: '享美食',
-          img:
-            'https://hexschool-api.s3.us-west-2.amazonaws.com/custom/gnl2stpPR9dClkQulbc7OwS6NxUJs6XBpjUE3sZ0AX5Jfr38oVkuONfiJs0JpAhfJqK2GclhikAuHgIX1yjX95f2ezHRRnpKk5A0rtQwuQwJyc5pnSdydMaXibZQoCZF.png',
-        },
-        {
-          title: '享樂',
-          img:
-            'https://hexschool-api.s3.us-west-2.amazonaws.com/custom/olNIR8PBmOv9UD8228oefzzncRMofRnRQfH7vc68BdGhCG4zH9RK0Xwbec5u9iBFzPzWmUTp3QVN2t49sr661CuC0Z6Rrq0DRieKH606qdO0b0Q3Vak0lhssVpqTPiAt.png',
-        },
-      ],
     };
-  },
-  methods: {
-    openModel() {},
   },
 };
 </script>
