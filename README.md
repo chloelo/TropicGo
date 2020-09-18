@@ -1,24 +1,11 @@
-# vue-final
+# TropicGo 熱趣
 
-## Project setup
-```
-npm install
-```
+https://chloelo.github.io/TropicGo/#/
+此為 Vue 前端框架建立的旅遊電商網站，僅供練習，無任何商業用途。
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 使用技術
+* Vue Cli
+* Vue Router
+* Bootstrap 4
+* SCSS
+* Axios

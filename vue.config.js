@@ -7,10 +7,10 @@ module.exports = {
   chainWebpack: (config) => {
     config.plugin('html').tap((args) => {
       const [obj] = args;
-      obj.title = 'TropicGo 回遊';
+      obj.title = 'TropicGo 熱趣';
       obj.meta = {
         keywords: 'Vue, JavaScript, 電商網站',
-        description: 'TropicGo 回遊, 藏在回歸線裡的熱情面紗，等你來一探究竟！',
+        description: 'TropicGo 熱趣, 藏在回歸線裡的熱情面紗，等你來一探究竟！',
       };
       // obj.icon = '123.png';
       return args;

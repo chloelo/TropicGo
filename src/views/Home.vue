@@ -28,7 +28,7 @@
             <li>
               <a
                 target="_blank"
-                href="https://github.com/chloelo"
+                href="https://github.com/chloelo/TropicGo"
                 class="text-white mx-3"
               ><i class="fab fa-github-square" />
               </a>
@@ -44,7 +44,7 @@
             <li>
               <a
                 target="_blank"
-                href="https://facebook.com/chloelo0925"
+                href="https://facebook.com/"
                 class="text-white mx-3"
               ><i class="fab fa-facebook" />
               </a>
