@@ -4,7 +4,7 @@
     <nav
       id="front-nav"
       class="navbar navbar-expand-lg navbar-light fixed-top align-items-center"
-      :class="{shadows:isShow}"
+      :class="{ shadows: isShow }"
     >
       <router-link
         class="navbar-brand"
@@ -29,11 +29,15 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <span class="position-relative"><i class="fas fa-shopping-cart" />
+            <span
+              class="position-relative"
+            ><i class="fas fa-shopping-cart" />
               <span
                 v-if="carts.length > 0"
                 class="cart-num"
-              >{{ totalQuantity }}</span>
+              >{{
+                totalQuantity
+              }}</span>
             </span>
           </button>
 
@@ -43,12 +47,12 @@
           >
             <div class="table-responsive dropdown-cart-list">
               <table class="table table-sm table-striped">
-                <caption>已選擇行程</caption>
+                <caption>
+                  已選擇行程
+                </caption>
                 <thead>
                   <tr>
-                    <th
-                      scope="col"
-                    >
+                    <th scope="col">
                       品名
                     </th>
                     <th scope="col">
@@ -64,7 +68,9 @@
                     v-for="item in carts"
                     :key="item.product.id"
                   >
-                    <td><span class="ellipsis">{{ item.product.title }}</span> </td>
+                    <td>
+                      <span class="ellipsis">{{ item.product.title }}</span>
+                    </td>
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.product.price | money }}</td>
                   </tr>

@@ -1,0 +1,214 @@
+.front-index {
+  .kv {
+    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/zgosa1jQ4lMkJmx1rPuVTWO2yNsl7k3HZSf0J6IpbSTkWE0NZVnnTRbYmgbiETU2Umccm2xTFPM4jwlmM6YSUqLBGf6m2nfXRWQ4418nfOoLegVowOLr9gTBBd4edihZ.png");
+    background-position: top center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba($black, $alpha: 0.4);
+    }
+    .txt-wrap {
+      color: $white;
+      padding: 30px 120px;
+    }
+    h2 {
+      font-weight: 700;
+      max-width: 12em;
+    }
+    .link {
+      width: 48%;
+      text-align: center;
+      padding: 10px;
+      font-weight: bold;
+      opacity: 0.9;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    .link-second {
+      border: 1px solid $white;
+      color: $white;
+    }
+    .link-main {
+      background-color: $white;
+      color: $africa;
+    }
+  }
+  @include max-991 {
+    .kv {
+      justify-content: center;
+      .txt-wrap {
+        padding: 15px 30px;
+      }
+    }
+  }
+  @include max-767 {
+    .kv {
+      .txt-wrap {
+        padding: 15px;
+      }
+    }
+  }
+  .zone_category {
+    padding-top: 120px;
+    .wrap {
+      padding: 15px;
+      text-align: center;
+      color: $white;
+    }
+    .asia,
+    .africa {
+      margin-top: -50px;
+    }
+    h3 {
+      border-bottom: 2px dotted;
+      padding-bottom: 15px;
+    }
+    .link {
+      cursor: pointer;
+      background-color: $white;
+      display: inline-block;
+      width: 100%;
+      padding: 6px 15px;
+    }
+    @include max-991 {
+      padding-top: 60px;
+      .wrap {
+        margin-bottom: 15px;
+      }
+    }
+    @include max-767 {
+      .asia,
+      .africa {
+        margin-top: 0px;
+      }
+      .wrap {
+        margin-top: 15px;
+      }
+    }
+  }
+  .zone_selected {
+    background: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/VQFdh5KLECKlzeOOODHYedxU2t0tHUaZUP2RtDJ3K65sb14TBknQa1PDCUSAFBLKU8gJTsauPdb6gB8Snahaj8XzYJx9gMUup7b7KECkBN1YQsvvPBFMc3oAUCysvYsI.png")
+      no-repeat center;
+    background-color: #fffbf9;
+
+    ul {
+      padding-left: 20px;
+    }
+    .link {
+      color: $white;
+      padding: 6px 15px;
+      display: inline-block;
+      margin-bottom: 30px;
+    }
+    .num-wrap {
+      position: relative;
+      // ↓ 按俊儀老師調整
+      overflow-x: hidden;
+      margin-bottom: 30px;
+      &::after {
+        content: "";
+        position: absolute;
+        width: calc(100% + 35px);
+        height: 5px;
+        background-color: $africa;
+        bottom: 5px;
+      }
+    }
+
+    .num-wrap02 {
+      overflow-x: hidden;
+    }
+    .num {
+      font-size: 350%;
+      background-color: $africa;
+      color: $white;
+      display: inline-block;
+      padding: 0px 10px;
+    }
+    h3 {
+      font-size: 350%;
+    }
+    @include max-991 {
+      .num,
+      h3 {
+        font-size: 200%;
+      }
+    }
+    @include max-767 {
+      .num-wrap01 {
+        overflow-x: hidden;
+      }
+    }
+  }
+  .zone-feedback {
+    .blockquote {
+      font-size: 18px;
+    }
+    .txt-wrap,
+    .img-wrap {
+      min-height: 220px;
+    }
+    .txt-wrap {
+      display: flex;
+      align-items: center;
+      color: $white;
+      padding: 15px;
+    }
+    .img-wrap {
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center 15%;
+    }
+    @include max-767 {
+      .txt-wrap {
+        min-height: 150px;
+      }
+    }
+  }
+  .zone-dec {
+    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/XtvgHS0SjTVWRFcIKGwjTbERB9bPfSOqO1VqNZIrutSYwaQQ75azaQA8wAfSemvZyp7ByCWzjpunW5C9bpQ9I1LOohpu56nnNBAF0o2xCjBlkvdCNgumFJUWiEBBPLGt.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba($black, $alpha: 0.6);
+    }
+    .icon {
+      max-width: 100px;
+    }
+    .item-wrap {
+      padding: 30px 15px;
+      border: 1px solid $white;
+      text-align: center;
+
+      p {
+        color: $white;
+        font-size: 20px;
+        margin-top: 10px;
+        margin-bottom: 0px;
+      }
+      @include max-767 {
+        margin-bottom: 15px;
+        padding: 10px 15px;
+      }
+    }
+  }
+}

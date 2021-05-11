@@ -1,0 +1,9 @@
+.front-footer {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  @include max-767 {
+    .logo {
+      max-width: 130px;
+    }
+  }
+}

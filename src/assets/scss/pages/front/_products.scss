@@ -1,0 +1,118 @@
+.front-products {
+  .kv {
+    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/XWZDLzyVuddDyBcWT5bLG50OKpqb2FUnnVY8FLz4s2bWYiCTXSbzoFb7YHXqqd4CA284ccVhXuPSIHBlnXmdwamJsQGo7OKVOwO7mGJ28KLXjMpp9Qh5ENxXqVoF0kXP.png");
+    background-position: 50% -50%;
+    height: 450px;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba($black, $alpha: 0.4);
+    }
+    .title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 15%;
+    }
+  }
+  @include max-767 {
+    .kv {
+      background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/W1KeF3YRdqevbXHhTTLP1hJd9x1uccAX19TzlbFHtP8kgR50f5OCO85OxuX7YVBQLlwMcre5CUKbPm0pYLznm0oo0h4Am7xzcSbB0MW1jOU6fq644NNdHgg99D8xlCYc.png");
+      height: 300px;
+      background-position: 50% -200px;
+    }
+  }
+  .zone_category {
+    padding-bottom: 40px;
+    .wrap {
+      margin-top: -80px;
+    }
+    .category {
+      width: 160px;
+      display: flex;
+      justify-content: center;
+    }
+    .btn {
+      width: calc(100% - 30px);
+      padding: 0.2rem;
+      padding-top: 0.4rem;
+    }
+    .icon {
+      max-width: 50px;
+    }
+    h4 {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-size: 18px;
+      color: $white;
+    }
+    @include max-767 {
+      .icon {
+        max-width: 40px;
+      }
+      .btn {
+        width: calc(100% - 3px);
+        padding: 0.1rem;
+      }
+      h3 {
+        font-size: 16px;
+      }
+    }
+  }
+  .zone_products {
+    padding-top: 0;
+    .ellipsis {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      white-space: normal;
+    }
+    .card {
+      border: none;
+      position: relative;
+      cursor: pointer;
+      .img-wrap {
+        overflow: hidden;
+        height: 185px;
+        position: relative;
+      }
+      img {
+        transition: all 0.5s ease-in-out;
+        object-fit: cover;
+      }
+
+      .badge {
+        text-transform: capitalize;
+        position: absolute;
+        right: -5px;
+        top: 160px;
+        z-index: 15;
+      }
+      &:hover {
+        img {
+          transform: scale(1.2);
+        }
+      }
+      .card-body {
+        background-color: $gray-100;
+        position: relative;
+        padding-bottom: 10px;
+        margin-bottom: 38px;
+      }
+      .btn-addTocart {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+      }
+    }
+  }
+}

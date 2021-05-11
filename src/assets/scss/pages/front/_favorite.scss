@@ -1,0 +1,67 @@
+.front-favorite {
+  .kv {
+    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/TZwNZ5GC6s2IboRWHaIDcFxW7RlWZgALm3ruoqdH0sMxAbTXajsp8NbRU00VAjyeWR0tXvitvoMVQlk8qufjmFEjPvxVs6e1zEOjgZGutkeGIyDFn5Qhp4pDH52kUYmm.png");
+    background-position: 50% 0;
+    height: 450px;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba($black, $alpha: 0.4);
+    }
+    .title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 10%;
+    }
+    h2 {
+      text-align: right;
+    }
+  }
+  @include max-767 {
+    .kv {
+      background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/ENjDVBKvf63SAapCoOl5Xa33f1sbpDgdmmH3d9UQsosTeLwDNZt5XCuIFF87GCgx15JIAkeGQHpeO43ZsrMm19M5YCvIBSZWFhxY8w78exe7rEx7kYNxpjGksstyin7R.png");
+      height: 300px;
+      background-position: 50% -160px;
+    }
+  }
+  .zone_favorites {
+    .img-wrap {
+      padding-left: 5px;
+      img {
+        width: 120px;
+        height: auto;
+      }
+    }
+    .close {
+      color: $gray-500;
+      font-size: 20px;
+    }
+  }
+  .zone_popular {
+    padding-top: 0;
+    .img-wrap {
+      overflow: hidden;
+      height: 185px;
+      position: relative;
+    }
+    img {
+      transition: all 0.5s ease-in-out;
+      object-fit: cover;
+    }
+    .ellipsis {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      white-space: normal;
+    }
+  }
+}

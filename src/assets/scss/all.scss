@@ -1,7 +1,25 @@
-@import '~bootstrap/scss/functions'; // 官方的
-@import './helpers/variables'; // 自己的
-@import '~bootstrap';
+@import "~bootstrap/scss/functions"; // ~bootstrap → 官方的
+@import "./helpers/variables"; // 自己的
+@import "~bootstrap";
 
-@import './helpers/myVariables';
-@import './helpers/myMixins';
-@import './helpers/layout';
+@import "./helpers/mixins";
+@import "./helpers/base";
+@import "./helpers/utilities";
+
+// layout
+@import "./layout/header";
+@import "./layout/footer";
+
+// pages
+@import "./pages/front/about";
+@import "./pages/front/cart";
+@import "./pages/front/favorite";
+@import "./pages/front/index";
+@import "./pages/front/product";
+@import "./pages/front/products";
+
+@import "./pages/back/login";
+@import "./pages/back/index";
+@import "./pages/back/products";
+@import "./pages/back/storage";
+@import "./pages/back/orders";

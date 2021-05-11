@@ -1,0 +1,29 @@
+.backpage-storage {
+  input[type="file"] {
+    height: auto;
+  }
+  h2 {
+    width: 7em;
+    text-align: left;
+    font-size: 27px;
+  }
+  p {
+    width: 7em;
+    margin-bottom: 0;
+  }
+  table {
+    img {
+      max-width: 150px;
+      width: 100%;
+    }
+  }
+  .path {
+    font-size: 90%;
+    white-space: pre-wrap; /* CSS3 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+    word-break: break-all;
+  }
+}

@@ -1,0 +1,56 @@
+.title-dec {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .circle {
+    width: 35px;
+    height: 35px;
+    margin-right: 1rem;
+    display: inline-block;
+    border-radius: 50%;
+    background-image: linear-gradient(
+      90deg,
+      rgba(245, 155, 32, 1) 0%,
+      rgba(245, 155, 32, 1) 50%,
+      rgba(218, 115, 39, 1) 51%,
+      rgba(218, 115, 39, 1) 100%
+    );
+  }
+}
+.prices {
+  margin-bottom: 0;
+  .price_origin {
+    font-size: 60%;
+    color: #ccc;
+    text-decoration: line-through;
+  }
+  .price_discount {
+    font-size: 120%;
+    color: $secondary;
+  }
+}
+// front-pages
+.zones {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+.toTop {
+  position: fixed;
+  display: flex;
+  opacity: 0;
+  bottom: 30px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  line-height: 0.6;
+  z-index: 20;
+  border-radius: 50%;
+  transition: 0.5s ease-in-out;
+  .icon {
+    font-size: 18px;
+  }
+  &.show {
+    opacity: 0.8;
+    bottom: 15px;
+  }
+}

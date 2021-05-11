@@ -1,0 +1,187 @@
+.front-cart {
+  .kv {
+    background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/f9FFnUdaTIPR5BQxqbdHrRVczO7ZefQofe2h8VwXlS7SmDyq7SlotuZAp9nnY7rv1QU5dMVjr8TPjbdpzjjndqBQ03aDLPxDjj7qkaDKI6QOU3Wk50syN0gzXFTSoucF.png");
+    background-position: 50% 0;
+    height: 450px;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba($black, $alpha: 0.2);
+    }
+    .title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 10%;
+    }
+    h2 {
+      text-align: right;
+    }
+  }
+  @include max-767 {
+    .kv {
+      background-image: url("https://hexschool-api.s3.us-west-2.amazonaws.com/custom/L06GK2uu2cXd8gY1fWtgCaq2qmxdSJvhTE4S1DzJefw4lbVi5DuOz2tPb4HyoCTWsx6o5LkO2QKb4Kngc3K4j8hwNXEiEK96jHx624IlyZjDaoNWB7EMrUR715rLjGdw.png");
+      height: 300px;
+      background-position: 50% -100px;
+      // background-size: cover;
+    }
+  }
+  .zone_process {
+    .step-wrap {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+    }
+    .icon {
+      font-size: 1.4rem;
+    }
+    .txt {
+      border-top: 1px solid;
+    }
+    .step {
+      font-size: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #e9ecef;
+      color: $gray-500;
+      border-radius: 50%;
+      width: 5.5rem;
+      height: 5.5rem;
+      transition: all 0.5s 0.4s;
+      &.done {
+        background-color: $secondary;
+        color: $white;
+      }
+
+      @include max-767 {
+        border-radius: 5%;
+        width: 4.2rem;
+        height: 4.2rem;
+      }
+    }
+    .progress {
+      height: 5px;
+      margin-top: -40px;
+      margin-left: 44px;
+      margin-right: 44px;
+    }
+    .progress-bar {
+      width: 0%;
+      &.step2 {
+        width: 33.333%;
+      }
+      &.step3 {
+        width: 66.666%;
+      }
+      &.step4 {
+        width: 100%;
+      }
+    }
+  }
+  .input-group-wrap {
+    display: flex;
+    align-items: center;
+  }
+
+  .zone_cartList {
+    .link-next {
+      font-size: 20px;
+    }
+    .btn-del {
+      font-size: 14px;
+      color: $gray-500;
+    }
+    .close {
+      color: $gray-500;
+      font-size: 20px;
+    }
+    .img-wrap {
+      padding-left: 5px;
+      img {
+        width: 120px;
+        height: auto;
+      }
+    }
+
+    .input-group {
+      width: 50%;
+    }
+    .input-group-wrap {
+      .form-control {
+        border: 1px solid $secondary;
+        color: $secondary;
+      }
+    }
+    .coupon-wrap {
+      width: 100%;
+      input {
+        border: 1px solid $secondary;
+        color: $gray-700;
+        &::placeholder {
+          color: $gray-500;
+        }
+      }
+    }
+
+    .count-total {
+      font-size: 20px;
+    }
+
+    @include max-767 {
+      .input-group-wrap {
+        flex-wrap: wrap;
+      }
+      .input-group {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  }
+  .totalPrice-wrap {
+    border: 2px dotted $gray-300;
+  }
+  .border-dashed-top {
+    border-top: 1px dashed $gray-300;
+    padding-top: 1rem;
+  }
+  .zone_form {
+    padding-top: 30px;
+    .form-wrap {
+      .form-group {
+        margin-bottom: 30px;
+      }
+      .form-control {
+        background-color: #f4f7f6;
+        border: 0;
+        &::placeholder {
+          color: $gray-500;
+        }
+      }
+      .btn-disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+  .order-infos {
+    background-color: #f4f7f6;
+    .list {
+      padding: 10px 0px;
+      &:first-of-type {
+        padding-top: 0;
+      }
+      &:last-of-type {
+        padding-bottom: 0;
+      }
+    }
+    .list + .list {
+      border-top: 1px dashed $gray-300;
+    }
+  }
+}
