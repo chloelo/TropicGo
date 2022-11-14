@@ -154,7 +154,7 @@ echo ${osStatus} " 5 秒後部署檔案到遠端分支 "
 echo ${osStatus} " ＊如要停止動作請按下 CRTL + C or Control + C"
 echo ${osStatus} "==============================================================${norm}"
 sleep 5s
-git push -f $originUrl master:gh-pages
+git push -f $originUrl main:gh-pages
 
 echo
 echo ${osStatus} "${yellow}=============================================================="
