@@ -64,7 +64,7 @@
             </p>
           </div>
           <p class="mb-0">
-            © 2021 Tropic Go All Rights Reserved.
+            © 2022 Tropic Go All Rights Reserved.
           </p>
         </div>
       </div>
