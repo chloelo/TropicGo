@@ -64,7 +64,7 @@
             </p>
           </div>
           <p class="mb-0">
-            © 2022 Tropic Go All Rights Reserved.
+            © {{ thisYear }} Tropic Go All Rights Reserved.
           </p>
         </div>
       </div>
@@ -85,6 +85,13 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    thisYear() {
+      const today = new Date();
+      const year = today.getFullYear();
+      return year;
+    },
   },
 };
 </script>
