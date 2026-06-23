@@ -411,7 +411,6 @@ const mockRoutes = {
         };
       }
 
-      // 模擬找不到或過期的情況
       const error = new Error('折扣碼無效');
       error.status = 404;
       throw error;
@@ -424,7 +423,6 @@ const mockRoutes = {
 
       order.paid = true;
 
-      // 這裡多包一層 data，為了讓前端的 res.data.data 存在
       return { data: { paid: true } };
     },
     'ec/orders': (url, data) => {
@@ -436,7 +434,6 @@ const mockRoutes = {
         products: mockDatabase.carts,
       };
       mockDatabase.orders.push(newOrder);
-      // 給 createOrder 前端檢查用
       return { data: newOrder };
     },
   },
@@ -490,7 +487,6 @@ const mockRoutes = {
 function matchAndExecute(method, url, data) {
   const routes = mockRoutes[method];
 
-  // 排序關鍵：先檢查 paying，確保它優先被匹配，防止被 ec/orders 搶走
   const keys = Object.keys(routes).sort((a, b) => {
     if (a.includes('paying')) return -1;
     return b.length - a.length;
@@ -504,7 +500,6 @@ function matchAndExecute(method, url, data) {
     setTimeout(() => {
       try {
         const result = routes[matchedKey](url, data);
-        // 注意：這裡已經包了一層 { data: ... }，這樣回傳給 Axios 正好符合
         resolve({ data: result });
       } catch (err) {
         const error = new Error(err.message || 'Mock Server Error');
