@@ -135,10 +135,11 @@ export default {
   },
   methods: {
     filterProducts(el) {
-      this.filterCategories = this.products.filter((item) => {
-        if (el === 'world' || el === '') return this.products;
-        return item.category === el;
-      });
+      if (el === 'world' || el === '') {
+        this.filterCategories = this.products;
+      } else {
+        this.filterCategories = this.products.filter((item) => item.category === el);
+      }
     },
     getProducts() {
       this.isLoading = true;

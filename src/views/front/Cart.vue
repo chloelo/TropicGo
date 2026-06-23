@@ -830,6 +830,8 @@ export default {
         })
         .catch(() => {
           this.$bus.$emit('msg:push', '該訂單不存在', 'danger');
+        }).finally(() => {
+          this.isLoading = false;
         });
     },
     payOrder() {

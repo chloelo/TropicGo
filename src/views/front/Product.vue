@@ -44,17 +44,17 @@
               </h2>
               <p>{{ product.content }}</p>
               <ul class="list-unstyled">
-                <li v-if="product.options.popular">
+                <li v-if="product.options && product.options.popular">
                   <span class="icon icon-popular">
                     <i class="fas fa-fire" />
                   </span>
                   熱門商品
                 </li>
-                <li>
+                <li v-if="product.options">
                   <span class="icon">
                     <i class="fas fa-plane-departure" />
                   </span>
-                  出發城市：{{ product.options.departureCity }}
+                  出發城市：{{ product.options.departureCity || '台北桃園 (TPE)' }}
                 </li>
                 <li>
                   <span class="icon">
