@@ -341,7 +341,7 @@ const mockRoutes = {
     'ec/orders/': (url) => {
       const id = url.split('/').pop();
       const order = mockDatabase.orders.find((o) => o.id === id);
-      if (order) return { success: true, data: order };
+      if (order) return { data: order };
       throw new Error('訂單不存在');
     },
   },
@@ -406,7 +406,6 @@ const mockRoutes = {
 
       if (coupon && coupon.enabled) {
         return {
-          success: true,
           data: coupon,
         };
       }
@@ -426,14 +425,28 @@ const mockRoutes = {
       return { data: { paid: true } };
     },
     'ec/orders': (url, data) => {
+      const originalAmount = mockDatabase.carts.reduce((acc, cur) => acc + (cur.product.price * cur.quantity), 0);
+      let discountedAmount = originalAmount;
+
+      // 如果有優惠券，用折扣
+      if (data && data.coupon) {
+        const coupon = mockDatabase.coupons.find((c) => c.code === data.coupon);
+        if (coupon && coupon.enabled) {
+          discountedAmount = originalAmount * (coupon.percent / 100);
+        }
+      }
+
       const newOrder = {
         id: new Date().getTime().toString(),
-        user: data,
-        amount: mockDatabase.carts.reduce((acc, cur) => acc + (cur.product.price * cur.quantity), 0),
+        user: data || {},
+        original_amount: originalAmount,
+        amount: discountedAmount,
         paid: false,
-        products: mockDatabase.carts,
+        products: [...mockDatabase.carts],
       };
       mockDatabase.orders.push(newOrder);
+      mockDatabase.carts = [];
+      updateCartStorage();
       return { data: newOrder };
     },
   },
@@ -486,13 +499,20 @@ const mockRoutes = {
 };
 function matchAndExecute(method, url, data) {
   const routes = mockRoutes[method];
+  if (!routes) return null;
 
   const keys = Object.keys(routes).sort((a, b) => {
-    if (a.includes('paying')) return -1;
+    if (a.includes('paying') && !b.includes('paying')) return -1;
+    if (!a.includes('paying') && b.includes('paying')) return 1;
     return b.length - a.length;
   });
 
-  const matchedKey = keys.find((k) => url.includes(k));
+  const matchedKey = keys.find((k) => {
+    if (k === 'ec/orders/paying') {
+      return url.includes('ec/orders') && url.includes('paying');
+    }
+    return url.includes(k);
+  });
 
   if (!matchedKey) return null;
 

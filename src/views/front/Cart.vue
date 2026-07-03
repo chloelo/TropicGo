@@ -467,15 +467,31 @@
                       </p>
                     </div>
                   </div>
-                  <div class="d-flex justify-content-between mt-4">
-                    <p class="mb-0 font-weight-bold">
-                      折扣金額
-                    </p>
-                    <p class="mb-0">
-                      - {{ ((item.product.price) * item.quantity) - order.amount | money }}
-                    </p>
-                  </div>
                 </div>
+              </div>
+
+              <div
+                v-if="order.original_amount > order.amount"
+                class="d-flex justify-content-between mt-3"
+              >
+                <p class="mb-0 font-weight-bold">
+                  商品原價
+                </p>
+                <p class="mb-0">
+                  {{ order.original_amount | money }}
+                </p>
+              </div>
+
+              <div
+                v-if="order.original_amount > order.amount"
+                class="d-flex justify-content-between mt-2"
+              >
+                <p class="mb-0 font-weight-bold">
+                  折扣金額
+                </p>
+                <p class="mb-0 text-danger">
+                  - {{ order.original_amount - order.amount | money }}
+                </p>
               </div>
 
               <div class="d-flex justify-content-between align-items-center mt-3 border-dashed-top">
@@ -529,7 +545,7 @@
                     付款方式
                   </p>
                   <p class="mb-0 font-weight-bold">
-                    {{ order.payment }}
+                    {{ order.user.payment }}
                   </p>
                 </div>
                 <div class="d-flex justify-content-between align-items-center list">
@@ -639,7 +655,7 @@
                     付款方式
                   </p>
                   <p class="mb-0 font-weight-bold">
-                    {{ order.payment }}
+                    {{ order.user.payment }}
                   </p>
                 </div>
                 <div class="d-flex justify-content-between align-items-center list">
@@ -840,14 +856,18 @@ export default {
       this.$http
         .post(api)
         .then((res) => {
-          if (res.data.data.paid) {
+          if (res.data.data && res.data.data.paid) {
             this.step = 4;
             this.getOrder(this.orderID);
-            this.isLoading = false;
+          } else {
+            this.$bus.$emit('msg:push', '付款失敗', 'danger');
           }
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log('payOrder error:', err);
           this.$bus.$emit('msg:push', '該訂單不存在', 'danger');
+        })
+        .finally(() => {
           this.isLoading = false;
         });
     },
