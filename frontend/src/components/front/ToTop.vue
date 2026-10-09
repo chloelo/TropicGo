@@ -13,6 +13,8 @@
 
 <template>
   <button
+    type="button"
+    aria-label="回到頂端"
     class="fixed right-[15px] z-20 w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center transition-all duration-500 ease-in-out"
     :class="visible ? 'opacity-80 bottom-[15px]' : 'opacity-0 bottom-[30px] pointer-events-none'"
     @click="scrollToTop"

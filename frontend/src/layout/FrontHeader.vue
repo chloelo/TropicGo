@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, ref } from 'vue'
+  import { computed, ref, watch } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { useWindowScroll } from '@vueuse/core'
   import logo from '@/assets/images/logo.png'
@@ -38,6 +38,16 @@
   // 購物車彈窗改成自己控制開關:點「查看購物車/前去逛逛」換頁時要順便收起來,
   // 不然 header 不會重新渲染,彈窗會一直開著蓋在新頁面上
   const cartOpen = ref(false)
+
+  // 換頁時把手機選單和購物車彈窗都收起來(舊版 NavbarFront.vue 也是 watch $route 收合選單),
+  // 不管是點選單連結、logo、收藏愛心還是瀏覽器上一頁,都不會留著蓋在新頁面上
+  watch(
+    () => route.fullPath,
+    () => {
+      mobileOpen.value = false
+      cartOpen.value = false
+    },
+  )
 
   function goToCart() {
     cartOpen.value = false
@@ -82,6 +92,8 @@
               : 'text-gray-500 hover:text-alert lg:text-white lg:hover:text-white/80'
           "
           active-class="text-alert"
+          aria-label="我的收藏"
+          title="我的收藏"
         >
           <span class="i-fa6-heart" />
         </RouterLink>
@@ -91,6 +103,8 @@
         <n-popover v-model:show="cartOpen" trigger="click" placement="bottom-end" :width="280" :to="false">
           <template #trigger>
             <button
+              type="button"
+              aria-label="購物車"
               class="relative text-lg transition-colors"
               :class="
                 scrolled
@@ -153,7 +167,13 @@
           </div>
         </n-popover>
 
-        <button class="lg:hidden text-lg text-gray-600" @click="mobileOpen = !mobileOpen">
+        <button
+          type="button"
+          class="lg:hidden text-lg text-gray-600"
+          aria-label="選單"
+          :aria-expanded="mobileOpen"
+          @click="mobileOpen = !mobileOpen"
+        >
           <span class="i-fa6-bars" />
         </button>
       </div>

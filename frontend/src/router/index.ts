@@ -3,12 +3,27 @@ import { useAdminAuthStore } from '@/stores/admin-auth'
 import { setPageTitle } from '@/utils/page-title'
 import HomeView from '@/views/front/HomeView.vue'
 
+function waitForScrollable(position: { left: number; top: number }) {
+  return new Promise<{ left: number; top: number }>((resolve) => {
+    const startedAt = Date.now()
+    const check = () => {
+      const maxTop = document.documentElement.scrollHeight - window.innerHeight
+      if (maxTop >= position.top || Date.now() - startedAt > 2000) resolve(position)
+      else requestAnimationFrame(check)
+    }
+    check()
+  })
+}
+
 const router = createRouter({
   history: createWebHistory(),
   // 舊版 router/index.js 也是直接 return {x:0,y:0},切頁一定從頂部開始。
   // 同一頁只改 query(產品列表切換地區 tab)時不捲動——舊版切 tab 沒有換路由,畫面也不會跳
   // 詳情頁換到另一個詳情頁也不在這裡處理,改由 ProductView 用動畫慢慢滑上去(舊版的效果)
-  scrollBehavior(to, from) {
+  scrollBehavior(to, from, savedPosition) {
+    // 瀏覽器上一頁/下一頁:回到離開時的捲動位置。頁面資料是進來後才向 API 撈,
+    // 剛切過來時頁面還不夠高、捲不到原本的位置,所以等頁面長到夠高再捲(最多等 2 秒)
+    if (savedPosition) return waitForScrollable(savedPosition)
     if (to.path === from.path) return false
     if (to.name === 'product' && from.name === 'product') return false
     return { left: 0, top: 0 }
