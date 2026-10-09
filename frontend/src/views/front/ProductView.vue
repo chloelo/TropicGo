@@ -4,6 +4,7 @@
   import { api } from '@/api/client'
   import type { Tour } from '@/api/tropicgo-api'
   import SectionTitle from '@/components/front/SectionTitle.vue'
+  import TourLinkCard from '@/components/front/TourLinkCard.vue'
   import { useCartStore } from '@/stores/cart'
   import { useFavorites } from '@/composables/use-favorites'
   import { formatCurrency } from '@/utils/format'
@@ -263,40 +264,8 @@
     <section v-if="relatedTours.length" class="zones">
       <div class="bs-container">
         <h3 class="text-[28px] font-medium leading-[1.2] mb-6">猜您可能會喜歡...</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[30px] gap-y-6">
-          <div
-            v-for="related in relatedTours"
-            :key="related.id"
-            class="flex flex-col bg-white shadow-[0_2px_4px_0_rgba(0,0,0,0.075)]"
-          >
-            <div class="h-[185px] overflow-hidden">
-              <img
-                :src="related.images[0]?.url"
-                :alt="related.title"
-                loading="lazy"
-                class="w-full h-full object-cover"
-              />
-            </div>
-            <div class="p-5 flex-1 flex flex-col">
-              <h5 class="text-[20px] font-medium leading-[1.2] mb-3">{{ related.title }}</h5>
-              <p class="leading-6 line-clamp-2 mb-4">{{ related.content }}</p>
-              <p class="flex justify-between items-center">
-                <span class="text-[0.6rem] text-[#ccc] line-through">
-                  {{ formatCurrency(related.origin_price) }}/{{ related.unit }}
-                </span>
-                <span class="text-[1.2rem] text-secondary">
-                  {{ formatCurrency(related.price) }}/{{ related.unit }}
-                </span>
-              </p>
-              <RouterLink
-                :to="`/products/${related.id}`"
-                class="mt-4 w-full px-3 py-[6px] border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors flex items-center justify-center gap-1"
-              >
-                前往查看
-                <span class="i-fa6-chevron-right text-sm" />
-              </RouterLink>
-            </div>
-          </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[30px]">
+          <TourLinkCard v-for="related in relatedTours" :key="related.id" :tour="related" />
         </div>
       </div>
     </section>
