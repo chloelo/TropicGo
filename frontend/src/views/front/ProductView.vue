@@ -5,6 +5,7 @@
   import type { Tour } from '@/api/tropicgo-api'
   import SectionTitle from '@/components/front/SectionTitle.vue'
   import TourLinkCard from '@/components/front/TourLinkCard.vue'
+  import NotFoundView from '@/views/front/NotFoundView.vue'
   import { useCartStore } from '@/stores/cart'
   import { useFavorites } from '@/composables/use-favorites'
   import { formatCurrency } from '@/utils/format'
@@ -80,7 +81,7 @@
   <!-- 載入中的提示交給全域 loader,這裡只先撐住高度 -->
   <main v-if="loading" class="min-h-screen" />
 
-  <main v-else-if="!tour" class="text-center text-gray-400 py-24">找不到這個行程。</main>
+  <NotFoundView v-else-if="!tour" heading="找不到這個行程" message="這個行程可能已經下架，或是網址打錯了。" />
 
   <main v-else>
     <!-- 舊版 .zone_detail_bg:用產品第一張圖當背景、模糊 1px、疊 70% 黑色遮罩,高度固定 250px -->

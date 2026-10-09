@@ -1,6 +1,12 @@
 <script setup lang="ts">
   import HeroBanner from '@/components/front/HeroBanner.vue'
   import { HERO_IMAGES } from '@/utils/hero-images'
+
+  // 也給詳情頁「找不到這個行程」共用,只換標題和說明文字
+  withDefaults(defineProps<{ heading?: string; message?: string }>(), {
+    heading: '找不到這個頁面',
+    message: '網址可能打錯了，或是這個頁面已經不存在。',
+  })
 </script>
 
 <template>
@@ -15,8 +21,8 @@
       title-bottom="15%"
     />
     <section class="bs-container py-[60px] text-center">
-      <h2 class="text-[28px] font-medium leading-[1.2] mb-4">找不到這個頁面</h2>
-      <p class="mb-8">網址可能打錯了，或是這個頁面已經不存在。</p>
+      <h2 class="text-[28px] font-medium leading-[1.2] mb-4">{{ heading }}</h2>
+      <p class="mb-8">{{ message }}</p>
       <div class="flex flex-col sm:flex-row justify-center gap-3">
         <RouterLink
           to="/"
