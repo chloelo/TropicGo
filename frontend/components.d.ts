@@ -15,6 +15,7 @@ declare module 'vue' {
     AppToasts: typeof import('./src/components/front/AppToasts.vue')['default']
     CartListStep: typeof import('./src/components/front/CartListStep.vue')['default']
     CartSteps: typeof import('./src/components/front/CartSteps.vue')['default']
+    CheckoutFormStep: typeof import('./src/components/front/CheckoutFormStep.vue')['default']
     HeroBanner: typeof import('./src/components/front/HeroBanner.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
