@@ -35,7 +35,12 @@
     return route.path === to ? 'text-africa font-medium' : 'text-gray-700 hover:text-sun'
   }
 
+  // 購物車彈窗改成自己控制開關:點「查看購物車/前去逛逛」換頁時要順便收起來,
+  // 不然 header 不會重新渲染,彈窗會一直開著蓋在新頁面上
+  const cartOpen = ref(false)
+
   function goToCart() {
+    cartOpen.value = false
     router.push(cartStore.items.length ? '/cart' : '/products')
   }
 </script>
@@ -83,7 +88,7 @@
 
         <!-- :to="false" 讓彈出視窗直接放在 header 裡,跟著 fixed 的 header 一起固定;
              預設放到 body 底下時,捲動頁面每次都要重算位置追上 header,會慢半拍看起來在晃 -->
-        <n-popover trigger="click" placement="bottom-end" :width="280" :to="false">
+        <n-popover v-model:show="cartOpen" trigger="click" placement="bottom-end" :width="280" :to="false">
           <template #trigger>
             <button
               class="relative text-lg transition-colors"
