@@ -33,6 +33,10 @@
   transform: translate3d(0, 100px, 0);
 }
 
+[data-aos='fade-down'] {
+  transform: translate3d(0, -100px, 0);
+}
+
 [data-aos^='zoom'][data-aos^='zoom'] {
   opacity: 0;
   transition-property: opacity, transform;
