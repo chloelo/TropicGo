@@ -46,16 +46,16 @@
   // 用標題比對找出來,連結才會真的指向有效的產品細項頁(修正舊版沒有連結的問題)。
   // 特別精選的墨西哥文案主題是馬雅古文明/世界文化遺產,要對應猶加敦這筆,不是坎昆海灘渡假
   // (坎昆那筆內容不符合文案主題,已經整筆移除)
-  const pickMexico = computed(() => tours.value.find((t) => t.title?.includes('墨西哥猶加敦')))
-  const pickEgypt = computed(() => tours.value.find((t) => t.title?.includes('埃及開羅')))
+  const pickMexico = computed(() => tours.value.find((t) => t.title.includes('墨西哥猶加敦')))
+  const pickEgypt = computed(() => tours.value.find((t) => t.title.includes('埃及開羅')))
 
   onMounted(async () => {
     const [{ data: regionRes }, { data: tourRes }] = await Promise.all([
       api.regions.getRegions(),
       api.tours.getTours({}),
     ])
-    regions.value = sortRegions(regionRes.data ?? [])
-    tours.value = tourRes.data ?? []
+    regions.value = sortRegions(regionRes.data)
+    tours.value = tourRes.data
   })
 </script>
 
@@ -127,18 +127,18 @@
                 v-aos:zoom-in
                 :to="{ path: '/products', query: { region: region.slug } }"
                 class="h-full p-[15px] text-center text-white flex flex-col items-center shadow transition-transform hover:-translate-y-1"
-                :class="REGION_BG[region.slug ?? ''] ?? 'bg-gray-400'"
+                :class="REGION_BG[region.slug] ?? 'bg-gray-400'"
               >
-                <img :src="REGION_ICON[region.slug ?? '']" :alt="region.name" class="w-16" />
+                <img :src="REGION_ICON[region.slug]" :alt="region.name" class="w-16" />
                 <h3
                   class="my-4 pb-[15px] w-full text-[28px] font-medium leading-[1.2] border-b-2 border-dotted border-white/60"
                 >
                   {{ region.name }}
                 </h3>
-                <p class="mb-4">{{ REGION_TEASER[region.slug ?? ''] }}</p>
+                <p class="mb-4">{{ REGION_TEASER[region.slug] }}</p>
                 <span
                   class="w-full bg-white px-[15px] py-[6px]"
-                  :class="REGION_TEXT[region.slug ?? ''] ?? 'text-gray-600'"
+                  :class="REGION_TEXT[region.slug] ?? 'text-gray-600'"
                 >
                   立即前往
                 </span>

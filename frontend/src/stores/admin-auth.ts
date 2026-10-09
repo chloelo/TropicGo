@@ -1,23 +1,18 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { api, getAdminToken, setAdminToken } from '@/api/client'
-
-export interface AdminInfo {
-  id: string
-  name: string
-  email: string
-}
+import type { Admin } from '@/api/tropicgo-api'
 
 export const useAdminAuthStore = defineStore('admin-auth', () => {
-  const admin = ref<AdminInfo | null>(null)
+  const admin = ref<Admin | null>(null)
   const checked = ref(false)
 
   const isLoggedIn = computed(() => !!admin.value)
 
   async function login(email: string, password: string) {
     const { data } = await api.admin.adminLogin({ email, password })
-    setAdminToken(data.data!.token!)
-    admin.value = data.data!.admin as AdminInfo
+    setAdminToken(data.data.token)
+    admin.value = data.data.admin
   }
 
   function logout() {
@@ -33,7 +28,7 @@ export const useAdminAuthStore = defineStore('admin-auth', () => {
     }
     try {
       const { data } = await api.admin.adminCheck()
-      admin.value = data.data as AdminInfo
+      admin.value = data.data
     } catch {
       setAdminToken(null)
       admin.value = null

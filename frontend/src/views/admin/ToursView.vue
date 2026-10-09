@@ -23,7 +23,7 @@
   const naiveDialog = useNaiveDialog()
 
   const regions = ref<Region[]>([])
-  const regionOptions = computed(() => regions.value.map((r) => ({ label: r.name, value: r.id! })))
+  const regionOptions = computed(() => regions.value.map((r) => ({ label: r.name, value: r.id })))
 
   const {
     data: tours,
@@ -33,7 +33,7 @@
     load,
   } = useTable<Tour>(async (p) => {
     const { data } = await api.admin.adminGetTours({ page: p })
-    return { data: data.data ?? [], total: data.meta?.total ?? 0 }
+    return { data: data.data, total: data.meta.total }
   })
 
   const { showDialog, dialogOptions, openDialog, closeDialog } = useDialog()
@@ -74,7 +74,7 @@
 
   onMounted(async () => {
     const { data } = await api.regions.getRegions()
-    regions.value = data.data ?? []
+    regions.value = data.data
     await load(1)
   })
 
@@ -91,7 +91,7 @@
     editingId.value = tour.id!
     Object.assign(form, {
       title: tour.title,
-      region_id: tour.region?.id ?? '',
+      region_id: tour.region.id,
       summary: tour.summary,
       description: tour.description,
       content: tour.content,
@@ -102,7 +102,7 @@
       is_popular: tour.is_popular,
       is_enabled: tour.is_enabled,
     })
-    imagesText.value = tour.images?.map((img) => img.url).join('\n') ?? ''
+    imagesText.value = tour.images.map((img) => img.url).join('\n')
     openDialog({ title: '編輯行程' })
   }
 
@@ -147,7 +147,7 @@
       negativeText: '取消',
       onPositiveClick: async () => {
         try {
-          await api.admin.adminDeleteTour(tour.id!)
+          await api.admin.adminDeleteTour(tour.id)
           message.success('刪除成功')
           await load(page.value)
         } catch {
@@ -163,7 +163,7 @@
       key: 'image',
       width: 90,
       render: (row) =>
-        row.images?.[0]?.url
+        row.images[0]?.url
           ? h(NImage, {
               src: row.images[0].url,
               width: 60,
@@ -174,7 +174,7 @@
           : '—',
     },
     { title: '名稱', key: 'title' },
-    { title: '地區', key: 'region', render: (row) => row.region?.name ?? '—' },
+    { title: '地區', key: 'region', render: (row) => row.region.name },
     { title: '出發城市', key: 'departure_city' },
     { title: '價格', key: 'price', render: (row) => formatCurrency(row.price) },
     {

@@ -37,8 +37,8 @@
     checkingCoupon.value = true
     try {
       const { data } = await api.coupons.checkCoupon({ code: couponCode.value.trim() })
-      appliedCoupon.value = data.data ?? null
-      toast.push(`優惠券套用成功，打 ${data.data?.percent}%`)
+      appliedCoupon.value = data.data
+      toast.push(`優惠券套用成功，打 ${data.data.percent}%`)
     } catch {
       appliedCoupon.value = null
       toast.push('優惠碼無效或已過期', 'danger')
@@ -107,7 +107,7 @@
         coupon_code: appliedCoupon.value?.id ? couponCode.value.trim() : undefined,
         items: cartStore.items.map((item) => ({ tour_id: item.tourId, quantity: item.quantity })),
       })
-      createdOrder.value = data.data ?? null
+      createdOrder.value = data.data
       cartStore.clear()
       step.value = 3
     } catch {

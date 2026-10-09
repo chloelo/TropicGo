@@ -20,8 +20,8 @@
   const activeImageIndex = ref(0)
   const quantity = ref(1)
 
-  const activeImage = computed(() => tour.value?.images?.[activeImageIndex.value]?.url)
-  const coverImage = computed(() => tour.value?.images?.[0]?.url)
+  const activeImage = computed(() => tour.value?.images[activeImageIndex.value]?.url)
+  const coverImage = computed(() => tour.value?.images[0]?.url)
   const subtotal = computed(() => (Number(quantity.value) || 0) * (tour.value?.price ?? 0))
 
   async function loadTour(id: string) {
@@ -32,13 +32,13 @@
     quantity.value = 1
     try {
       const { data } = await api.tours.getTour(id)
-      tour.value = data.data ?? null
+      tour.value = data.data
       if (tour.value?.title) setPageTitle(tour.value.title)
 
       // 舊版「猜您可能會喜歡」列出同地區的全部行程(排除自己),不限筆數
-      if (tour.value?.region?.slug) {
+      if (tour.value?.region.slug) {
         const { data: listRes } = await api.tours.getTours({ region: tour.value.region.slug })
-        relatedTours.value = (listRes.data ?? []).filter((t: Tour) => t.id !== tour.value?.id)
+        relatedTours.value = listRes.data.filter((t: Tour) => t.id !== tour.value?.id)
       }
     } finally {
       loading.value = false
@@ -237,8 +237,8 @@
                 class="px-2 py-1 text-sm border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors flex items-center gap-1"
                 @click="handleToggleFavorite"
               >
-                <span :class="isFavorite(tour.id!) ? 'i-fa6-heart' : 'i-fa6-regular-heart'" />
-                {{ isFavorite(tour.id!) ? '已加入收藏' : '加入收藏' }}
+                <span :class="isFavorite(tour.id) ? 'i-fa6-heart' : 'i-fa6-regular-heart'" />
+                {{ isFavorite(tour.id) ? '已加入收藏' : '加入收藏' }}
               </button>
             </div>
           </div>
@@ -271,7 +271,7 @@
           >
             <div class="h-[185px] overflow-hidden">
               <img
-                :src="related.images?.[0]?.url"
+                :src="related.images[0]?.url"
                 :alt="related.title"
                 loading="lazy"
                 class="w-full h-full object-cover"

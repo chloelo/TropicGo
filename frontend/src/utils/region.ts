@@ -9,10 +9,8 @@ import iconWorld from '@/assets/images/icon-world.png'
 // (例如非洲剛好跟大洋洲疊在同一欄),所以撈回來後統一照這個固定順序排一次
 const REGION_ORDER = ['asia', 'america', 'africa', 'oceania']
 
-export function sortRegions<T extends { slug?: string | null }>(regions: T[]): T[] {
-  return [...regions].sort(
-    (a, b) => REGION_ORDER.indexOf(a.slug ?? '') - REGION_ORDER.indexOf(b.slug ?? ''),
-  )
+export function sortRegions<T extends { slug: string }>(regions: T[]): T[] {
+  return [...regions].sort((a, b) => REGION_ORDER.indexOf(a.slug) - REGION_ORDER.indexOf(b.slug))
 }
 
 // UnoCSS 是靜態掃描 class 字串產生 CSS,動態組字串(如 `bg-${slug}`)掃描不到,

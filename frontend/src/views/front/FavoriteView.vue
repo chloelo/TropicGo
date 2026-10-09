@@ -13,14 +13,14 @@
   const tours = ref<Tour[]>([])
   const loading = ref(true)
 
-  const favoriteTours = computed(() => tours.value.filter((t) => favoriteIds.value.includes(t.id!)))
+  const favoriteTours = computed(() => tours.value.filter((t) => favoriteIds.value.includes(t.id)))
   const popularTours = computed(() => tours.value.filter((t) => t.is_popular))
 
   onMounted(async () => {
     loading.value = true
     try {
       const { data } = await api.tours.getTours({})
-      tours.value = data.data ?? []
+      tours.value = data.data
     } finally {
       loading.value = false
     }
@@ -51,7 +51,7 @@
           class="flex items-center gap-4 bg-gray-50 mb-4 p-3"
         >
           <img
-            :src="tour.images?.[0]?.url"
+            :src="tour.images[0]?.url"
             :alt="tour.title"
             loading="lazy"
             class="w-[120px] aspect-[4/3] object-cover shrink-0"
@@ -59,7 +59,7 @@
           <div class="relative flex-1 min-w-0 p-3">
             <button
               class="absolute top-0 right-0 text-gray-400 hover:text-alert text-lg"
-              @click="toggleFavorite(tour.id!)"
+              @click="toggleFavorite(tour.id)"
             >
               <span class="i-fa6-xmark" />
             </button>

@@ -27,11 +27,11 @@ export const useCartStore = defineStore('cart', () => {
       existing.quantity += quantity
     } else {
       items.value.push({
-        tourId: tour.id!,
-        title: tour.title!,
-        price: tour.price!,
-        unit: tour.unit!,
-        image: tour.images?.[0]?.url ?? '',
+        tourId: tour.id,
+        title: tour.title,
+        price: tour.price,
+        unit: tour.unit,
+        image: tour.images[0]?.url ?? '',
         quantity,
       })
     }

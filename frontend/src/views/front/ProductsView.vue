@@ -27,7 +27,7 @@
 
   const tabs = computed(() => [
     { slug: null, colorKey: 'world', name: '全部' },
-    ...regions.value.map((r) => ({ slug: r.slug ?? null, colorKey: r.slug ?? '', name: r.name })),
+    ...regions.value.map((r) => ({ slug: r.slug, colorKey: r.slug, name: r.name })),
   ])
 
   function tabClass(slug: string | null, colorKey: string) {
@@ -42,7 +42,7 @@
       const { data } = await api.tours.getTours(
         activeSlug.value ? { region: activeSlug.value } : {},
       )
-      tours.value = data.data ?? []
+      tours.value = data.data
     } finally {
       loading.value = false
     }
@@ -65,7 +65,7 @@
 
   onMounted(async () => {
     const { data } = await api.regions.getRegions()
-    regions.value = sortRegions(data.data ?? [])
+    regions.value = sortRegions(data.data)
   })
 </script>
 

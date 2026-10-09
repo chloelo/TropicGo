@@ -25,9 +25,12 @@ components:
       scheme: bearer
       bearerFormat: JWT
 
+  # 回應用的 schema 都把欄位列進 required(資料庫欄位都是 NOT NULL、relation 也一定會一起查回來),
+  # 產生出來的 TS 型別才不會每個欄位都是「可能沒有」,前端就不用到處寫 ! 或 ?? 硬撐
   schemas:
     Region:
       type: object
+      required: [id, name, slug]
       properties:
         id: { type: string, format: uuid }
         name: { type: string, example: 亞洲 }
@@ -35,6 +38,7 @@ components:
 
     TourImage:
       type: object
+      required: [id, url, sort_order]
       properties:
         id: { type: string, format: uuid }
         url: { type: string, format: uri }
@@ -42,6 +46,24 @@ components:
 
     Tour:
       type: object
+      required:
+        [
+          id,
+          title,
+          summary,
+          description,
+          content,
+          unit,
+          departure_city,
+          origin_price,
+          price,
+          is_popular,
+          is_enabled,
+          created_at,
+          updated_at,
+          region,
+          images,
+        ]
       properties:
         id: { type: string, format: uuid }
         title: { type: string }
@@ -82,6 +104,7 @@ components:
 
     Coupon:
       type: object
+      required: [id, title, code, percent, due_date, is_enabled]
       properties:
         id: { type: string, format: uuid }
         title: { type: string }
@@ -104,6 +127,7 @@ components:
 
     OrderItem:
       type: object
+      required: [id, title_snapshot, unit_price_snapshot, quantity, subtotal]
       properties:
         id: { type: string, format: uuid }
         title_snapshot: { type: string }
@@ -113,6 +137,22 @@ components:
 
     Order:
       type: object
+      # message、coupon 一定會有這個欄位,只是值可能是 null(nullable)
+      required:
+        [
+          id,
+          order_number,
+          customer_name,
+          customer_email,
+          customer_phone,
+          customer_address,
+          message,
+          total_amount,
+          status,
+          created_at,
+          coupon,
+          items,
+        ]
       properties:
         id: { type: string, format: uuid }
         order_number: { type: string }
@@ -154,20 +194,32 @@ components:
 
     PaginationMeta:
       type: object
+      required: [page, pageSize, total, totalPages]
       properties:
         page: { type: integer }
         pageSize: { type: integer }
         total: { type: integer }
         totalPages: { type: integer }
 
+    Admin:
+      type: object
+      required: [id, name, email]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        email: { type: string }
+
+    # 不放 data:這裡寫 data: {} 會被產生成 any,跟各 API 自己的 data 型別交集後整個變 any,型別檢查就失效了。
+    # 各 API 的 data 型別在自己的 response 裡定義(刪除這類 data 為 null 的就不寫)
     SuccessResponse:
       type: object
+      required: [status]
       properties:
         status: { type: string, example: success }
-        data: {}
 
     ErrorResponse:
       type: object
+      required: [status, message]
       properties:
         status: { type: string, example: failed }
         message: { type: string }
@@ -199,6 +251,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data:
                         type: array
@@ -224,6 +277,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data:
                         type: array
@@ -249,6 +303,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data: { $ref: '#/components/schemas/Tour' }
         '400': { $ref: '#/components/responses/BadRequest' }
@@ -276,9 +331,11 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data:
                         type: object
+                        required: [id, title, percent]
                         properties:
                           id: { type: string, format: uuid }
                           title: { type: string }
@@ -304,6 +361,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data: { $ref: '#/components/schemas/Order' }
         '400': { $ref: '#/components/responses/BadRequest' }
@@ -327,6 +385,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data: { $ref: '#/components/schemas/Order' }
         '400': { $ref: '#/components/responses/BadRequest' }
@@ -355,17 +414,14 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data:
                         type: object
+                        required: [token, admin]
                         properties:
                           token: { type: string }
-                          admin:
-                            type: object
-                            properties:
-                              id: { type: string, format: uuid }
-                              name: { type: string }
-                              email: { type: string }
+                          admin: { $ref: '#/components/schemas/Admin' }
         '400': { $ref: '#/components/responses/BadRequest' }
 
   /admin/auth/check:
@@ -376,10 +432,16 @@ paths:
       security: [{ bearerAuth: [] }]
       responses:
         '200':
-          description: 成功
+          description: 成功,回傳目前登入的管理員
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/SuccessResponse' }
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    required: [data]
+                    properties:
+                      data: { $ref: '#/components/schemas/Admin' }
         '401': { $ref: '#/components/responses/Unauthorized' }
 
   /admin/tours:
@@ -401,6 +463,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data, meta]
                     properties:
                       data:
                         type: array
@@ -426,6 +489,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data: { $ref: '#/components/schemas/Tour' }
         '400': { $ref: '#/components/responses/BadRequest' }
@@ -451,6 +515,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data: { $ref: '#/components/schemas/Tour' }
         '400': { $ref: '#/components/responses/BadRequest' }
@@ -479,6 +544,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data: { $ref: '#/components/schemas/Tour' }
         '400': { $ref: '#/components/responses/BadRequest' }
@@ -521,6 +587,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data, meta]
                     properties:
                       data:
                         type: array
@@ -546,6 +613,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data: { $ref: '#/components/schemas/Coupon' }
         '400': { $ref: '#/components/responses/BadRequest' }
@@ -576,6 +644,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data: { $ref: '#/components/schemas/Coupon' }
         '400': { $ref: '#/components/responses/BadRequest' }
@@ -618,6 +687,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data, meta]
                     properties:
                       data:
                         type: array
@@ -656,6 +726,7 @@ paths:
                 allOf:
                   - $ref: '#/components/schemas/SuccessResponse'
                   - type: object
+                    required: [data]
                     properties:
                       data: { $ref: '#/components/schemas/Order' }
         '400': { $ref: '#/components/responses/BadRequest' }

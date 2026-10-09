@@ -21,7 +21,7 @@
     <div class="relative">
       <div class="relative aspect-[4/3] overflow-hidden">
         <img
-          :src="tour.images?.[0]?.url"
+          :src="tour.images[0]?.url"
           :alt="tour.title"
           loading="lazy"
           class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -39,7 +39,7 @@
       <span
         v-if="tour.region"
         class="absolute -right-[5px] bottom-[7px] z-10 px-2 py-1 rounded-full text-xs font-medium text-white"
-        :class="REGION_BG[tour.region.slug ?? ''] ?? 'bg-gray-400'"
+        :class="REGION_BG[tour.region.slug] ?? 'bg-gray-400'"
       >
         {{ tour.region.name }}
       </span>

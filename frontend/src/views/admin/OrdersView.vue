@@ -39,7 +39,7 @@
     load,
   } = useTable<Order>(async (p) => {
     const { data } = await api.admin.adminGetOrders({ page: p })
-    return { data: data.data ?? [], total: data.meta?.total ?? 0 }
+    return { data: data.data, total: data.meta.total }
   })
 
   const { showDialog, dialogOptions, openDialog, closeDialog } = useDialog<Order>()
@@ -50,7 +50,7 @@
   onMounted(() => load(1))
 
   function openDetail(order: Order) {
-    selectedStatus.value = order.status ?? 'PENDING'
+    selectedStatus.value = order.status
     openDialog({ title: `訂單明細 - ${order.order_number}`, data: order })
   }
 

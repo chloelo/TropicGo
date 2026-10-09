@@ -29,7 +29,7 @@
     load,
   } = useTable<Coupon>(async (p) => {
     const { data } = await api.admin.adminGetCoupons({ page: p })
-    return { data: data.data ?? [], total: data.meta?.total ?? 0 }
+    return { data: data.data, total: data.meta.total }
   })
 
   const { showDialog, dialogOptions, openDialog, closeDialog } = useDialog()
@@ -120,7 +120,7 @@
       negativeText: '取消',
       onPositiveClick: async () => {
         try {
-          await api.admin.adminDeleteCoupon(coupon.id!)
+          await api.admin.adminDeleteCoupon(coupon.id)
           message.success('刪除成功')
           await load(page.value)
         } catch {

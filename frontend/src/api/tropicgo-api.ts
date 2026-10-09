@@ -12,43 +12,43 @@
 
 export interface Region {
   /** @format uuid */
-  id?: string
+  id: string
   /** @example "亞洲" */
-  name?: string
+  name: string
   /** @example "asia" */
-  slug?: string
+  slug: string
 }
 
 export interface TourImage {
   /** @format uuid */
-  id?: string
+  id: string
   /** @format uri */
-  url?: string
-  sort_order?: number
+  url: string
+  sort_order: number
 }
 
 export interface Tour {
   /** @format uuid */
-  id?: string
-  title?: string
-  summary?: string
-  description?: string
+  id: string
+  title: string
+  summary: string
+  description: string
   /** 費用包含(簡短條列) */
-  content?: string
+  content: string
   /** @example "人" */
-  unit?: string
+  unit: string
   /** @example "桃園" */
-  departure_city?: string
-  origin_price?: number
-  price?: number
-  is_popular?: boolean
-  is_enabled?: boolean
+  departure_city: string
+  origin_price: number
+  price: number
+  is_popular: boolean
+  is_enabled: boolean
   /** @format date-time */
-  created_at?: string
+  created_at: string
   /** @format date-time */
-  updated_at?: string
-  region?: Region
-  images?: TourImage[]
+  updated_at: string
+  region: Region
+  images: TourImage[]
 }
 
 export interface TourInput {
@@ -70,14 +70,14 @@ export interface TourInput {
 
 export interface Coupon {
   /** @format uuid */
-  id?: string
-  title?: string
-  code?: string
+  id: string
+  title: string
+  code: string
   /** 要付的百分比,90 代表打 9 折 */
-  percent?: number
+  percent: number
   /** @format date-time */
-  due_date?: string
-  is_enabled?: boolean
+  due_date: string
+  is_enabled: boolean
 }
 
 export interface CouponInput {
@@ -95,28 +95,28 @@ export interface CouponInput {
 
 export interface OrderItem {
   /** @format uuid */
-  id?: string
-  title_snapshot?: string
-  unit_price_snapshot?: number
-  quantity?: number
-  subtotal?: number
+  id: string
+  title_snapshot: string
+  unit_price_snapshot: number
+  quantity: number
+  subtotal: number
 }
 
 export interface Order {
   /** @format uuid */
-  id?: string
-  order_number?: string
-  customer_name?: string
-  customer_email?: string
-  customer_phone?: string
-  customer_address?: string
-  message?: string | null
-  total_amount?: number
-  status?: 'PENDING' | 'PAID' | 'CANCELLED' | 'COMPLETED'
+  id: string
+  order_number: string
+  customer_name: string
+  customer_email: string
+  customer_phone: string
+  customer_address: string
+  message: string | null
+  total_amount: number
+  status: 'PENDING' | 'PAID' | 'CANCELLED' | 'COMPLETED'
   /** @format date-time */
-  created_at?: string
-  coupon?: Coupon | null
-  items?: OrderItem[]
+  created_at: string
+  coupon: Coupon | null
+  items: OrderItem[]
 }
 
 export interface OrderInput {
@@ -135,22 +135,28 @@ export interface OrderInput {
 }
 
 export interface PaginationMeta {
-  page?: number
-  pageSize?: number
-  total?: number
-  totalPages?: number
+  page: number
+  pageSize: number
+  total: number
+  totalPages: number
+}
+
+export interface Admin {
+  /** @format uuid */
+  id: string
+  name: string
+  email: string
 }
 
 export interface SuccessResponse {
   /** @example "success" */
-  status?: string
-  data?: any
+  status: string
 }
 
 export interface ErrorResponse {
   /** @example "failed" */
-  status?: string
-  message?: string
+  status: string
+  message: string
 }
 
 import type {
@@ -333,7 +339,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     getRegions: (params: RequestParams = {}) =>
       this.request<
         SuccessResponse & {
-          data?: Region[]
+          data: Region[]
         },
         any
       >({
@@ -364,7 +370,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         SuccessResponse & {
-          data?: Tour[]
+          data: Tour[]
         },
         ErrorResponse
       >({
@@ -386,7 +392,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     getTour: (id: string, params: RequestParams = {}) =>
       this.request<
         SuccessResponse & {
-          data?: Tour
+          data: Tour
         },
         ErrorResponse
       >({
@@ -413,11 +419,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         SuccessResponse & {
-          data?: {
+          data: {
             /** @format uuid */
-            id?: string
-            title?: string
-            percent?: number
+            id: string
+            title: string
+            percent: number
           }
         },
         ErrorResponse
@@ -442,7 +448,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     createOrder: (data: OrderInput, params: RequestParams = {}) =>
       this.request<
         SuccessResponse & {
-          data?: Order
+          data: Order
         },
         ErrorResponse
       >({
@@ -465,7 +471,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     getOrder: (id: string, params: RequestParams = {}) =>
       this.request<
         SuccessResponse & {
-          data?: Order
+          data: Order
         },
         ErrorResponse
       >({
@@ -494,14 +500,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         SuccessResponse & {
-          data?: {
-            token?: string
-            admin?: {
-              /** @format uuid */
-              id?: string
-              name?: string
-              email?: string
-            }
+          data: {
+            token: string
+            admin: Admin
           }
         },
         ErrorResponse
@@ -524,7 +525,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     adminCheck: (params: RequestParams = {}) =>
-      this.request<SuccessResponse, ErrorResponse>({
+      this.request<
+        SuccessResponse & {
+          data: Admin
+        },
+        ErrorResponse
+      >({
         path: `/admin/auth/check`,
         method: 'GET',
         secure: true,
@@ -550,8 +556,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         SuccessResponse & {
-          data?: Tour[]
-          meta?: PaginationMeta
+          data: Tour[]
+          meta: PaginationMeta
         },
         ErrorResponse
       >({
@@ -575,7 +581,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     adminCreateTour: (data: TourInput, params: RequestParams = {}) =>
       this.request<
         SuccessResponse & {
-          data?: Tour
+          data: Tour
         },
         ErrorResponse
       >({
@@ -600,7 +606,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     adminGetTour: (id: string, params: RequestParams = {}) =>
       this.request<
         SuccessResponse & {
-          data?: Tour
+          data: Tour
         },
         ErrorResponse
       >({
@@ -623,7 +629,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     adminUpdateTour: (id: string, data: TourInput, params: RequestParams = {}) =>
       this.request<
         SuccessResponse & {
-          data?: Tour
+          data: Tour
         },
         ErrorResponse
       >({
@@ -672,8 +678,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         SuccessResponse & {
-          data?: Coupon[]
-          meta?: PaginationMeta
+          data: Coupon[]
+          meta: PaginationMeta
         },
         ErrorResponse
       >({
@@ -697,7 +703,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     adminCreateCoupon: (data: CouponInput, params: RequestParams = {}) =>
       this.request<
         SuccessResponse & {
-          data?: Coupon
+          data: Coupon
         },
         ErrorResponse
       >({
@@ -722,7 +728,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     adminUpdateCoupon: (id: string, data: CouponInput, params: RequestParams = {}) =>
       this.request<
         SuccessResponse & {
-          data?: Coupon
+          data: Coupon
         },
         ErrorResponse
       >({
@@ -771,8 +777,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         SuccessResponse & {
-          data?: Order[]
-          meta?: PaginationMeta
+          data: Order[]
+          meta: PaginationMeta
         },
         ErrorResponse
       >({
@@ -802,7 +808,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         SuccessResponse & {
-          data?: Order
+          data: Order
         },
         ErrorResponse
       >({
