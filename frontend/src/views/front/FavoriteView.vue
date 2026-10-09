@@ -4,7 +4,7 @@
   import type { Tour } from '@/api/tropicgo-api'
   import HeroBanner from '@/components/front/HeroBanner.vue'
   import SectionTitle from '@/components/front/SectionTitle.vue'
-  import TourCard from '@/components/front/TourCard.vue'
+  import TourLinkCard from '@/components/front/TourLinkCard.vue'
   import { useFavorites } from '@/composables/use-favorites'
   import { formatCurrency } from '@/utils/format'
   import { HERO_IMAGES } from '@/utils/hero-images'
@@ -38,72 +38,79 @@
       mobile-position="50% -160px"
     />
 
-    <!-- 收藏清單 -->
-    <section class="max-w-4xl mx-auto px-[15px] pt-16 lg:pt-[120px] pb-8">
-      <!-- 載入中的提示交給全域 loader,這裡只先撐住高度 -->
-      <div v-if="loading" class="min-h-[300px]" />
+    <!-- 收藏清單(舊版 .zone_favorites):置中、md 以上佔容器 8/12 欄 -->
+    <section class="zones">
+      <div class="bs-container">
+        <div class="flex flex-wrap justify-center -mx-[15px]">
+          <div class="w-full md:w-2/3 px-[15px]">
+            <!-- 載入中的提示交給全域 loader,這裡只先撐住高度 -->
+            <div v-if="loading" class="min-h-[300px]" />
 
-      <template v-else-if="favoriteTours.length">
-        <h3 class="text-lg font-bold text-gray-800 pb-3 mb-3 border-b border-gray-200">收藏清單列表</h3>
-        <div
-          v-for="tour in favoriteTours"
-          :key="tour.id"
-          class="flex items-center gap-4 bg-gray-50 mb-4 p-3"
-        >
-          <img
-            :src="tour.images[0]?.url"
-            :alt="tour.title"
-            loading="lazy"
-            class="w-[120px] aspect-[4/3] object-cover shrink-0"
-          />
-          <div class="relative flex-1 min-w-0 p-3">
-            <button
-              class="absolute top-0 right-0 text-gray-400 hover:text-alert text-lg"
-              @click="toggleFavorite(tour.id)"
-            >
-              <span class="i-fa6-xmark" />
-            </button>
-            <p class="font-bold text-africa pr-6 line-clamp-1">{{ tour.title }}</p>
-            <p class="text-sm text-gray-400 mt-1">
-              <span class="line-through">原價：{{ formatCurrency(tour.origin_price) }}/人</span>
-            </p>
-            <p class="text-sm text-gray-500 mt-1">
-              特價：{{ formatCurrency(tour.price) }} / {{ tour.unit }}
-            </p>
-            <div class="flex justify-end mt-2">
-              <RouterLink
-                :to="`/products/${tour.id}`"
-                class="inline-flex items-center gap-2 bg-secondary text-white text-sm px-4 py-2 hover:bg-secondary-dark transition-colors"
-              >
-                了解更多
-                <span class="i-fa6-chevron-right text-xs" />
-              </RouterLink>
-            </div>
+            <template v-else-if="favoriteTours.length">
+              <h3 class="text-[28px] font-medium leading-[1.2] border-b border-[#dee2e6] pb-4 mb-4">收藏清單列表</h3>
+              <div v-for="tour in favoriteTours" :key="tour.id" class="flex items-center bg-[#f8f9fa] mb-6">
+                <div class="pl-4">
+                  <img :src="tour.images[0]?.url" :alt="tour.title" class="w-[120px] h-auto align-middle" />
+                </div>
+                <div class="relative w-full p-4">
+                  <!-- 舊版 Bootstrap .close:半透明灰色叉叉,hover 變比較不透明 -->
+                  <button
+                    type="button"
+                    class="absolute top-4 right-4 text-[20px] leading-none text-[#adb5bd] opacity-50 hover:opacity-75"
+                    aria-label="取消收藏"
+                    @click="toggleFavorite(tour.id)"
+                  >
+                    <span class="i-fa6-xmark" />
+                  </button>
+                  <p class="font-bold pr-6 text-africa">{{ tour.title }}</p>
+                  <p>
+                    <span class="text-[60%] text-[#ccc] line-through">
+                      原價：{{ formatCurrency(tour.origin_price) }}/{{ tour.unit }}
+                    </span>
+                  </p>
+                  <p class="mb-1 text-[14px] text-[#6c757d]">
+                    特價：{{ formatCurrency(tour.price) }} / {{ tour.unit }}
+                  </p>
+                  <div class="flex justify-end">
+                    <RouterLink
+                      :to="`/products/${tour.id}`"
+                      class="mt-2 inline-flex items-center gap-1 px-3 py-[6px] border border-secondary bg-secondary text-white hover:bg-secondary-dark hover:border-secondary-dark transition-colors"
+                    >
+                      了解更多
+                      <span class="i-fa6-chevron-right" />
+                    </RouterLink>
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <template v-else>
+              <h3 class="text-[28px] font-medium leading-[1.2] border-b border-[#dee2e6] pb-4 mb-4">
+                您尚未有任何收藏行程喔！
+              </h3>
+              <div class="flex justify-end">
+                <RouterLink
+                  to="/products"
+                  class="inline-flex items-center gap-1 px-3 py-[6px] border border-secondary bg-secondary text-white hover:bg-secondary-dark hover:border-secondary-dark transition-colors"
+                >
+                  前去逛逛
+                  <span class="i-fa6-chevron-right" />
+                </RouterLink>
+              </div>
+            </template>
           </div>
         </div>
-      </template>
-
-      <template v-else>
-        <h3 class="text-lg font-bold text-gray-800 pb-3 mb-3 border-b border-gray-200">
-          您尚未有任何收藏行程喔！
-        </h3>
-        <div class="flex justify-end">
-          <RouterLink
-            to="/products"
-            class="inline-flex items-center gap-2 bg-secondary text-white px-4 py-2 hover:bg-secondary-dark transition-colors"
-          >
-            前去逛逛
-            <span class="i-fa6-chevron-right text-xs" />
-          </RouterLink>
-        </div>
-      </template>
+      </div>
     </section>
 
-    <!-- 熱門推薦 -->
-    <section v-if="!loading && popularTours.length" class="bs-container pb-16">
-      <SectionTitle title="熱門推薦" tag="h3" class="mb-12" />
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <TourCard v-for="tour in popularTours" :key="tour.id" :tour="tour" />
+    <!-- 熱門推薦(舊版 .zone_popular:上方不留 padding,接在收藏清單後面)。
+         卡片照舊版用「前往查看」的簡單卡片,不用行程列表的 TourCard(那個有熱門標籤,在這裡每張都標熱門很多餘) -->
+    <section v-if="!loading && popularTours.length" class="pb-[60px]">
+      <div class="bs-container">
+        <SectionTitle title="熱門推薦" tag="h3" class="mb-12" />
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[30px]">
+          <TourLinkCard v-for="tour in popularTours" :key="tour.id" :tour="tour" />
+        </div>
       </div>
     </section>
   </main>
