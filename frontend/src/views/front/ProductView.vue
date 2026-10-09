@@ -217,7 +217,7 @@
               <div class="mb-4">
                 <button
                   type="button"
-                  class="w-full h-[38px] bg-secondary text-white flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                  class="w-full h-[38px] bg-secondary text-white flex items-center justify-center gap-2 hover:bg-secondary-dark transition-colors"
                   @click="handleAddToCart"
                 >
                   <span class="i-fa6-cart-shopping" />

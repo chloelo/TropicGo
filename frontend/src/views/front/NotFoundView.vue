@@ -26,7 +26,7 @@
         </RouterLink>
         <RouterLink
           to="/products"
-          class="px-6 py-2 bg-secondary text-white flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+          class="px-6 py-2 bg-secondary text-white flex items-center justify-center gap-2 hover:bg-secondary-dark transition-colors"
         >
           去找行程
           <span class="i-fa6-chevron-right text-sm" />

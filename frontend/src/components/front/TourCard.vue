@@ -58,7 +58,7 @@
          內文區 flex-1 撐滿,按鈕當最後一個 flex 子元素,同一排卡片的按鈕也會對齊在底部 -->
     <button
       type="button"
-      class="w-full py-2 bg-secondary text-white flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+      class="w-full py-2 bg-secondary text-white flex items-center justify-center gap-2 hover:bg-secondary-dark transition-colors"
       @click.prevent.stop="addToCart"
     >
       <span class="i-fa6-cart-shopping" />

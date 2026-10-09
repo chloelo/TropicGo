@@ -73,7 +73,7 @@
             <div class="flex justify-end mt-2">
               <RouterLink
                 :to="`/products/${tour.id}`"
-                class="inline-flex items-center gap-2 bg-secondary text-white text-sm px-4 py-2 hover:opacity-90 transition-opacity"
+                class="inline-flex items-center gap-2 bg-secondary text-white text-sm px-4 py-2 hover:bg-secondary-dark transition-colors"
               >
                 了解更多
                 <span class="i-fa6-chevron-right text-xs" />
@@ -90,7 +90,7 @@
         <div class="flex justify-end">
           <RouterLink
             to="/products"
-            class="inline-flex items-center gap-2 bg-secondary text-white px-4 py-2 hover:opacity-90 transition-opacity"
+            class="inline-flex items-center gap-2 bg-secondary text-white px-4 py-2 hover:bg-secondary-dark transition-colors"
           >
             前去逛逛
             <span class="i-fa6-chevron-right text-xs" />

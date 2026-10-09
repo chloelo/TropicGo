@@ -190,7 +190,7 @@
                 <div class="flex justify-end">
                   <RouterLink
                     :to="`/products/${pickMexico.id}`"
-                    class="flex items-center gap-1 bg-secondary text-white px-[15px] py-[6px] mb-[30px] hover:opacity-90 transition-opacity"
+                    class="flex items-center gap-1 bg-secondary text-white px-[15px] py-[6px] mb-[30px] hover:bg-secondary-dark transition-colors"
                   >
                     了解更多
                     <span class="i-fa6-chevron-right text-xs" />
@@ -228,7 +228,7 @@
                 <div class="flex justify-end">
                   <RouterLink
                     :to="`/products/${pickEgypt.id}`"
-                    class="flex items-center gap-1 bg-secondary text-white px-[15px] py-[6px] mb-[30px] hover:opacity-90 transition-opacity"
+                    class="flex items-center gap-1 bg-secondary text-white px-[15px] py-[6px] mb-[30px] hover:bg-secondary-dark transition-colors"
                   >
                     了解更多
                     <span class="i-fa6-chevron-right text-xs" />

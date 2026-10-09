@@ -139,7 +139,7 @@
             </div>
 
             <button
-              class="w-full mt-3 flex items-center justify-center gap-2 bg-primary text-white px-4 py-2 hover:opacity-90 transition-opacity"
+              class="w-full mt-3 flex items-center justify-center gap-2 bg-primary text-white px-4 py-2 hover:bg-primary-dark transition-colors"
               @click="goToCart"
             >
               {{ cartStore.items.length ? '查看購物車' : '前去逛逛' }}

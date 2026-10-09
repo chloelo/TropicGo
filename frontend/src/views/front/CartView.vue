@@ -315,7 +315,7 @@
         <p class="text-gray-500 mt-2">感謝您對 TropicGo 的信任，我們會盡快與您聯絡，請耐心等候。</p>
         <RouterLink
           to="/products"
-          class="inline-block mt-6 px-6 py-3 bg-primary text-white hover:opacity-90 transition-colors"
+          class="inline-block mt-6 px-6 py-3 bg-primary text-white hover:bg-primary-dark transition-colors"
         >
           再去逛逛
         </RouterLink>

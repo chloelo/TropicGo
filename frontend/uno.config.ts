@@ -19,8 +19,9 @@ export default defineConfig({
   theme: {
     colors: {
       // 照舊版 _variables.scss 的 $theme-colors map-merge 搬過來(primary 實際被覆寫成 $africa,不是 Bootstrap 預設的藍色)
-      primary: '#a36549',
-      secondary: '#627d52',
+      // dark = 舊版 Bootstrap 實心按鈕 hover 的顏色(背景 darken 7.5%),用法 hover:bg-primary-dark
+      primary: { DEFAULT: '#a36549', dark: '#89553d' },
+      secondary: { DEFAULT: '#627d52', dark: '#506643' },
       asia: '#957042',
       america: '#955442',
       africa: '#a36549',
