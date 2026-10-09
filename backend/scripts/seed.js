@@ -1,4 +1,4 @@
-// scripts/seed.js — 塞入開發用的基本資料(地區 + 一個管理員帳號)
+// scripts/seed.js — 塞入開發用的基本資料(地區 + 優惠券 + 一個管理員帳號)
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const { dataSource } = require('../db/data-source');
@@ -8,6 +8,17 @@ const REGIONS = [
   { name: '美洲', slug: 'america' },
   { name: '非洲', slug: 'africa' },
   { name: '大洋洲', slug: 'oceania' },
+];
+
+// 首頁「最新優惠」彈窗圖片上寫的折扣碼(percent 是要付的百分比,90 = 打 9 折)
+const COUPONS = [
+  {
+    title: '全站 9 折優惠',
+    code: 'tropicgo90',
+    percent: 90,
+    due_date: new Date('2030-12-31T23:59:59+08:00'),
+    is_enabled: true,
+  },
 ];
 
 const ADMIN = {
@@ -25,6 +36,15 @@ async function seed() {
     if (!exists) {
       await regionRepo.save(region);
       console.log(`+ Region: ${region.name}`);
+    }
+  }
+
+  const couponRepo = dataSource.getRepository('Coupon');
+  for (const coupon of COUPONS) {
+    const exists = await couponRepo.findOneBy({ code: coupon.code });
+    if (!exists) {
+      await couponRepo.save(coupon);
+      console.log(`+ Coupon: ${coupon.code}`);
     }
   }
 
