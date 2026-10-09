@@ -4,6 +4,7 @@
   import type { FormInst, FormRules } from 'naive-ui'
   import { api } from '@/api/client'
   import type { Order } from '@/api/tropicgo-api'
+  import CartListStep, { type AppliedCoupon } from '@/components/front/CartListStep.vue'
   import CartSteps from '@/components/front/CartSteps.vue'
   import HeroBanner from '@/components/front/HeroBanner.vue'
   import { useCartStore } from '@/stores/cart'
@@ -14,44 +15,16 @@
   const toast = useToastStore()
   const cartStore = useCartStore()
 
-  // 結帳成功後也會呼叫 cartStore.clear(),那時不該跳「清除購物車」,所以通知只放在按鈕這裡
-  function clearCart() {
-    cartStore.clear()
-    toast.push('成功清除購物車')
-  }
-
   const step = ref(1)
 
   // ---- Step 1:確認清單 + 優惠碼 ----
-  const couponCode = ref('')
-  const appliedCoupon = ref<{ id: string; title: string; percent: number } | null>(null)
-  const checkingCoupon = ref(false)
+  const appliedCoupon = ref<AppliedCoupon | null>(null)
 
-  const rawTotal = computed(() => cartStore.totalPrice)
+  // 折扣後應付金額(percent 是要付的百分比,90 代表打 9 折)
   const discountedTotal = computed(() => {
-    if (!appliedCoupon.value) return rawTotal.value
-    return Math.round((rawTotal.value * appliedCoupon.value.percent) / 100)
+    if (!appliedCoupon.value) return cartStore.totalPrice
+    return Math.round((cartStore.totalPrice * appliedCoupon.value.percent) / 100)
   })
-
-  async function applyCoupon() {
-    if (!couponCode.value.trim()) return
-    checkingCoupon.value = true
-    try {
-      const { data } = await api.coupons.checkCoupon({ code: couponCode.value.trim() })
-      appliedCoupon.value = data.data
-      toast.push(`優惠券套用成功，打 ${data.data.percent}%`)
-    } catch {
-      appliedCoupon.value = null
-      toast.push('優惠碼無效或已過期', 'danger')
-    } finally {
-      checkingCoupon.value = false
-    }
-  }
-
-  function removeCoupon() {
-    appliedCoupon.value = null
-    couponCode.value = ''
-  }
 
   // ---- Step 2:填寫資料 ----
   const formRef = ref<FormInst | null>(null)
@@ -105,7 +78,7 @@
         customer_phone: form.tel,
         customer_address: form.address,
         message: form.message || undefined,
-        coupon_code: appliedCoupon.value?.id ? couponCode.value.trim() : undefined,
+        coupon_code: appliedCoupon.value?.code,
         items: cartStore.items.map((item) => ({ tour_id: item.tourId, quantity: item.quantity })),
       })
       createdOrder.value = data.data
@@ -142,104 +115,16 @@
       </div>
     </section>
 
-    <div class="max-w-4xl mx-auto px-4 py-8">
-      <!-- Step 1 -->
-      <section v-if="step === 1">
-        <div v-if="cartStore.items.length === 0" class="text-center py-16">
-          <p class="text-gray-400">您尚未選擇任何行程喔，快去選購吧！</p>
-          <RouterLink to="/products" class="text-primary mt-2 inline-block">
-            前往行程列表
-          </RouterLink>
-        </div>
+    <!-- 舊版 .zone_cartList -->
+    <section v-if="step === 1" class="zones">
+      <div class="bs-container">
+        <CartListStep v-model:coupon="appliedCoupon" :payable="discountedTotal" @next="step = 2" />
+      </div>
+    </section>
 
-        <template v-else>
-          <div class="flex justify-end mb-3">
-            <button
-              class="text-sm text-gray-400 flex items-center gap-1 hover:text-alert"
-              @click="clearCart"
-            >
-              <span class="i-fa6-trash-can" />
-              清空購物車
-            </button>
-          </div>
-
-          <div
-            v-for="item in cartStore.items"
-            :key="item.tourId"
-            class="flex items-center gap-4 border-b border-gray-100 py-4"
-          >
-            <img :src="item.image" class="w-20 h-20 rounded object-cover shrink-0" alt="" />
-            <div class="flex-1 min-w-0">
-              <p class="font-medium text-gray-800 line-clamp-1">{{ item.title }}</p>
-              <p class="text-sm text-gray-400">{{ formatCurrency(item.price) }}/{{ item.unit }}</p>
-            </div>
-            <div class="flex items-center border border-gray-300 rounded-full shrink-0">
-              <button
-                class="w-8 h-8 flex items-center justify-center text-gray-500"
-                @click="cartStore.updateQuantity(item.tourId, item.quantity - 1)"
-              >
-                <span class="i-fa6-minus text-xs" />
-              </button>
-              <span class="w-6 text-center text-sm">{{ item.quantity }}</span>
-              <button
-                class="w-8 h-8 flex items-center justify-center text-gray-500"
-                @click="cartStore.updateQuantity(item.tourId, item.quantity + 1)"
-              >
-                <span class="i-fa6-plus text-xs" />
-              </button>
-            </div>
-            <p class="w-24 text-right font-bold text-primary shrink-0">
-              {{ formatCurrency(item.price * item.quantity) }}
-            </p>
-            <button
-              class="text-gray-300 hover:text-alert shrink-0"
-              @click="cartStore.removeItem(item.tourId)"
-            >
-              <span class="i-fa6-xmark" />
-            </button>
-          </div>
-
-          <div class="mt-6 bg-gray-50 rounded-lg p-5">
-            <div class="flex gap-2">
-              <n-input
-                v-model:value="couponCode"
-                placeholder="輸入優惠碼"
-                :disabled="!!appliedCoupon"
-              />
-              <n-button v-if="!appliedCoupon" :loading="checkingCoupon" @click="applyCoupon">
-                套用
-              </n-button>
-              <n-button v-else quaternary @click="removeCoupon">移除</n-button>
-            </div>
-            <p v-if="appliedCoupon" class="text-sm text-primary mt-2 flex items-center gap-1">
-              <span class="i-fa6-tag" />
-              已套用「{{ appliedCoupon.title }}」,打 {{ appliedCoupon.percent }}%
-            </p>
-
-            <div class="mt-4 flex justify-between items-baseline">
-              <span class="text-gray-500">總金額</span>
-              <div>
-                <span v-if="appliedCoupon" class="text-gray-400 line-through mr-2">
-                  {{ formatCurrency(rawTotal) }}
-                </span>
-                <span class="text-2xl font-bold text-primary">
-                  {{ formatCurrency(discountedTotal) }}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex justify-end mt-6">
-            <n-button type="primary" round size="large" @click="step = 2">
-              前往結帳
-              <template #icon><span class="i-fa6-chevron-right" /></template>
-            </n-button>
-          </div>
-        </template>
-      </section>
-
+    <div v-else class="max-w-4xl mx-auto px-4 py-8">
       <!-- Step 2 -->
-      <section v-else-if="step === 2" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section v-if="step === 2" class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="md:col-span-2">
           <n-form ref="formRef" :model="form" :rules="rules" label-placement="top">
             <n-form-item label="姓名" path="name">
