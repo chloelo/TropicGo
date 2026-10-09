@@ -43,6 +43,10 @@
         activeSlug.value ? { region: activeSlug.value } : {},
       )
       tours.value = data.data
+    } catch {
+      // 網址的地區不存在(手動亂打、舊連結的地區被刪掉),API 會回 400:退回「全部」,網址也一起改掉,
+      // 改網址會觸發下面的 watch 重新載入全部行程
+      if (activeSlug.value) router.replace({ query: {} })
     } finally {
       loading.value = false
     }
