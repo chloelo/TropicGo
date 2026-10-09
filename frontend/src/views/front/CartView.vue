@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { computed, ref, watch } from 'vue'
+  import { useRoute, useRouter } from 'vue-router'
   import { api } from '@/api/client'
   import type { Order } from '@/api/tropicgo-api'
   import CartListStep, { type AppliedCoupon } from '@/components/front/CartListStep.vue'
@@ -12,6 +13,8 @@
   import { useToastStore } from '@/stores/toast'
   import { HERO_IMAGES } from '@/utils/hero-images'
 
+  const route = useRoute()
+  const router = useRouter()
   const toast = useToastStore()
   const cartStore = useCartStore()
 
@@ -68,13 +71,58 @@
       createdOrder.value = data.data
       orderedItems.value = [...cartStore.items]
       cartStore.clear()
+      cartStore.pendingOrderId = data.data.id
       step.value = 3
+      // 訂單 id 放進網址:跳去別頁再回來、重新整理,都能用下面的 watch 把訂單抓回來,不會卡在待付款找不到
+      router.replace({ query: { order: data.data.id } })
     } catch {
       toast.push('建立訂單失敗', 'danger')
     } finally {
       submitting.value = false
     }
   }
+
+  // 網址帶 ?order=訂單id(送出訂單後、從別頁回來、重新整理)就把訂單抓回來:
+  // 待付款 → 確認付款那一步;已付款/已完成 → 完成訂單那一步;查不到或已取消 → 拿掉網址參數回到購物車。
+  // 不是待付款(或查不到)的訂單,順便清掉 header「前往付款」的記錄
+  const loadingOrder = ref(false)
+
+  function forgetPendingOrder(id: string) {
+    if (cartStore.pendingOrderId === id) cartStore.pendingOrderId = ''
+  }
+
+  async function loadOrder(id: string) {
+    loadingOrder.value = true
+    try {
+      const { data } = await api.orders.getOrder(id)
+      const order = data.data
+      if (order.status === 'CANCELLED') throw new Error('訂單已取消')
+      if (order.status !== 'PENDING') forgetPendingOrder(id)
+      createdOrder.value = order
+      step.value = order.status === 'PENDING' ? 3 : 4
+    } catch {
+      forgetPendingOrder(id)
+      router.replace({ query: {} })
+    } finally {
+      loadingOrder.value = false
+    }
+  }
+
+  watch(
+    () => route.query.order,
+    (id) => {
+      if (typeof id === 'string') {
+        // 剛送出訂單時資料已經在手上,不用再抓一次
+        if (createdOrder.value?.id !== id) loadOrder(id)
+      } else if (step.value >= 3) {
+        // 在確認付款/完成訂單時點 header 的購物車(網址變回 /cart),回到購物車那一步
+        createdOrder.value = null
+        orderedItems.value = []
+        step.value = 1
+      }
+    },
+    { immediate: true },
+  )
 
   // 沒有串真的金流,後端直接把待付款的訂單改成已付款(舊版 payOrder)
   async function handlePay() {
@@ -83,6 +131,7 @@
     try {
       const { data } = await api.orders.payOrder(createdOrder.value.id)
       createdOrder.value = data.data
+      forgetPendingOrder(data.data.id)
       step.value = 4
     } catch {
       toast.push('付款失敗', 'danger')
@@ -110,8 +159,11 @@
       </div>
     </section>
 
+    <!-- 從網址抓訂單時先撐住高度(載入提示交給全域 loader),不然會先閃一下空的購物車 -->
+    <div v-if="loadingOrder" class="min-h-[300px]" />
+
     <!-- 舊版 .zone_cartList -->
-    <section v-if="step === 1" class="zones">
+    <section v-else-if="step === 1" class="zones">
       <div class="bs-container">
         <CartListStep v-model:coupon="appliedCoupon" :payable="discountedTotal" @next="step = 2" />
       </div>

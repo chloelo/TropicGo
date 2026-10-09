@@ -53,6 +53,12 @@
     cartOpen.value = false
     router.push(cartStore.items.length ? '/cart' : '/products')
   }
+
+  // 有送出但還沒付款的訂單:帶訂單 id 回購物車頁,會直接顯示確認付款那一步
+  function goToPayment() {
+    cartOpen.value = false
+    router.push({ path: '/cart', query: { order: cartStore.pendingOrderId } })
+  }
 </script>
 
 <template>
@@ -123,6 +129,21 @@
           </template>
 
           <div>
+            <div
+              v-if="cartStore.pendingOrderId"
+              class="flex items-center justify-between gap-2 mb-3 p-2 bg-[#f8f9fa] text-sm"
+            >
+              <span class="text-gray-700">您有一筆訂單尚未付款</span>
+              <button
+                type="button"
+                class="flex items-center gap-1 shrink-0 text-primary hover:text-africa-link transition-colors"
+                @click="goToPayment"
+              >
+                前往付款
+                <span class="i-fa6-chevron-right text-xs" />
+              </button>
+            </div>
+
             <p class="font-bold text-sm text-gray-700 mb-2">已選擇行程</p>
 
             <!-- 品項多時只有清單這段捲動(標題列黏在上面),總計和按鈕固定在下方不用滑到底 -->
