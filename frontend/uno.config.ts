@@ -8,6 +8,7 @@ export default defineConfig({
   safelist: [
     ...REGION_SLUGS.map((slug) => `bg-${slug}`),
     ...REGION_SLUGS.map((slug) => `text-${slug}`),
+    ...REGION_SLUGS.map((slug) => `hover:text-${slug}-link`),
   ],
   shortcuts: {
     // 照舊版 Bootstrap .container 的斷點寬度做的容器(非滿版,寬度到某個斷點就鎖住、置中),
@@ -22,11 +23,12 @@ export default defineConfig({
       // dark = 舊版 Bootstrap 實心按鈕 hover 的顏色(背景 darken 7.5%),用法 hover:bg-primary-dark
       primary: { DEFAULT: '#a36549', dark: '#89553d' },
       secondary: { DEFAULT: '#627d52', dark: '#506643' },
-      asia: '#957042',
-      america: '#955442',
-      africa: '#a36549',
-      oceania: '#497d8d',
-      world: '#456996',
+      // link = 舊版 Bootstrap a.text-{color} 連結 hover 的文字色(darken 15%),用法 hover:text-asia-link
+      asia: { DEFAULT: '#957042', link: '#60482b' },
+      america: { DEFAULT: '#955442', link: '#60362b' },
+      africa: { DEFAULT: '#a36549', link: '#6e4431' },
+      oceania: { DEFAULT: '#497d8d', link: '#2f505b' },
+      world: { DEFAULT: '#456996', link: '#2d4462' },
       sunbright: '#ffd629',
       sun: '#fdb42d',
       alert: '#d82c4f',

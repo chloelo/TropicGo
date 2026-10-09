@@ -31,12 +31,13 @@ export const REGION_ICON: Record<string, string> = {
   oceania: iconOceania,
 }
 
+// 首頁分類卡「立即前往」:舊版是 Bootstrap 的 a.text-{color},hover 時文字變深
 export const REGION_TEXT: Record<string, string> = {
-  world: 'text-world',
-  asia: 'text-asia',
-  america: 'text-america',
-  africa: 'text-africa',
-  oceania: 'text-oceania',
+  world: 'text-world hover:text-world-link',
+  asia: 'text-asia hover:text-asia-link',
+  america: 'text-america hover:text-america-link',
+  africa: 'text-africa hover:text-africa-link',
+  oceania: 'text-oceania hover:text-oceania-link',
 }
 
 // 首頁分類卡的簡介文字——原版 ProductsFilter.vue 裡的文案
