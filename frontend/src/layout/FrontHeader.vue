@@ -81,7 +81,9 @@
           <span class="i-fa6-heart" />
         </RouterLink>
 
-        <n-popover trigger="click" placement="bottom-end" :width="280">
+        <!-- :to="false" 讓彈出視窗直接放在 header 裡,跟著 fixed 的 header 一起固定;
+             預設放到 body 底下時,捲動頁面每次都要重算位置追上 header,會慢半拍看起來在晃 -->
+        <n-popover trigger="click" placement="bottom-end" :width="280" :to="false">
           <template #trigger>
             <button
               class="relative text-lg transition-colors"
@@ -104,22 +106,28 @@
           <div>
             <p class="font-bold text-sm text-gray-700 mb-2">已選擇行程</p>
 
-            <table v-if="cartStore.items.length" class="w-full text-sm">
-              <thead>
-                <tr class="text-gray-400 text-xs border-b border-gray-100">
-                  <th class="text-left font-normal pb-1">品名</th>
-                  <th class="text-center font-normal pb-1">數量</th>
-                  <th class="text-right font-normal pb-1">單價</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in cartStore.items" :key="item.tourId">
-                  <td class="py-1 pr-2 max-w-[120px] truncate">{{ item.title }}</td>
-                  <td class="text-center py-1">{{ item.quantity }}</td>
-                  <td class="text-right py-1">{{ formatCurrency(item.price) }}</td>
-                </tr>
-              </tbody>
-            </table>
+            <!-- 品項多時只有清單這段捲動(標題列黏在上面),總計和按鈕固定在下方不用滑到底 -->
+            <!-- table-fixed:數量/單價固定寬度、品名吃剩下的空間,表格寬度永遠等於容器,
+                 不會被長品名或直向卷軸擠出橫向卷軸(一般表格的格子不遵守 max-width,會被內容撐寬) -->
+            <div v-if="cartStore.items.length" class="max-h-[300px] overflow-y-auto">
+              <table class="w-full table-fixed text-sm">
+                <thead class="sticky top-0 bg-white">
+                  <tr class="text-gray-400 text-xs border-b border-gray-100">
+                    <th class="text-left font-normal pb-1">品名</th>
+                    <th class="w-10 text-center font-normal pb-1">數量</th>
+                    <th class="w-[90px] text-right font-normal pb-1">單價</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in cartStore.items" :key="item.tourId">
+                    <!-- 被截斷時滑鼠移上去會跳出完整品名,沒截斷就不會跳 -->
+                    <td class="py-1 pr-2"><n-ellipsis>{{ item.title }}</n-ellipsis></td>
+                    <td class="text-center py-1">{{ item.quantity }}</td>
+                    <td class="text-right py-1 whitespace-nowrap">{{ formatCurrency(item.price) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <p v-else class="text-gray-400 text-sm py-2">您尚未選擇任何行程喔！</p>
 
             <div
