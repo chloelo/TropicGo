@@ -1,0 +1,662 @@
+openapi: 3.0.3
+info:
+  title: TropicGo API
+  version: 1.0.0
+  description: 熱帶國家旅行團銷售網站 — 後端 API 文件
+
+servers:
+  - url: http://localhost:8080/api
+    description: 本機開發
+
+tags:
+  - name: Regions
+  - name: Tours
+  - name: Coupons
+  - name: Orders
+  - name: Admin Auth
+  - name: Admin Tours
+  - name: Admin Coupons
+  - name: Admin Orders
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Region:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string, example: 亞洲 }
+        slug: { type: string, example: asia }
+
+    TourImage:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        url: { type: string, format: uri }
+        sort_order: { type: integer }
+
+    Tour:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string }
+        summary: { type: string }
+        description: { type: string }
+        content: { type: string, description: 費用包含(簡短條列) }
+        unit: { type: string, example: 人 }
+        departure_city: { type: string, example: 桃園 }
+        origin_price: { type: integer }
+        price: { type: integer }
+        is_popular: { type: boolean }
+        is_enabled: { type: boolean }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+        region: { $ref: '#/components/schemas/Region' }
+        images:
+          type: array
+          items: { $ref: '#/components/schemas/TourImage' }
+
+    TourInput:
+      type: object
+      required: [title, region_id, summary, description, content, unit, departure_city, origin_price, price, images]
+      properties:
+        title: { type: string }
+        region_id: { type: string, format: uuid }
+        summary: { type: string }
+        description: { type: string }
+        content: { type: string, description: 費用包含(簡短條列) }
+        unit: { type: string }
+        departure_city: { type: string }
+        origin_price: { type: integer }
+        price: { type: integer }
+        is_popular: { type: boolean }
+        is_enabled: { type: boolean }
+        images:
+          type: array
+          items: { type: string, format: uri }
+
+    Coupon:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string }
+        code: { type: string }
+        percent:
+          type: integer
+          description: 要付的百分比,90 代表打 9 折
+        due_date: { type: string, format: date-time }
+        is_enabled: { type: boolean }
+
+    CouponInput:
+      type: object
+      required: [title, code, percent, due_date]
+      properties:
+        title: { type: string }
+        code: { type: string }
+        percent: { type: integer, minimum: 1, maximum: 100 }
+        due_date: { type: string, format: date }
+        is_enabled: { type: boolean }
+
+    OrderItem:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        title_snapshot: { type: string }
+        unit_price_snapshot: { type: integer }
+        quantity: { type: integer }
+        subtotal: { type: integer }
+
+    Order:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        order_number: { type: string }
+        customer_name: { type: string }
+        customer_email: { type: string }
+        customer_phone: { type: string }
+        customer_address: { type: string }
+        message: { type: string, nullable: true }
+        total_amount: { type: integer }
+        status:
+          type: string
+          enum: [PENDING, PAID, CANCELLED, COMPLETED]
+        created_at: { type: string, format: date-time }
+        coupon:
+          allOf: [{ $ref: '#/components/schemas/Coupon' }]
+          nullable: true
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/OrderItem' }
+
+    OrderInput:
+      type: object
+      required: [customer_name, customer_email, customer_phone, customer_address, items]
+      properties:
+        customer_name: { type: string }
+        customer_email: { type: string }
+        customer_phone: { type: string }
+        customer_address: { type: string }
+        message: { type: string }
+        coupon_code: { type: string }
+        items:
+          type: array
+          items:
+            type: object
+            required: [tour_id, quantity]
+            properties:
+              tour_id: { type: string, format: uuid }
+              quantity: { type: integer, minimum: 1 }
+
+    PaginationMeta:
+      type: object
+      properties:
+        page: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer }
+        totalPages: { type: integer }
+
+    SuccessResponse:
+      type: object
+      properties:
+        status: { type: string, example: success }
+        data: {}
+
+    ErrorResponse:
+      type: object
+      properties:
+        status: { type: string, example: failed }
+        message: { type: string }
+
+  responses:
+    BadRequest:
+      description: 請求格式錯誤或驗證失敗
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    Unauthorized:
+      description: 未登入或 token 無效
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+paths:
+  /regions:
+    get:
+      tags: [Regions]
+      operationId: getRegions
+      summary: 取得所有地區分類
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items: { $ref: '#/components/schemas/Region' }
+
+  /tours:
+    get:
+      tags: [Tours]
+      operationId: getTours
+      summary: 取得行程列表(可依地區篩選)
+      parameters:
+        - name: region
+          in: query
+          schema: { type: string }
+          example: asia
+          description: 地區 slug,不帶則回傳全部已上架行程
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items: { $ref: '#/components/schemas/Tour' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+
+  /tours/{id}:
+    get:
+      tags: [Tours]
+      operationId: getTour
+      summary: 取得單一行程詳情
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Tour' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+
+  /coupons/check:
+    post:
+      tags: [Coupons]
+      operationId: checkCoupon
+      summary: 驗證優惠碼是否有效
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code]
+              properties:
+                code: { type: string }
+      responses:
+        '200':
+          description: 優惠碼有效
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id: { type: string, format: uuid }
+                          title: { type: string }
+                          percent: { type: integer }
+        '400': { $ref: '#/components/responses/BadRequest' }
+
+  /orders:
+    post:
+      tags: [Orders]
+      operationId: createOrder
+      summary: 建立訂單(結帳送出)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/OrderInput' }
+      responses:
+        '201':
+          description: 建立成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Order' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+
+  /orders/{id}:
+    get:
+      tags: [Orders]
+      operationId: getOrder
+      summary: 查詢單一訂單(客人用訂單 id 查詢,不需登入)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Order' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+
+  /admin/auth/login:
+    post:
+      tags: [Admin Auth]
+      operationId: adminLogin
+      summary: 管理員登入
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+      responses:
+        '200':
+          description: 登入成功,回傳 JWT
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          token: { type: string }
+                          admin:
+                            type: object
+                            properties:
+                              id: { type: string, format: uuid }
+                              name: { type: string }
+                              email: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+
+  /admin/auth/check:
+    get:
+      tags: [Admin Auth]
+      operationId: adminCheck
+      summary: 驗證目前登入狀態
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SuccessResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /admin/tours:
+    get:
+      tags: [Admin Tours]
+      operationId: adminGetTours
+      summary: 行程列表(分頁,含未上架)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer, default: 1 }
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items: { $ref: '#/components/schemas/Tour' }
+                      meta: { $ref: '#/components/schemas/PaginationMeta' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      tags: [Admin Tours]
+      operationId: adminCreateTour
+      summary: 新增行程
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TourInput' }
+      responses:
+        '201':
+          description: 建立成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Tour' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /admin/tours/{id}:
+    get:
+      tags: [Admin Tours]
+      operationId: adminGetTour
+      summary: 取得單一行程(含未上架)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Tour' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    put:
+      tags: [Admin Tours]
+      operationId: adminUpdateTour
+      summary: 更新行程(圖片整批替換)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TourInput' }
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Tour' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    delete:
+      tags: [Admin Tours]
+      operationId: adminDeleteTour
+      summary: 刪除行程(已有訂單關聯則會被擋下)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: 刪除成功
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SuccessResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /admin/coupons:
+    get:
+      tags: [Admin Coupons]
+      operationId: adminGetCoupons
+      summary: 優惠券列表(分頁)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer, default: 1 }
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items: { $ref: '#/components/schemas/Coupon' }
+                      meta: { $ref: '#/components/schemas/PaginationMeta' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      tags: [Admin Coupons]
+      operationId: adminCreateCoupon
+      summary: 新增優惠券
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CouponInput' }
+      responses:
+        '201':
+          description: 建立成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Coupon' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /admin/coupons/{id}:
+    put:
+      tags: [Admin Coupons]
+      operationId: adminUpdateCoupon
+      summary: 更新優惠券
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CouponInput' }
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Coupon' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    delete:
+      tags: [Admin Coupons]
+      operationId: adminDeleteCoupon
+      summary: 刪除優惠券(已被訂單使用則會被擋下)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: 刪除成功
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SuccessResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /admin/orders:
+    get:
+      tags: [Admin Orders]
+      operationId: adminGetOrders
+      summary: 訂單列表(分頁)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer, default: 1 }
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items: { $ref: '#/components/schemas/Order' }
+                      meta: { $ref: '#/components/schemas/PaginationMeta' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /admin/orders/{id}/status:
+    patch:
+      tags: [Admin Orders]
+      operationId: adminUpdateOrderStatus
+      summary: 更新訂單狀態
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [PENDING, PAID, CANCELLED, COMPLETED]
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/Order' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
