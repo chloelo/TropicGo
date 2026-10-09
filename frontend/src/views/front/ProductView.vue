@@ -42,6 +42,10 @@
         const { data: listRes } = await api.tours.getTours({ region: tour.value.region.slug })
         relatedTours.value = listRes.data.filter((t: Tour) => t.id !== tour.value?.id)
       }
+    } catch {
+      // 查不到行程(ID 亂打、已下架):畫面顯示 404 元件,分頁標題也跟一般 404 頁一致
+      tour.value = null
+      setPageTitle('找不到頁面')
     } finally {
       loading.value = false
     }
