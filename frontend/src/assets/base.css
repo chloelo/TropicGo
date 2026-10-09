@@ -1,0 +1,84 @@
+/* Tailwind 的 preflight 預設就會重置成 border-box,UnoCSS 這個專案沒有這層,
+   預設瀏覽器是 content-box,任何 w-full/w-screen 疊加 padding 的地方(例如 bs-container)
+   實際佔用寬度都會變成「100% + padding」,窄螢幕下會整個橫向溢出、東西被切到螢幕外。
+   border-width/style 也是同一類缺口:沒有這條,單獨下 border-t + border-dotted 時,
+   其他三邊的 style 也會被設成 dotted,但 width 沒歸零(瀏覽器預設是 medium≈3px),
+   結果變成四邊都有虛線框,不是只有上面一條 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+/* Tailwind 的 preflight 也會把標題/段落的瀏覽器預設 margin 全部歸零,UnoCSS 沒有這層。
+   h1~h6 瀏覽器預設本身就有 top+bottom margin(h2 大概 0.83em),疊加在每個 section 自己的
+   padding 上面,標題上方就會多出一大截不是故意要的空白;段落預設也有 margin-bottom,
+   疊在容器自己的 padding-bottom 上一樣會多一截。這裡統一歸零,要間距的地方已經都有另外下 margin utility class */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+figure,
+dl,
+dd {
+  margin: 0;
+}
+
+/* ul/ol 瀏覽器預設有 margin:1em 0(依 font-size 縮放)+ padding-left,UnoCSS 沒有這層 preflight。
+   footer 的社群 icon 列表用 text-xl(20px)時,光這個預設 margin 上下就各多出 20px,整個 footer 高度跟著跑掉。
+   專案裡每個 <ul> 都已經各自明確加了 list-disc/list-none,沒有依賴瀏覽器預設樣式,可以安全全域歸零 */
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+html,
+body {
+  background-color: #ffffff;
+  /* 舊版 _base.scss 的 body 文字色是 $coffee-gray-700(#707070),不是瀏覽器預設黑或 Tailwind 的 gray-800 */
+  color: #707070;
+}
+
+/* <n-config-provider> 會渲染一個 .n-config-provider 包裹 div,在上面設 font-size:14px /
+   line-height:1.6(Naive UI 自己的預設值)。前台要比照舊版 Bootstrap 的 16px / 1.5,
+   統一在 FrontLayout 的外層 div 蓋回來;後台維持 Naive UI 預設 */
+
+#app {
+  min-height: 100vh;
+}
+
+/* 舊版 $link-decoration: none,且 a:hover 也特別重置掉底線,UnoCSS 沒有這層 preflight,
+   不處理的話所有 RouterLink 包起來的「立即前往」「了解更多」之類文字都會長底線 */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 舊版 _base.scss: h2 { color: $africa } 全站生效,各頁面 title-dec 的 h2(特別精選/旅客怎麼說/
+   想好要去哪了嗎/關於 TropicGo)都是靠這條全域規則上色,沒有另外加 class。
+   Hero 區塊的白色 h2(.kv h2)用的是 class 選擇器(.text-white),specificity 比這條 bare element 選擇器高,蓋得過去 */
+h2 {
+  color: #a36549;
+}
+
+/* UnoCSS 的 preflight 不像 Tailwind 會重置表單元素,原生 <button> 會保留瀏覽器預設的灰底樣式,
+   這裡比照 Tailwind preflight 的做法重置,各處再用 utility class(border/padding/bg-*)疊加即可 */
+button {
+  -webkit-appearance: button;
+  background-color: transparent;
+  background-image: none;
+  border-width: 0;
+  border-style: solid;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
