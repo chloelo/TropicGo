@@ -80,7 +80,7 @@
       :bg-desktop="HERO_IMAGES.products.desktop"
       :bg-mobile="HERO_IMAGES.products.mobile"
       desktop-position="50% 65%"
-      mobile-position="50% 50%"
+      mobile-position="50% -200px"
       title-bottom="15%"
     />
 

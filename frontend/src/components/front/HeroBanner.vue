@@ -28,9 +28,11 @@
       :class="bgMobile ? 'hidden md:block' : ''"
       :style="{ backgroundImage: `url(${bgDesktop})`, backgroundPosition: desktopPosition }"
     />
+    <!-- 手機版跟舊版一樣用圖片原尺寸(800x600),不用 cover:各頁的 mobilePosition(例如 50% -160px)
+         是照原尺寸算的往上位移,cover 會先把圖縮成 300px 高,再往上推就露出底下的灰色遮罩 -->
     <div
       v-if="bgMobile"
-      class="absolute inset-0 bg-cover bg-no-repeat md:hidden"
+      class="absolute inset-0 bg-no-repeat md:hidden"
       :style="{ backgroundImage: `url(${bgMobile})`, backgroundPosition: mobilePosition }"
     />
     <div class="absolute inset-0 bg-black" :style="{ opacity: overlay }" />
