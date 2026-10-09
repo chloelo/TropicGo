@@ -25,7 +25,8 @@
            手機寬度也是硬擠在同一排——我多加了 flex-wrap,窄螢幕擠不下就整個 icon 掉到下一行、跟 logo 沒對齊 -->
       <div class="flex items-center justify-between gap-4">
         <RouterLink to="/">
-          <img :src="logo" alt="TropicGo" class="h-10 w-auto block" />
+          <!-- 舊版 _footer.scss:768px 以下 logo 縮到 130px 寬 -->
+          <img :src="logo" alt="TropicGo" class="w-[130px] md:w-[195px] h-auto block" />
         </RouterLink>
         <ul class="flex gap-4 text-xl list-none">
           <li v-for="link in socialLinks" :key="link.label">
@@ -43,7 +44,8 @@
         </ul>
       </div>
 
-      <div class="mt-6 flex flex-col md:flex-row justify-between gap-2 text-white/80">
+      <!-- 舊版 align-items-md-end:桌機版權宣告跟左邊 email 那行對齊在底部;手機上下排,中間 4px -->
+      <div class="mt-6 flex flex-col md:flex-row md:items-end justify-between gap-1 text-white/80">
         <div>
           <p>03-456-7890</p>
           <p>tropicgo@mail.com</p>
