@@ -44,5 +44,6 @@ declare module 'vue' {
     SectionTitle: typeof import('./src/components/front/SectionTitle.vue')['default']
     ToTop: typeof import('./src/components/front/ToTop.vue')['default']
     TourCard: typeof import('./src/components/front/TourCard.vue')['default']
+    TourLinkCard: typeof import('./src/components/front/TourLinkCard.vue')['default']
   }
 }
