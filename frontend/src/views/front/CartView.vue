@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, ref } from 'vue'
+  import { computed, ref, watch } from 'vue'
   import { api } from '@/api/client'
   import type { Order } from '@/api/tropicgo-api'
   import CartListStep, { type AppliedCoupon } from '@/components/front/CartListStep.vue'
@@ -16,6 +16,12 @@
   const cartStore = useCartStore()
 
   const step = ref(1)
+
+  // 舊版 winScroll():換步驟時如果已經往下捲,就慢慢捲回步驟條的位置,看得到現在進行到哪一步
+  // (舊版只有「前往結帳」「回上一步」有捲,這裡每次換步驟都捲,送出訂單、付款後才不會停在頁面中間)
+  watch(step, () => {
+    if (window.scrollY >= 10) window.scrollTo({ top: 250, behavior: 'smooth' })
+  })
 
   // ---- Step 1:確認清單 + 優惠碼 ----
   const appliedCoupon = ref<AppliedCoupon | null>(null)
