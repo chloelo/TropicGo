@@ -13,6 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppLoader: typeof import('./src/components/front/AppLoader.vue')['default']
     AppToasts: typeof import('./src/components/front/AppToasts.vue')['default']
+    CartSteps: typeof import('./src/components/front/CartSteps.vue')['default']
     HeroBanner: typeof import('./src/components/front/HeroBanner.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']

@@ -4,6 +4,7 @@
   import type { FormInst, FormRules } from 'naive-ui'
   import { api } from '@/api/client'
   import type { Order } from '@/api/tropicgo-api'
+  import CartSteps from '@/components/front/CartSteps.vue'
   import HeroBanner from '@/components/front/HeroBanner.vue'
   import { useCartStore } from '@/stores/cart'
   import { useToastStore } from '@/stores/toast'
@@ -135,14 +136,13 @@
       mobile-position="50% -100px"
     />
 
-    <div class="max-w-4xl mx-auto px-4 py-8">
-      <n-steps :current="step" class="mb-10">
-        <n-step title="確認清單" />
-        <n-step title="填寫資料" />
-        <n-step title="確認付款" />
-        <n-step title="完成訂單" />
-      </n-steps>
+    <section class="zones">
+      <div class="bs-container">
+        <CartSteps :step="step" />
+      </div>
+    </section>
 
+    <div class="max-w-4xl mx-auto px-4 py-8">
       <!-- Step 1 -->
       <section v-if="step === 1">
         <div v-if="cartStore.items.length === 0" class="text-center py-16">
