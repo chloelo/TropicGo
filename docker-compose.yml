@@ -1,0 +1,57 @@
+volumes:
+  pgData:
+
+services:
+  # API 文件(Swagger UI),瀏覽 + Try it out 試打 API。開發時可選擇性開啟:docker compose up -d swagger
+  swagger:
+    image: swaggerapi/swagger-ui:v5.17.14
+    environment:
+      - SWAGGER_JSON=/openapi.yaml
+    volumes:
+      - ./docs/openapi.yaml:/openapi.yaml:ro
+    ports:
+      - "8081:8080"
+
+  # 本地開發用的 PostgreSQL。日常開發只開這個容器,backend 直接用 npm run dev 跑在本機(熱重載較快)。
+  postgres:
+    image: postgres:16.4-alpine3.20
+    environment:
+      - POSTGRES_USER=student
+      - POSTGRES_PASSWORD=student666
+      - POSTGRES_DB=tropicgo
+    volumes:
+      - pgData:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U student -d tropicgo"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # 想測試完整容器化(前端+後端+資料庫全部用 Docker 跑)時才需要這個服務。
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=student
+      - DB_PASSWORD=student666
+      - DB_DATABASE=tropicgo
+      - JWT_SECRET=devsecret-change-me
+      - JWT_EXPIRES_DAY=30d
+      - DB_SYNCHRONIZE=true
+      - DB_ENABLE_SSL=false
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:8080/healthcheck').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))\""]
+      interval: 10s
+      timeout: 3s
+      retries: 5
