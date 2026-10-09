@@ -110,6 +110,7 @@ export interface Order {
   customer_email: string
   customer_phone: string
   customer_address: string
+  payment_method: string | null
   message: string | null
   total_amount: number
   status: 'PENDING' | 'PAID' | 'CANCELLED' | 'COMPLETED'
@@ -124,6 +125,7 @@ export interface OrderInput {
   customer_email: string
   customer_phone: string
   customer_address: string
+  payment_method: 'Credit' | 'LinePay' | 'ApplePay' | 'GooglePay' | 'ATM' | 'CVS'
   message?: string
   coupon_code?: string
   items: {

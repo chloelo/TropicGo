@@ -146,6 +146,7 @@ components:
           customer_email,
           customer_phone,
           customer_address,
+          payment_method,
           message,
           total_amount,
           status,
@@ -160,6 +161,8 @@ components:
         customer_email: { type: string }
         customer_phone: { type: string }
         customer_address: { type: string }
+        # 這個欄位是後來才加的,之前建立的訂單沒有值(null)
+        payment_method: { type: string, nullable: true }
         message: { type: string, nullable: true }
         total_amount: { type: integer }
         status:
@@ -175,12 +178,17 @@ components:
 
     OrderInput:
       type: object
-      required: [customer_name, customer_email, customer_phone, customer_address, items]
+      required: [customer_name, customer_email, customer_phone, customer_address, payment_method, items]
       properties:
         customer_name: { type: string }
         customer_email: { type: string }
         customer_phone: { type: string }
         customer_address: { type: string }
+        # 跟 backend/controllers/orders.js 的 PAYMENT_METHODS 要一致
+        payment_method:
+          type: string
+          # Credit 信用卡、LinePay、ApplePay、GooglePay、ATM 轉帳、CVS 超商代碼繳費
+          enum: [Credit, LinePay, ApplePay, GooglePay, ATM, CVS]
         message: { type: string }
         coupon_code: { type: string }
         items:

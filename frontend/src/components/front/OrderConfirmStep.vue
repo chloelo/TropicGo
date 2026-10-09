@@ -10,7 +10,6 @@
   const props = defineProps<{
     order: Order
     orderedItems: CartItem[]
-    payment: string | null
     paying: boolean
   }>()
   const emit = defineEmits<{ pay: [] }>()
@@ -79,7 +78,7 @@
         </div>
       </div>
 
-      <OrderContactInfo :order="order" :payment="payment">
+      <OrderContactInfo :order="order">
         <button
           type="button"
           class="mt-4 w-full px-3 py-[6px] border border-secondary bg-secondary text-white hover:bg-secondary-dark hover:border-secondary-dark transition-colors disabled:opacity-65 disabled:pointer-events-none"

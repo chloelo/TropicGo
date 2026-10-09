@@ -49,8 +49,10 @@
   const orderedItems = ref<CartItem[]>([])
   const paying = ref(false)
 
-  // 表單驗證在 CheckoutFormStep 裡做完,通過才會觸發這裡
+  // 表單驗證在 CheckoutFormStep 裡做完,通過才會觸發這裡(付款方式必選,這裡的檢查只是讓型別確定不是 null)
   async function handleSubmitOrder() {
+    const paymentMethod = form.value.payment
+    if (!paymentMethod) return
     submitting.value = true
     try {
       const { data } = await api.orders.createOrder({
@@ -58,6 +60,7 @@
         customer_email: form.value.email,
         customer_phone: form.value.tel,
         customer_address: form.value.address,
+        payment_method: paymentMethod,
         message: form.value.message || undefined,
         coupon_code: appliedCoupon.value?.code,
         items: cartStore.items.map((item) => ({ tour_id: item.tourId, quantity: item.quantity })),
@@ -133,7 +136,6 @@
         <OrderConfirmStep
           :order="createdOrder"
           :ordered-items="orderedItems"
-          :payment="form.payment"
           :paying="paying"
           @pay="handlePay"
         />
@@ -143,7 +145,7 @@
     <!-- 舊版 .zone_checkout -->
     <section v-else-if="step === 4 && createdOrder" class="zones">
       <div class="bs-container">
-        <OrderCompleteStep :order="createdOrder" :payment="form.payment" />
+        <OrderCompleteStep :order="createdOrder" />
       </div>
     </section>
   </main>

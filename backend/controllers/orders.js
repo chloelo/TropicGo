@@ -6,13 +6,18 @@ const { isValidString, isNonNegativeInteger } = require('../utils/validUtils');
 // 不含容易看錯的字元(0/O、1/I/L),訂單編號給客服人工對單時比較不會唸錯、抄錯
 const generateOrderNumber = customAlphabet('23456789ABCDEFGHJKMNPQRSTUVWXYZ', 10);
 
+// 結帳頁「購買方式」的選項(存英文代碼,畫面顯示中文由前端 utils/payment.ts 對應),
+// 跟 docs/openapi.yaml 的 OrderInput.payment_method enum 要一致
+const PAYMENT_METHODS = ['Credit', 'LinePay', 'ApplePay', 'GooglePay', 'ATM', 'CVS'];
+
 function validateOrderInput(body) {
-  const { customer_name, customer_email, customer_phone, customer_address, items } = body;
+  const { customer_name, customer_email, customer_phone, customer_address, payment_method, items } = body;
 
   if (!isValidString(customer_name)) return '請輸入姓名';
   if (!isValidString(customer_email)) return '請輸入 Email';
   if (!isValidString(customer_phone)) return '請輸入電話';
   if (!isValidString(customer_address)) return '請輸入地址';
+  if (!PAYMENT_METHODS.includes(payment_method)) return '請選擇付款方式';
   if (!Array.isArray(items) || items.length === 0) return '購物車是空的';
 
   for (const item of items) {
@@ -30,7 +35,7 @@ const ordersController = {
 
     const {
       customer_name, customer_email, customer_phone, customer_address,
-      message, coupon_code, items,
+      payment_method, message, coupon_code, items,
     } = req.body;
 
     try {
@@ -81,6 +86,7 @@ const ordersController = {
           customer_email,
           customer_phone,
           customer_address,
+          payment_method,
           message,
           coupon: coupon ? { id: coupon.id } : null,
           total_amount: totalAmount,

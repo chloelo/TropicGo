@@ -3,13 +3,14 @@
   import type { FormInst, FormRules, GlobalThemeOverrides } from 'naive-ui'
   import { useCartStore } from '@/stores/cart'
   import { formatCurrency } from '@/utils/format'
+  import { PAYMENT_LABEL, type PaymentMethod } from '@/utils/payment'
 
   export interface CheckoutForm {
     name: string
     tel: string
     email: string
     address: string
-    payment: string | null
+    payment: PaymentMethod | null
     message: string
   }
 
@@ -19,13 +20,8 @@
 
   const cartStore = useCartStore()
 
-  // 舊版的付款方式選項(後端訂單目前沒有這個欄位,只在確認付款那一步顯示)
-  const paymentOptions = ['WebATM', 'ATM', 'CVS', 'Barcode', 'Credit', 'ApplePay', 'GooglePay'].map(
-    (value) => ({
-      label: value,
-      value,
-    }),
-  )
+  // 下拉選單顯示中文、送出英文代碼
+  const paymentOptions = Object.entries(PAYMENT_LABEL).map(([value, label]) => ({ label, value }))
 
   // 錯誤訊息照舊版 vee-validate 的中文訊息格式
   const rules: FormRules = {

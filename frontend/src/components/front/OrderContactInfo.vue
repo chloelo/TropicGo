@@ -1,16 +1,17 @@
 <script setup lang="ts">
   import { computed } from 'vue'
   import type { Order } from '@/api/tropicgo-api'
+  import { paymentLabel } from '@/utils/payment'
 
-  const props = defineProps<{ order: Order; payment: string | null }>()
+  const props = defineProps<{ order: Order }>()
 
-  // 付款方式後端訂單沒有存,用客人在填寫資料那一步選的
+  // 付款方式是後來才加的欄位,更早建立的訂單沒有值
   const rows = computed(() => [
     { label: '聯絡人姓名', value: props.order.customer_name },
     { label: '聯絡人電話', value: props.order.customer_phone },
     { label: '聯絡人信箱', value: props.order.customer_email },
     { label: '聯絡人地址', value: props.order.customer_address },
-    { label: '付款方式', value: props.payment ?? '' },
+    { label: '付款方式', value: paymentLabel(props.order.payment_method) },
   ])
   const paid = computed(() => props.order.status === 'PAID' || props.order.status === 'COMPLETED')
 </script>

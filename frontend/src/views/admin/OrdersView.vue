@@ -6,6 +6,7 @@
   import { useDialog } from '@/composables/use-dialog'
   import { useTable } from '@/composables/use-table'
   import { formatCurrency, formatDateTime } from '@/utils/format'
+  import { paymentLabel } from '@/utils/payment'
 
   const PAGE_SIZE = 10
 
@@ -138,6 +139,10 @@
           </n-descriptions-item>
           <n-descriptions-item label="地址">
             {{ dialogOptions.data.customer_address }}
+          </n-descriptions-item>
+          <!-- 付款方式是後來才加的欄位,更早建立的訂單沒有值就不顯示 -->
+          <n-descriptions-item v-if="dialogOptions.data.payment_method" label="付款方式">
+            {{ paymentLabel(dialogOptions.data.payment_method) }}
           </n-descriptions-item>
           <n-descriptions-item v-if="dialogOptions.data.message" label="備註">
             {{ dialogOptions.data.message }}

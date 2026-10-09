@@ -3,7 +3,7 @@
   import type { Order } from '@/api/tropicgo-api'
   import OrderContactInfo from '@/components/front/OrderContactInfo.vue'
 
-  defineProps<{ order: Order; payment: string | null }>()
+  defineProps<{ order: Order }>()
 
   // 舊版用 Bootstrap collapse:按「查看訂單」展開/收合聯絡人資料
   const showOrder = ref(false)
@@ -35,7 +35,7 @@
         </div>
       </div>
       <n-collapse-transition :show="showOrder">
-        <OrderContactInfo :order="order" :payment="payment" />
+        <OrderContactInfo :order="order" />
       </n-collapse-transition>
     </div>
   </div>

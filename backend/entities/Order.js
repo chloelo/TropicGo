@@ -42,6 +42,12 @@ module.exports = new EntitySchema({
       type: 'text',
       nullable: true,
     },
+    // 客人結帳時選的付款方式(沒有串金流,只是記錄);這個欄位是後來才加的,之前的訂單沒有值,所以允許 null
+    payment_method: {
+      type: 'varchar',
+      length: 30,
+      nullable: true,
+    },
     total_amount: {
       type: 'integer',
       nullable: false,
