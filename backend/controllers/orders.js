@@ -117,6 +117,23 @@ const ordersController = {
     if (!order) return next(appError(400, '訂單不存在'));
     res.json({ status: 'success', data: order });
   },
+
+  // POST /api/orders/:id/pay
+  // 模擬付款(沒有串真的金流):客人在結帳流程按「確認付款」,待付款的訂單改成已付款
+  async payOrder(req, res, next) {
+    const { id } = req.params;
+    const orderRepo = dataSource.getRepository('Order');
+    const existing = await orderRepo.findOneBy({ id });
+    if (!existing) return next(appError(400, '訂單不存在'));
+    if (existing.status !== 'PENDING') return next(appError(400, '這筆訂單不是待付款狀態'));
+
+    await orderRepo.update(id, { status: 'PAID' });
+    const updated = await orderRepo.findOne({
+      where: { id },
+      relations: { items: true, coupon: true },
+    });
+    res.json({ status: 'success', data: updated });
+  },
 };
 
 module.exports = ordersController;

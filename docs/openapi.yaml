@@ -390,6 +390,30 @@ paths:
                       data: { $ref: '#/components/schemas/Order' }
         '400': { $ref: '#/components/responses/BadRequest' }
 
+  /orders/{id}/pay:
+    post:
+      tags: [Orders]
+      operationId: payOrder
+      summary: 模擬付款(沒有串金流,待付款的訂單直接改成已付款)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: 付款成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    required: [data]
+                    properties:
+                      data: { $ref: '#/components/schemas/Order' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+
   /admin/auth/login:
     post:
       tags: [Admin Auth]

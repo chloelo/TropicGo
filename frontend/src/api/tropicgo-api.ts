@@ -480,6 +480,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         format: 'json',
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @tags Orders
+     * @name PayOrder
+     * @summary 模擬付款(沒有串金流,待付款的訂單直接改成已付款)
+     * @request POST:/orders/{id}/pay
+     */
+    payOrder: (id: string, params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data: Order
+        },
+        ErrorResponse
+      >({
+        path: `/orders/${id}/pay`,
+        method: 'POST',
+        format: 'json',
+        ...params,
+      }),
   }
   admin = {
     /**
