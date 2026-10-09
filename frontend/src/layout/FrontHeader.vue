@@ -35,6 +35,22 @@
     return route.path === to ? 'text-africa font-medium' : 'text-gray-700 hover:text-sun'
   }
 
+  // 舊版愛心、購物車 icon 跟選單文字共用 .nav-link 的顏色:白底時灰色、hover 黃橘、所在頁赤陶色;
+  // 桌機透明底時白色、hover 白 80%、所在頁亮黃。lg 以下 header 一直是白底,所以沒捲動時也要先給白底的顏色,
+  // 桌機(lg)再蓋成透明底的顏色
+  function iconClass(active: boolean) {
+    if (active) return scrolled.value ? 'text-africa' : 'text-africa lg:text-sunbright'
+    return scrolled.value
+      ? 'text-gray-700 hover:text-sun'
+      : 'text-gray-700 hover:text-sun lg:text-white lg:hover:text-white/80'
+  }
+
+  // 購物車彈窗打開時,白底的 icon 維持黃橘色(舊版 .nav-link[aria-expanded="true"])
+  function cartIconClass() {
+    if (!cartOpen.value) return iconClass(false)
+    return scrolled.value ? 'text-sun' : 'text-sun lg:text-white lg:hover:text-white/80'
+  }
+
   // 購物車彈窗改成自己控制開關:點「查看購物車/前去逛逛」換頁時要順便收起來,
   // 不然 header 不會重新渲染,彈窗會一直開著蓋在新頁面上
   const cartOpen = ref(false)
@@ -92,12 +108,7 @@
         <RouterLink
           to="/favorite"
           class="text-lg transition-colors"
-          :class="
-            scrolled
-              ? 'text-gray-500 hover:text-alert'
-              : 'text-gray-500 hover:text-alert lg:text-white lg:hover:text-white/80'
-          "
-          active-class="text-alert"
+          :class="iconClass(route.path === '/favorite')"
           aria-label="我的收藏"
           title="我的收藏"
         >
@@ -112,11 +123,8 @@
               type="button"
               aria-label="購物車"
               class="relative text-lg transition-colors"
-              :class="
-                scrolled
-                  ? 'text-gray-500 hover:text-primary'
-                  : 'text-gray-500 hover:text-primary lg:text-white lg:hover:text-white/80'
-              "
+              :class="cartIconClass()"
+              :aria-expanded="cartOpen"
             >
               <span class="i-fa6-cart-shopping" />
               <span
@@ -188,9 +196,11 @@
           </div>
         </n-popover>
 
+        <!-- 跟旁邊的愛心、購物車一樣:hover 變黃橘,選單展開時維持黃橘(只在 lg 以下出現,header 一定是白底) -->
         <button
           type="button"
-          class="lg:hidden text-lg text-gray-600"
+          class="lg:hidden text-lg transition-colors"
+          :class="mobileOpen ? 'text-sun' : 'text-gray-700 hover:text-sun'"
           aria-label="選單"
           :aria-expanded="mobileOpen"
           @click="mobileOpen = !mobileOpen"
