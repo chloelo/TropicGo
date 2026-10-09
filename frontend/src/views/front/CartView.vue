@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import { computed, ref } from 'vue'
-  import { RouterLink } from 'vue-router'
   import { api } from '@/api/client'
   import type { Order } from '@/api/tropicgo-api'
   import CartListStep, { type AppliedCoupon } from '@/components/front/CartListStep.vue'
   import CartSteps from '@/components/front/CartSteps.vue'
   import CheckoutFormStep, { type CheckoutForm } from '@/components/front/CheckoutFormStep.vue'
   import HeroBanner from '@/components/front/HeroBanner.vue'
-  import { useCartStore } from '@/stores/cart'
+  import OrderCompleteStep from '@/components/front/OrderCompleteStep.vue'
+  import OrderConfirmStep from '@/components/front/OrderConfirmStep.vue'
+  import { useCartStore, type CartItem } from '@/stores/cart'
   import { useToastStore } from '@/stores/toast'
-  import { formatCurrency } from '@/utils/format'
   import { HERO_IMAGES } from '@/utils/hero-images'
 
   const toast = useToastStore()
@@ -37,8 +37,11 @@
     message: '',
   })
 
-  // ---- Step 3:訂單結果 ----
+  // ---- Step 3、4:確認付款、完成訂單 ----
   const createdOrder = ref<Order | null>(null)
+  // 送出訂單後購物車會清空,先留一份給確認付款那一步顯示圖片和單位
+  const orderedItems = ref<CartItem[]>([])
+  const paying = ref(false)
 
   // 表單驗證在 CheckoutFormStep 裡做完,通過才會觸發這裡
   async function handleSubmitOrder() {
@@ -54,18 +57,29 @@
         items: cartStore.items.map((item) => ({ tour_id: item.tourId, quantity: item.quantity })),
       })
       createdOrder.value = data.data
+      orderedItems.value = [...cartStore.items]
       cartStore.clear()
       step.value = 3
     } catch {
-      toast.push('建立訂單失敗，請確認資料是否正確', 'danger')
+      toast.push('建立訂單失敗', 'danger')
     } finally {
       submitting.value = false
     }
   }
 
-  function confirmPayment() {
-    // 沒有真的金流,這裡只是情境模擬;實際付款狀態由後台人工確認後更新
-    step.value = 4
+  // 沒有串真的金流,後端直接把待付款的訂單改成已付款(舊版 payOrder)
+  async function handlePay() {
+    if (!createdOrder.value) return
+    paying.value = true
+    try {
+      const { data } = await api.orders.payOrder(createdOrder.value.id)
+      createdOrder.value = data.data
+      step.value = 4
+    } catch {
+      toast.push('付款失敗', 'danger')
+    } finally {
+      paying.value = false
+    }
   }
 </script>
 
@@ -107,39 +121,24 @@
       </div>
     </section>
 
-    <div v-else class="max-w-4xl mx-auto px-4 py-8">
-      <!-- Step 3 -->
-      <section v-if="step === 3 && createdOrder" class="max-w-md mx-auto text-center">
-        <span class="i-fa6-circle-check text-primary text-5xl" />
-        <h2 class="text-xl font-bold text-gray-800 mt-4">訂單已送出</h2>
-        <p class="text-gray-500 mt-1">訂單編號：{{ createdOrder.order_number }}</p>
+    <!-- 舊版 .zone_order -->
+    <section v-else-if="step === 3 && createdOrder" class="zones">
+      <div class="bs-container">
+        <OrderConfirmStep
+          :order="createdOrder"
+          :ordered-items="orderedItems"
+          :payment="form.payment"
+          :paying="paying"
+          @pay="handlePay"
+        />
+      </div>
+    </section>
 
-        <div class="bg-gray-50 rounded-lg p-5 mt-6 text-left text-sm space-y-2">
-          <p>聯絡人：{{ createdOrder.customer_name }}</p>
-          <p>Email:{{ createdOrder.customer_email }}</p>
-          <p>電話：{{ createdOrder.customer_phone }}</p>
-          <p class="font-bold text-primary pt-2 border-t border-gray-200">
-            應付金額：{{ formatCurrency(createdOrder.total_amount) }}
-          </p>
-        </div>
-
-        <n-button type="primary" round size="large" class="mt-6" @click="confirmPayment">
-          確認付款
-        </n-button>
-      </section>
-
-      <!-- Step 4 -->
-      <section v-else-if="step === 4" class="max-w-md mx-auto text-center py-10">
-        <span class="i-fa6-circle-check text-primary text-6xl" />
-        <h2 class="text-2xl font-bold text-gray-800 mt-4">恭喜您，已完成付款！</h2>
-        <p class="text-gray-500 mt-2">感謝您對 TropicGo 的信任，我們會盡快與您聯絡，請耐心等候。</p>
-        <RouterLink
-          to="/products"
-          class="inline-block mt-6 px-6 py-3 bg-primary text-white hover:bg-primary-dark transition-colors"
-        >
-          再去逛逛
-        </RouterLink>
-      </section>
-    </div>
+    <!-- 舊版 .zone_checkout -->
+    <section v-else-if="step === 4 && createdOrder" class="zones">
+      <div class="bs-container">
+        <OrderCompleteStep :order="createdOrder" :payment="form.payment" />
+      </div>
+    </section>
   </main>
 </template>
