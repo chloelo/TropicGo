@@ -1,0 +1,28 @@
+{
+  "name": "tropicgo-backend",
+  "version": "1.0.0",
+  "description": "TropicGo 旅行社後端 API",
+  "main": "app.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "nodemon ./app.js",
+    "start": "node ./app.js",
+    "seed": "node ./scripts/seed.js",
+    "format": "prettier --write \"**/*.js\"",
+    "seed:tours": "node ./scripts/seed-tours.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nanoid": "^3.3.20",
+    "pg": "^8.23.0",
+    "typeorm": "^1.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prettier": "^3.9.6"
+  }
+}
