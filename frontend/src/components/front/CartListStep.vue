@@ -58,9 +58,11 @@
 </script>
 
 <template>
-  <!-- 舊版 .zone_cartList:左邊 8/12 欄購物清單、右邊 4/12 欄金額,768px 以下上下堆疊 -->
+  <!-- 舊版 .zone_cartList:左邊 8/12 欄購物清單、右邊 4/12 欄金額。
+       舊版在 768px 就分兩欄,但新版金額顯示成「NT$ 378,000」比舊版「$378,000」長,
+       平板寬度的 4/12 欄放不下(小計、應付金額都會折行),改成 992px 以上才分兩欄,以下上下堆疊 -->
   <div class="flex flex-wrap justify-center -mx-[15px]">
-    <div class="w-full md:w-2/3 px-[15px]">
+    <div class="w-full lg:w-2/3 px-[15px]">
       <template v-if="cartStore.items.length">
         <div class="flex justify-between items-center mb-4">
           <RouterLink
@@ -104,8 +106,8 @@
               {{ formatCurrency(item.price) }} / {{ item.unit }}
             </p>
 
-            <!-- 數量加減佔一半寬、小計靠右;768px 以下數量加減佔滿一整行,小計換到下一行 -->
-            <div class="mt-2 flex flex-wrap items-center md:flex-nowrap">
+            <!-- 數量加減佔一半寬、小計靠右(中間至少留 12px);768px 以下數量加減佔滿一整行,小計換到下一行 -->
+            <div class="mt-2 flex flex-wrap items-center gap-x-3 md:flex-nowrap">
               <div class="flex w-full h-[38px] mb-[10px] md:w-1/2 md:mb-0">
                 <button
                   type="button"
@@ -133,7 +135,9 @@
                   <span class="i-fa6-plus" />
                 </button>
               </div>
-              <p class="ml-auto">小計：{{ formatCurrency(item.price * item.quantity) }}</p>
+              <p class="ml-auto whitespace-nowrap">
+                小計：{{ formatCurrency(item.price * item.quantity) }}
+              </p>
             </div>
           </div>
         </div>
@@ -153,11 +157,12 @@
       </template>
     </div>
 
-    <div class="w-full md:w-1/3 px-[15px]">
+    <!-- 金額一律不折行,標題和金額中間至少留 12px -->
+    <div class="w-full lg:w-1/3 px-[15px]">
       <div class="p-4 mb-4 border border-[#dee2e6]">
-        <div class="flex justify-between">
+        <div class="flex justify-between gap-3">
           <span class="font-bold">商品總額</span>
-          <span>{{ formatCurrency(cartStore.totalPrice) }}</span>
+          <span class="whitespace-nowrap">{{ formatCurrency(cartStore.totalPrice) }}</span>
         </div>
         <form class="mt-4 flex" @submit.prevent="applyCoupon">
           <input
@@ -174,13 +179,13 @@
             套用
           </button>
         </form>
-        <div class="mt-4 flex justify-between">
+        <div class="mt-4 flex justify-between gap-3">
           <span class="font-bold">折扣</span>
-          <span class="text-[#dc3545]">- {{ formatCurrency(discount) }}</span>
+          <span class="whitespace-nowrap text-[#dc3545]">- {{ formatCurrency(discount) }}</span>
         </div>
-        <div class="mt-4 pt-4 flex justify-between border-t border-dashed border-[#dee2e6]">
-          <p class="font-bold">應付金額</p>
-          <p class="text-[24px] font-bold leading-[1.2] text-secondary">
+        <div class="mt-4 pt-4 flex justify-between gap-3 border-t border-dashed border-[#dee2e6]">
+          <p class="font-bold whitespace-nowrap">應付金額</p>
+          <p class="whitespace-nowrap text-[24px] font-bold leading-[1.2] text-secondary">
             {{ formatCurrency(payable) }}
           </p>
         </div>
