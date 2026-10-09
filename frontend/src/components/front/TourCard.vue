@@ -16,7 +16,7 @@
 <template>
   <RouterLink
     :to="`/products/${tour.id}`"
-    class="group relative flex flex-col bg-white shadow-sm hover:shadow-lg transition-shadow"
+    class="group relative flex flex-col bg-white shadow-sm"
   >
     <div class="relative">
       <div class="relative aspect-[4/3] overflow-hidden">
@@ -24,7 +24,7 @@
           :src="tour.images[0]?.url"
           :alt="tour.title"
           loading="lazy"
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-500 ease-[ease-in-out]"
         />
         <span
           v-if="tour.is_popular"
