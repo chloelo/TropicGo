@@ -26,6 +26,18 @@
       loading.value = false
     }
   }
+
+  // 示範帳號是公開給面試官的（只能瀏覽），帳密由環境變數帶入；沒設定就不顯示這個按鈕
+  const demoEmail = import.meta.env.VITE_DEMO_EMAIL
+  const demoPassword = import.meta.env.VITE_DEMO_PASSWORD
+
+  // 先把帳密填進欄位再登入，看得到用的是哪個帳號
+  function loginAsDemo() {
+    if (!demoEmail || !demoPassword) return
+    email.value = demoEmail
+    password.value = demoPassword
+    handleSubmit()
+  }
 </script>
 
 <template>
@@ -73,6 +85,19 @@
           登入
         </button>
       </form>
+      <template v-if="demoEmail && demoPassword">
+        <button
+          type="button"
+          class="w-full mt-3 px-3 py-[6px] rounded-[25px] border border-africa text-africa hover:bg-africa hover:text-white transition-colors disabled:opacity-65"
+          :disabled="loading"
+          @click="loginAsDemo"
+        >
+          使用示範帳號登入
+        </button>
+        <p class="mt-2 text-center text-[14px] text-[#6c757d]">
+          示範帳號可以瀏覽整個後台，但無法修改資料
+        </p>
+      </template>
     </div>
   </div>
 </template>
