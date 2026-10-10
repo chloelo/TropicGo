@@ -60,7 +60,7 @@ export interface TourInput {
   /** 費用包含(簡短條列) */
   content: string
   unit: string
-  departure_city: string
+  departure_city: '台北' | '桃園' | '台中' | '高雄'
   origin_price: number
   price: number
   is_popular?: boolean

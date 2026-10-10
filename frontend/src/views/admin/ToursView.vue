@@ -15,6 +15,7 @@
   import type { Region, Tour, TourInput } from '@/api/tropicgo-api'
   import { useDialog } from '@/composables/use-dialog'
   import { useTable } from '@/composables/use-table'
+  import { DEPARTURE_CITIES, isDepartureCity, type DepartureCity } from '@/utils/departure-city'
   import { formatCurrency } from '@/utils/format'
 
   const PAGE_SIZE = 10
@@ -43,7 +44,14 @@
   const isEdit = ref(false)
   const editingId = ref<string | null>(null)
 
-  function emptyForm() {
+  // 出發城市是下拉選單,編輯舊資料時如果不在選項裡就先清空(null),讓必填驗證提醒重新選
+  type TourForm = Omit<TourInput, 'images' | 'departure_city'> & {
+    departure_city: DepartureCity | null
+  }
+
+  const departureCityOptions = DEPARTURE_CITIES.map((city) => ({ label: city, value: city }))
+
+  function emptyForm(): TourForm {
     return {
       title: '',
       region_id: '',
@@ -69,7 +77,7 @@
     summary: { required: true, message: '請輸入行程摘要', trigger: 'blur' },
     description: { required: true, message: '請輸入行程介紹', trigger: 'blur' },
     content: { required: true, message: '請輸入費用包含說明', trigger: 'blur' },
-    departure_city: { required: true, message: '請輸入出發城市', trigger: 'blur' },
+    departure_city: { required: true, message: '請選擇出發城市', trigger: 'change' },
   }
 
   onMounted(async () => {
@@ -88,7 +96,7 @@
 
   function openEdit(tour: Tour) {
     isEdit.value = true
-    editingId.value = tour.id!
+    editingId.value = tour.id
     Object.assign(form, {
       title: tour.title,
       region_id: tour.region.id,
@@ -96,7 +104,7 @@
       description: tour.description,
       content: tour.content,
       unit: tour.unit,
-      departure_city: tour.departure_city,
+      departure_city: isDepartureCity(tour.departure_city) ? tour.departure_city : null,
       origin_price: tour.origin_price,
       price: tour.price,
       is_popular: tour.is_popular,
@@ -119,7 +127,11 @@
       return
     }
 
-    const payload: TourInput = { ...form, images }
+    // 出發城市必選(上面的驗證已經擋掉 null),這裡的檢查只是讓型別確定不是 null
+    const departureCity = form.departure_city
+    if (!departureCity) return
+
+    const payload: TourInput = { ...form, departure_city: departureCity, images }
 
     submitting.value = true
     try {
@@ -259,7 +271,11 @@
           <n-input v-model:value="form.unit" />
         </n-form-item>
         <n-form-item label="出發城市" path="departure_city">
-          <n-input v-model:value="form.departure_city" />
+          <n-select
+            v-model:value="form.departure_city"
+            :options="departureCityOptions"
+            placeholder="請選擇"
+          />
         </n-form-item>
         <n-form-item label="原價">
           <n-input-number v-model:value="form.origin_price" :min="0" style="width: 100%" />

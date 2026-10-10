@@ -4,6 +4,9 @@ const { isValidString, isNonNegativeInteger } = require('../utils/validUtils');
 
 const PAGE_SIZE = 10;
 
+// 後台「出發城市」下拉選單的選項(舊版就是這四個),跟 docs/openapi.yaml 的 TourInput.departure_city enum 要一致
+const DEPARTURE_CITIES = ['台北', '桃園', '台中', '高雄'];
+
 function validateTourInput(body) {
   const {
     title, region_id, summary, description, content,
@@ -16,7 +19,7 @@ function validateTourInput(body) {
   if (!isValidString(description)) return '請輸入行程介紹';
   if (!isValidString(content)) return '請輸入費用包含說明';
   if (!isValidString(unit)) return '請輸入單位';
-  if (!isValidString(departure_city)) return '請輸入出發城市';
+  if (!DEPARTURE_CITIES.includes(departure_city)) return '請選擇出發城市';
   if (!isNonNegativeInteger(origin_price)) return '原價格式錯誤';
   if (!isNonNegativeInteger(price)) return '優惠價格式錯誤';
   if (!Array.isArray(images) || images.length === 0 || !images.every(isValidString)) {

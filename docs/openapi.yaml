@@ -93,7 +93,10 @@ components:
         description: { type: string }
         content: { type: string, description: 費用包含(簡短條列) }
         unit: { type: string }
-        departure_city: { type: string }
+        # 跟 backend/controllers/adminTours.js 的 DEPARTURE_CITIES 要一致
+        departure_city:
+          type: string
+          enum: [台北, 桃園, 台中, 高雄]
         origin_price: { type: integer }
         price: { type: integer }
         is_popular: { type: boolean }
