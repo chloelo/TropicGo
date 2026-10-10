@@ -121,11 +121,13 @@
       remote
     />
 
+    <!-- 最高到視窗高度扣掉上下各 40px:標題和底部按鈕固定,只有中間的內容捲動,內容再多按鈕也不會被推到畫面外 -->
     <n-modal
       v-model:show="showDialog"
       preset="card"
       :title="dialogOptions.title"
-      style="width: 560px"
+      style="width: 560px; max-height: calc(100vh - 80px)"
+      content-scrollable
     >
       <template v-if="dialogOptions.data">
         <n-descriptions :column="1" label-placement="left" bordered size="small">
@@ -149,11 +151,11 @@
             {{ dialogOptions.data.message }}
           </n-descriptions-item>
           <n-descriptions-item v-if="dialogOptions.data.coupon" label="使用優惠券">
-            {{ dialogOptions.data.coupon.title }}({{ dialogOptions.data.coupon.code }})
+            {{ dialogOptions.data.coupon.title }}（{{ dialogOptions.data.coupon.code }}）
           </n-descriptions-item>
         </n-descriptions>
 
-        <h4 class="mt-4 mb-2 font-bold">行程明細</h4>
+        <h4 class="mt-4 mb-2 font-bold">產品明細</h4>
         <ul class="list-none mb-4">
           <li
             v-for="item in dialogOptions.data.items"

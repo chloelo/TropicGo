@@ -11,7 +11,7 @@
 
   const menuOptions: MenuOption[] = [
     { label: renderLink('儀表板', '/admin'), key: '/admin' },
-    { label: renderLink('行程管理', '/admin/tours'), key: '/admin/tours' },
+    { label: renderLink('產品管理', '/admin/tours'), key: '/admin/tours' },
     { label: renderLink('優惠券管理', '/admin/coupons'), key: '/admin/coupons' },
     { label: renderLink('訂單管理', '/admin/orders'), key: '/admin/orders' },
   ]

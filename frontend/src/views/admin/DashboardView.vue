@@ -6,6 +6,6 @@
 
 <template>
   <n-card title="儀表板">
-    <p>歡迎回來,{{ authStore.admin?.name }}。</p>
+    <p>歡迎回來，{{ authStore.admin?.name }}。</p>
   </n-card>
 </template>

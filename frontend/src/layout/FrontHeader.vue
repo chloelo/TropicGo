@@ -16,7 +16,8 @@
 
   const navLinks = [
     { label: '首頁', to: '/' },
-    { label: '找行程', to: '/products' },
+    // 舊版 header 寫的是「產品列表」(首頁 Hero 的按鈕才是「找行程」)
+    { label: '產品列表', to: '/products' },
     { label: '關於我們', to: '/about' },
   ]
 

@@ -72,10 +72,10 @@
   const imagesText = ref('')
 
   const rules: FormRules = {
-    title: { required: true, message: '請輸入行程名稱', trigger: 'blur' },
+    title: { required: true, message: '請輸入產品名稱', trigger: 'blur' },
     region_id: { required: true, message: '請選擇地區', trigger: 'change' },
-    summary: { required: true, message: '請輸入行程摘要', trigger: 'blur' },
-    description: { required: true, message: '請輸入行程介紹', trigger: 'blur' },
+    summary: { required: true, message: '請輸入產品摘要', trigger: 'blur' },
+    description: { required: true, message: '請輸入產品介紹', trigger: 'blur' },
     content: { required: true, message: '請輸入費用包含說明', trigger: 'blur' },
     departure_city: { required: true, message: '請選擇出發城市', trigger: 'change' },
   }
@@ -91,7 +91,7 @@
     editingId.value = null
     Object.assign(form, emptyForm())
     imagesText.value = ''
-    openDialog({ title: '新增行程' })
+    openDialog({ title: '新增產品' })
   }
 
   function openEdit(tour: Tour) {
@@ -111,7 +111,7 @@
       is_enabled: tour.is_enabled,
     })
     imagesText.value = tour.images.map((img) => img.url).join('\n')
-    openDialog({ title: '編輯行程' })
+    openDialog({ title: '編輯產品' })
   }
 
   async function handleSubmit() {
@@ -145,7 +145,7 @@
       closeDialog()
       await load(page.value)
     } catch {
-      message.error('儲存失敗,請檢查欄位內容')
+      message.error('儲存失敗，請檢查欄位內容')
     } finally {
       submitting.value = false
     }
@@ -155,8 +155,8 @@
     // 刪除是不能復原的操作:用「危險」類型(紅色圖示和刪除鈕);取消鈕維持灰色,
     // 畫面上只有刪除鈕有顏色(灰色的焦點、hover 樣式在 utils/naive-theme.ts 的 Dialog 設定)
     naiveDialog.error({
-      title: '刪除行程',
-      content: `確定要刪除「${tour.title}」嗎?`,
+      title: '刪除產品',
+      content: `確定要刪除「${tour.title}」嗎？`,
       positiveText: '刪除',
       negativeText: '取消',
       onPositiveClick: async () => {
@@ -165,7 +165,7 @@
           message.success('刪除成功')
           await load(page.value)
         } catch {
-          message.error('刪除失敗,此行程可能已有訂單使用,可改為下架')
+          message.error('刪除失敗，此產品可能已有訂單使用，可改為下架')
         }
       },
     })
@@ -231,9 +231,9 @@
 </script>
 
 <template>
-  <n-card title="行程管理">
+  <n-card title="產品管理">
     <template #header-extra>
-      <n-button type="primary" @click="openCreate">新增行程</n-button>
+      <n-button type="primary" @click="openCreate">新增產品</n-button>
     </template>
 
     <n-data-table
@@ -245,14 +245,16 @@
       remote
     />
 
+    <!-- 最高到視窗高度扣掉上下各 40px:標題和底部按鈕固定,只有中間的內容捲動,內容再多按鈕也不會被推到畫面外 -->
     <n-modal
       v-model:show="showDialog"
       preset="card"
       :title="dialogOptions.title"
-      style="width: 600px"
+      style="width: 600px; max-height: calc(100vh - 80px)"
+      content-scrollable
     >
       <n-form ref="formRef" :model="form" :rules="rules" label-placement="top">
-        <n-form-item label="行程名稱" path="title">
+        <n-form-item label="產品名稱" path="title">
           <n-input v-model:value="form.title" />
         </n-form-item>
         <n-form-item label="地區" path="region_id">
@@ -283,7 +285,7 @@
         <n-form-item label="優惠價">
           <n-input-number v-model:value="form.price" :min="0" style="width: 100%" />
         </n-form-item>
-        <n-form-item label="圖片網址(每行一個)">
+        <n-form-item label="圖片網址（每行一個）">
           <n-input
             v-model:value="imagesText"
             type="textarea"
@@ -291,12 +293,18 @@
             placeholder="https://example.com/1.jpg&#10;https://example.com/2.jpg"
           />
         </n-form-item>
-        <n-form-item label="熱門行程">
-          <n-switch v-model:value="form.is_popular" />
-        </n-form-item>
-        <n-form-item label="上架">
-          <n-switch v-model:value="form.is_enabled" />
-        </n-form-item>
+        <!-- 兩個開關都很短:同一排左右各佔一半,文字在左、開關緊接在文字右邊。
+             不用 n-form-item 的 label:左側 label 的寬度是整個表單統一算的,短的「上架」前面會空一截 -->
+        <div class="grid grid-cols-2">
+          <n-form-item :show-label="false">
+            <span class="mr-3">熱門產品</span>
+            <n-switch v-model:value="form.is_popular" aria-label="熱門產品" />
+          </n-form-item>
+          <n-form-item :show-label="false">
+            <span class="mr-3">上架</span>
+            <n-switch v-model:value="form.is_enabled" aria-label="上架" />
+          </n-form-item>
+        </div>
       </n-form>
 
       <template #footer>

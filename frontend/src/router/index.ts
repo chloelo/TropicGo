@@ -38,7 +38,7 @@ const router = createRouter({
           path: 'products',
           name: 'products',
           component: () => import('@/views/front/ProductsView.vue'),
-          meta: { title: '找行程' },
+          meta: { title: '產品列表' },
         },
         {
           // 標題在 ProductView 載入行程後改成行程名稱
@@ -94,7 +94,7 @@ const router = createRouter({
           path: 'tours',
           name: 'admin-tours',
           component: () => import('@/views/admin/ToursView.vue'),
-          meta: { title: '後台・行程管理' },
+          meta: { title: '後台・產品管理' },
         },
         {
           path: 'coupons',

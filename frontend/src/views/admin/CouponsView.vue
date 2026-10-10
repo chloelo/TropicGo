@@ -106,7 +106,7 @@
       closeDialog()
       await load(page.value)
     } catch {
-      message.error('儲存失敗,優惠碼可能重複')
+      message.error('儲存失敗，優惠碼可能重複')
     } finally {
       submitting.value = false
     }
@@ -117,7 +117,7 @@
     // 畫面上只有刪除鈕有顏色(灰色的焦點、hover 樣式在 utils/naive-theme.ts 的 Dialog 設定)
     naiveDialog.error({
       title: '刪除優惠券',
-      content: `確定要刪除「${coupon.title}」嗎?`,
+      content: `確定要刪除「${coupon.title}」嗎？`,
       positiveText: '刪除',
       negativeText: '取消',
       onPositiveClick: async () => {
@@ -126,7 +126,7 @@
           message.success('刪除成功')
           await load(page.value)
         } catch {
-          message.error('刪除失敗,此優惠券可能已被訂單使用,可改為停用')
+          message.error('刪除失敗，此優惠券可能已被訂單使用，可改為停用')
         }
       },
     })
@@ -191,11 +191,13 @@
       remote
     />
 
+    <!-- 最高到視窗高度扣掉上下各 40px:標題和底部按鈕固定,只有中間的內容捲動,內容再多按鈕也不會被推到畫面外 -->
     <n-modal
       v-model:show="showDialog"
       preset="card"
       :title="dialogOptions.title"
-      style="width: 480px"
+      style="width: 480px; max-height: calc(100vh - 80px)"
+      content-scrollable
     >
       <n-form ref="formRef" :model="form" :rules="rules" label-placement="top">
         <n-form-item label="名稱" path="title">
@@ -204,7 +206,7 @@
         <n-form-item label="優惠碼" path="code">
           <n-input v-model:value="form.code" />
         </n-form-item>
-        <n-form-item label="折扣(要付的百分比,90 代表打 9 折)" path="percent">
+        <n-form-item label="折扣（要付的百分比，90 代表打 9 折）" path="percent">
           <n-input-number v-model:value="form.percent" :min="1" :max="100" style="width: 100%" />
         </n-form-item>
         <n-form-item label="到期日">
