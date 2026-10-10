@@ -39,20 +39,20 @@
       mobile-position="50% -80px"
     />
 
-    <!-- 關於 TropicGo(舊版 .zone_intro) -->
+    <!-- 關於 TropicGo -->
     <section class="pt-[60px] md:pt-[100px] pb-[60px]">
       <div class="bs-container">
         <div class="flex flex-wrap -mx-[15px]">
           <div class="w-full md:w-1/2 px-[15px]">
-            <!-- z-[3] 讓照片疊在右邊文字區的米色底塊上面 -->
+            <!-- z-[3]：讓照片疊在右邊文字區的米色底塊上面 -->
             <div class="relative z-[3]">
               <img v-aos:fade-up :src="HERO_IMAGES.about.content[0]" alt="關於 TropicGo" class="max-w-full h-auto align-middle" />
             </div>
           </div>
           <div class="w-full md:w-1/2 px-[15px]">
             <div v-aos:fade-down class="relative p-4">
-              <!-- 舊版 .txt-wrap::before 的米色底塊:桌機比文字區大 120%、往左延伸壓到照片底下,
-                   往下多 30px 形成高低差;手機改成剛好包住文字、底線改在下方 -->
+              <!-- 米色底塊：桌機比文字區大 120%、往左延伸壓到照片底下，往下多 30px 形成高低差；
+                   手機剛好包住文字，底線改在下方 -->
               <div
                 class="absolute -z-1 bg-[#f3ece9] border-africa w-full h-[105%] top-0 right-0 border-b-[3px] md:w-[120%] md:h-[120%] md:top-auto md:-bottom-[30px] md:-right-[20px] md:border-b-0 md:border-r-[3px]"
               />
@@ -73,9 +73,7 @@
       </div>
     </section>
 
-    <!-- 裝飾 banner(舊版 .zone_banner)。
-         這頁的 img 都加 align-middle:舊版 Bootstrap reboot 預設 img { vertical-align: middle },
-         圖片下方跟行高之間的空隙比預設的 baseline 小,不加的話每張圖下面都多約 6px -->
+    <!-- 裝飾 banner。這頁的 img 都加 align-middle：圖片預設對齊文字 baseline，下方會多出約 6px 的空隙 -->
     <section class="pt-4">
       <div class="hidden md:block">
         <img v-aos:fade-down :src="HERO_IMAGES.about.content[1]" alt="" class="max-w-full h-auto align-middle" />
@@ -85,7 +83,7 @@
       </div>
     </section>
 
-    <!-- TropicGo 成員(舊版 .zone_crew):卡片高度跟著文字長度走,不拉成一樣高 -->
+    <!-- TropicGo 成員：卡片高度跟著文字長度，不拉成一樣高 -->
     <section class="zones">
       <div class="bs-container">
         <SectionTitle title="TropicGo 成員" class="mb-12" />

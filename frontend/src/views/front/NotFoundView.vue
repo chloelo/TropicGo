@@ -2,7 +2,7 @@
   import HeroBanner from '@/components/front/HeroBanner.vue'
   import { HERO_IMAGES } from '@/utils/hero-images'
 
-  // 也給詳情頁「找不到這個行程」共用,只換標題和說明文字
+  // 也給詳情頁「找不到這個行程」共用，只換標題和說明文字
   withDefaults(defineProps<{ heading?: string; message?: string }>(), {
     heading: '找不到這個頁面',
     message: '網址可能打錯了，或是這個頁面已經不存在。',
@@ -10,7 +10,7 @@
 </script>
 
 <template>
-  <!-- 前台的 header 在桌機未捲動時是透明的,頁面頂端一定要有 Hero,不然 header 的白字會看不見 -->
+  <!-- header 在桌機未捲動時是透明的，頁面頂端一定要有 Hero，不然 header 的白字會看不見 -->
   <main>
     <HeroBanner
       title="迷路了嗎？"

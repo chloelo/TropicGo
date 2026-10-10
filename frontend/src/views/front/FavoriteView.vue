@@ -38,12 +38,12 @@
       mobile-position="50% -160px"
     />
 
-    <!-- 收藏清單(舊版 .zone_favorites):置中、md 以上佔容器 8/12 欄 -->
+    <!-- 收藏清單 -->
     <section class="zones">
       <div class="bs-container">
         <div class="flex flex-wrap justify-center -mx-[15px]">
           <div class="w-full md:w-2/3 px-[15px]">
-            <!-- 載入中的提示交給全域 loader,這裡只先撐住高度 -->
+            <!-- 載入提示交給全域 loader，這裡只先撐住高度 -->
             <div v-if="loading" class="min-h-[300px]" />
 
             <template v-else-if="favoriteTours.length">
@@ -53,7 +53,6 @@
                   <img :src="tour.images[0]?.url" :alt="tour.title" class="w-[120px] h-auto align-middle" />
                 </div>
                 <div class="relative w-full p-4">
-                  <!-- 舊版 Bootstrap .close:半透明灰色叉叉,hover 變比較不透明 -->
                   <button
                     type="button"
                     class="absolute top-4 right-4 text-[20px] leading-none text-[#adb5bd] opacity-50 hover:opacity-75"
@@ -103,8 +102,7 @@
       </div>
     </section>
 
-    <!-- 熱門推薦(舊版 .zone_popular:上方不留 padding,接在收藏清單後面)。
-         卡片照舊版用「前往查看」的簡單卡片,不用行程列表的 TourCard(那個有熱門標籤,在這裡每張都標熱門很多餘) -->
+    <!-- 熱門推薦：用簡易卡片 TourLinkCard，不用產品列表的 TourCard（那個有熱門標籤，在這裡每張都標熱門很多餘） -->
     <section v-if="!loading && popularTours.length" class="pb-[60px]">
       <div class="bs-container">
         <SectionTitle title="熱門推薦" tag="h3" class="mb-12" />

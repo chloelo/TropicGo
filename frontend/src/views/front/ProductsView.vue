@@ -15,8 +15,8 @@
   const activeSlug = ref<string | null>(null)
   const loading = ref(false)
 
-  // 舊版是 Bootstrap 的 .btn-{地區色}:hover 底色 darken 7.5%、active darken 10%。
-  // 選中的分類直接用 active 色,同一時間只套一組顏色 class,不會跟 hover 互相競爭
+  // hover、選中的顏色是底色加深 7.5%、10%（原設計）。選中時直接用選中色，
+  // 同一時間只套一組顏色 class，不會跟 hover 互相競爭
   const TAB_COLOR: Record<string, { base: string; active: string }> = {
     world: { base: 'bg-world hover:bg-[#39577c]', active: 'bg-[#355173]' },
     asia: { base: 'bg-asia hover:bg-[#7a5c36]', active: 'bg-[#725532]' },
@@ -44,16 +44,15 @@
       )
       tours.value = data.data
     } catch {
-      // 網址的地區不存在(手動亂打、舊連結的地區被刪掉),API 會回 400:退回「全部」,網址也一起改掉,
-      // 改網址會觸發下面的 watch 重新載入全部行程
+      // 網址的地區不存在（手動亂打、地區被刪掉）會回 400：退回「全部」並改掉網址，下面的 watch 會重新載入
       if (activeSlug.value) router.replace({ query: {} })
     } finally {
       loading.value = false
     }
   }
 
-  // 篩選狀態以網址的 ?region= 為準:切 tab 只改網址,實際載入交給下面的 watch。
-  // 用 replace 不多塞瀏覽紀錄,從詳情頁按上一頁會回到帶著正確 query 的列表
+  // 篩選狀態以網址的 ?region= 為準：切換只改網址，載入交給下面的 watch。
+  // 用 replace 不多塞瀏覽紀錄，從詳情頁按上一頁會回到同一個篩選
   function selectRegion(slug: string | null) {
     router.replace({ query: slug ? { region: slug } : {} })
   }
@@ -85,10 +84,8 @@
     />
 
     <section class="bs-container pb-8">
-      <!-- 舊版 .wrap 是 margin-top:-80px,但外層 .zones 有 padding-top:60px,
-           兩者相抵實際只往上疊 20px,只壓到 KV 下緣一點點 -->
-      <!-- 舊版每格 .category 寬 160px、不換行,手機寬度不夠時 5 格一起縮窄塞在同一排;
-           按鈕寬是格子寬減 30px(手機減 3px),按鈕之間的間距就是這樣來的,不是用 gap -->
+      <!-- 分類列往上疊 20px，壓到 KV 下緣一點點。每格固定 160px、不換行，手機寬度不夠時一起縮窄；
+           按鈕寬是格子寬減 30px（手機減 3px），按鈕之間的間距是這樣來的，不是用 gap -->
       <div class="flex justify-center -mt-5 relative z-10 mb-10">
         <div v-for="tab in tabs" :key="tab.colorKey" class="w-[160px] flex justify-center">
           <button
@@ -102,7 +99,7 @@
         </div>
       </div>
 
-      <!-- 載入中的提示交給全域 loader,這裡只先撐住高度 -->
+      <!-- 載入提示交給全域 loader，這裡只先撐住高度 -->
       <div v-if="loading" class="min-h-[400px]" />
       <div v-else-if="tours.length === 0" class="text-center text-gray-400 py-12">
         目前沒有符合的行程

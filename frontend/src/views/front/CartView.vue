@@ -20,22 +20,21 @@
 
   const step = ref(1)
 
-  // 舊版 winScroll():換步驟時如果已經往下捲,就慢慢捲回步驟條的位置,看得到現在進行到哪一步
-  // (舊版只有「前往結帳」「回上一步」有捲,這裡每次換步驟都捲,送出訂單、付款後才不會停在頁面中間)
+  // 換步驟時如果已經往下捲，就捲回步驟條的位置，看得到現在進行到哪一步
   watch(step, () => {
     if (window.scrollY >= 10) window.scrollTo({ top: 250, behavior: 'smooth' })
   })
 
-  // ---- Step 1:確認清單 + 優惠碼 ----
+  // ---- Step 1：確認清單 + 優惠碼 ----
   const appliedCoupon = ref<AppliedCoupon | null>(null)
 
-  // 折扣後應付金額(percent 是要付的百分比,90 代表打 9 折)
+  // 折扣後應付金額（percent 是要付的百分比，90 代表打 9 折）
   const discountedTotal = computed(() => {
     if (!appliedCoupon.value) return cartStore.totalPrice
     return Math.round((cartStore.totalPrice * appliedCoupon.value.percent) / 100)
   })
 
-  // ---- Step 2:填寫資料 ----
+  // ---- Step 2：填寫資料 ----
   const submitting = ref(false)
   const form = ref<CheckoutForm>({
     name: '',
@@ -46,13 +45,13 @@
     message: '',
   })
 
-  // ---- Step 3、4:確認付款、完成訂單 ----
+  // ---- Step 3、4：確認付款、完成訂單 ----
   const createdOrder = ref<Order | null>(null)
-  // 送出訂單後購物車會清空,先留一份給確認付款那一步顯示圖片和單位
+  // 送出訂單後購物車會清空，先留一份給確認付款那一步顯示圖片和單位
   const orderedItems = ref<CartItem[]>([])
   const paying = ref(false)
 
-  // 表單驗證在 CheckoutFormStep 裡做完,通過才會觸發這裡(付款方式必選,這裡的檢查只是讓型別確定不是 null)
+  // 表單驗證在 CheckoutFormStep 裡已經做完；這裡的檢查只是讓型別確定付款方式不是 null
   async function handleSubmitOrder() {
     const paymentMethod = form.value.payment
     if (!paymentMethod) return
@@ -73,7 +72,7 @@
       cartStore.clear()
       cartStore.pendingOrderId = data.data.id
       step.value = 3
-      // 訂單 id 放進網址:跳去別頁再回來、重新整理,都能用下面的 watch 把訂單抓回來,不會卡在待付款找不到
+      // 訂單 id 放進網址：離開再回來、重新整理，都能用下面的 watch 把訂單抓回來
       router.replace({ query: { order: data.data.id } })
     } catch {
       toast.push('建立訂單失敗', 'danger')
@@ -82,9 +81,8 @@
     }
   }
 
-  // 網址帶 ?order=訂單id(送出訂單後、從別頁回來、重新整理)就把訂單抓回來:
-  // 待付款 → 確認付款那一步;已付款/已完成 → 完成訂單那一步;查不到或已取消 → 拿掉網址參數回到購物車。
-  // 不是待付款(或查不到)的訂單,順便清掉 header「前往付款」的記錄
+  // 網址帶 ?order= 時把訂單抓回來：待付款 → 確認付款；已付款、已完成 → 完成訂單；
+  // 查不到或已取消 → 拿掉網址參數回到購物車。不是待付款的訂單，順便清掉 header「前往付款」的記錄
   const loadingOrder = ref(false)
 
   function forgetPendingOrder(id: string) {
@@ -112,10 +110,10 @@
     () => route.query.order,
     (id) => {
       if (typeof id === 'string') {
-        // 剛送出訂單時資料已經在手上,不用再抓一次
+        // 剛送出訂單時資料已經在手上，不用再抓一次
         if (createdOrder.value?.id !== id) loadOrder(id)
       } else if (step.value >= 3) {
-        // 在確認付款/完成訂單時點 header 的購物車(網址變回 /cart),回到購物車那一步
+        // 網址變回 /cart（例如點了 header 的購物車），回到購物車那一步
         createdOrder.value = null
         orderedItems.value = []
         step.value = 1
@@ -124,7 +122,7 @@
     { immediate: true },
   )
 
-  // 沒有串真的金流,後端直接把待付款的訂單改成已付款(舊版 payOrder)
+  // 沒有串金流，由後端直接把待付款訂單改成已付款
   async function handlePay() {
     if (!createdOrder.value) return
     paying.value = true
@@ -159,17 +157,17 @@
       </div>
     </section>
 
-    <!-- 從網址抓訂單時先撐住高度(載入提示交給全域 loader),不然會先閃一下空的購物車 -->
+    <!-- 從網址抓訂單時先撐住高度，不然會先閃一下空的購物車 -->
     <div v-if="loadingOrder" class="min-h-[300px]" />
 
-    <!-- 舊版 .zone_cartList -->
+    <!-- 確認清單 -->
     <section v-else-if="step === 1" class="zones">
       <div class="bs-container">
         <CartListStep v-model:coupon="appliedCoupon" :payable="discountedTotal" @next="step = 2" />
       </div>
     </section>
 
-    <!-- 舊版 .zone_form:上方只留 30px -->
+    <!-- 填寫資料（上方只留 30px） -->
     <section v-else-if="step === 2" class="pt-[30px] pb-[60px]">
       <div class="bs-container">
         <CheckoutFormStep
@@ -182,7 +180,7 @@
       </div>
     </section>
 
-    <!-- 舊版 .zone_order -->
+    <!-- 確認付款 -->
     <section v-else-if="step === 3 && createdOrder" class="zones">
       <div class="bs-container">
         <OrderConfirmStep
@@ -194,7 +192,7 @@
       </div>
     </section>
 
-    <!-- 舊版 .zone_checkout -->
+    <!-- 完成訂單 -->
     <section v-else-if="step === 4 && createdOrder" class="zones">
       <div class="bs-container">
         <OrderCompleteStep :order="createdOrder" />

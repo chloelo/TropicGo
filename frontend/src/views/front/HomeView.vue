@@ -42,10 +42,7 @@
     return { backgroundImage: `url(${url})` }
   }
 
-  // 新增的真實行程剛好對應首頁原本的「特別精選」兩個推薦(墨西哥 / 埃及),
-  // 用標題比對找出來,連結才會真的指向有效的產品細項頁(修正舊版沒有連結的問題)。
-  // 特別精選的墨西哥文案主題是馬雅古文明/世界文化遺產,要對應猶加敦這筆,不是坎昆海灘渡假
-  // (坎昆那筆內容不符合文案主題,已經整筆移除)
+  // 「特別精選」的兩個推薦用標題找出對應的產品，「了解更多」才連得到詳情頁
   const pickMexico = computed(() => tours.value.find((t) => t.title.includes('墨西哥猶加敦')))
   const pickEgypt = computed(() => tours.value.find((t) => t.title.includes('埃及開羅')))
 
@@ -70,9 +67,7 @@
         :style="{ backgroundImage: `url(${HERO_IMAGES.index.hero})` }"
       />
       <div class="absolute inset-0 bg-black/40" />
-      <!-- padding 跟寬度限制要分兩層:外層只負責跟螢幕邊緣留白(padding),
-           內層才限制寬度(跟著 h2 各斷點字級換算的 12em:30px/42px/60px → 360/504/720px)。
-           兩個放同一層會互相干擾——padding 包在 max-width 裡面會把可用寬度吃掉,字還沒到 12em 就先換行了 -->
+      <!-- 留白和寬度限制分兩層：padding 放在 max-width 裡會吃掉可用寬度，標題會提早換行 -->
       <div class="relative z-10 text-white px-4 md:px-12 lg:px-[120px]">
         <div class="max-w-[360px] md:max-w-[504px] lg:max-w-[720px]">
           <h2
@@ -102,21 +97,17 @@
       </div>
     </section>
 
-    <!-- 想好要去哪了嗎:照舊版 .zone_category 的 Bootstrap 結構——文字 .col-lg-4 + 卡片 .col-lg-8,
-         卡片各 .col-lg-3 .col-md-6,欄距 30px;上 padding 桌機 120px、992px 以下 60px,下 padding 60px -->
+    <!-- 想好要去哪了嗎 -->
     <section class="bs-container pt-[60px] lg:pt-[120px] pb-[60px]">
       <div class="flex flex-wrap -mx-[15px]">
         <div class="w-full lg:w-4/12 px-[15px] mb-8 lg:mb-0">
           <h2 class="text-[32px] font-medium leading-[1.2] mb-2">想好要去哪了嗎？</h2>
           <p class="mb-4">還沒有想法的話，來這裡找找吧，也許會有意外的驚奇。</p>
         </div>
-        <!-- 平板(md,2 欄)時亞洲/非洲會往上位移 50px,跟上面文字只隔 32px 的話會蓋到文字,
-             所以補一段平板專屬的上緣緩衝空間 -->
+        <!-- 平板時亞洲、非洲卡片會往上位移 50px，這裡多留空間，避免蓋到上面的文字 -->
         <div class="w-full lg:w-8/12 px-[15px] md:mt-[50px] lg:mt-0">
           <div class="flex flex-wrap -mx-[15px] gap-y-[15px] md:gap-y-0">
-            <!-- -50px 位移要放在「跟進場動畫不同的元素」上——zoom-in 動畫本身也是用 transform(scale),
-                 寫在同一個元素上兩個會搶同一個 transform 屬性,位移會整個不見。
-                 外層負責欄位和位移,內層 RouterLink 負責動畫 -->
+            <!-- 位移放外層、進場動畫放內層：兩者都用 transform，放在同一個元素上位移會被動畫蓋掉 -->
             <div
               v-for="region in regions"
               :key="region.id"
@@ -149,9 +140,7 @@
       </div>
     </section>
 
-    <!-- 特別精選:欄位切法、間距照舊版 Index.vue 的 Bootstrap 結構——
-         .container > .row.mt-5 > .col-md-6 ×2,內層 .row > .col-lg-5(國名)+ .col-lg-7(內文);
-         用 flex + 負 margin + 15px 內距重現 Bootstrap 的 30px 欄距,欄寬才會跟舊版一模一樣 -->
+    <!-- 特別精選 -->
     <section
       class="relative zones bg-no-repeat bg-center"
       :style="{ backgroundColor: '#fffbf9', backgroundImage: `url(${HERO_IMAGES.index.zoneSelectedBg})` }"
@@ -159,13 +148,10 @@
       <div class="bs-container">
         <SectionTitle title="特別精選" />
 
-        <!-- 舊版標題 mb 8px + 這排 mt-5 48px 在 flex 的 .row 裡不會重疊,實際是 56px -->
         <div v-if="pickMexico" class="flex flex-wrap items-center -mx-[15px] mt-[56px]">
           <div class="w-full md:w-1/2 px-[15px]">
-            <!-- 舊版 .num-wrap 外層是 relative + overflow-x:hidden,裝飾線寬度是「整個欄位寬度 + 35px」,
-                 不是只貼著「01」數字本身,用容器寬度撐開才會看起來延伸一整條。.num 本身是 inline-block
-                 (不是 plain inline span),容器高度才會貼齊數字視覺範圍,底線 bottom-[5px] 才會落在
-                 數字色塊下緣內側、往上一點點,而不是陷進色塊中間或跟色塊邊緣完全重疊 -->
+            <!-- 裝飾線比欄位再長 35px，超出的部分由外層 overflow-hidden 裁掉；
+                 數字用 inline-block，底線才會貼在數字色塊的下緣 -->
             <div class="relative overflow-hidden mb-[30px]">
               <span class="text-[32px] lg:text-[56px] inline-block text-white bg-africa px-[10px]">01</span>
               <span class="absolute left-0 bottom-[5px] w-[calc(100%+35px)] h-[5px] bg-africa" />
@@ -204,10 +190,9 @@
           </div>
         </div>
 
-        <!-- 舊版埃及這排沒有 align-items-center,圖片跟內文都靠上對齊(只有墨西哥那排是垂直置中) -->
+        <!-- 刻意不垂直置中（原設計）：這排圖文都靠上對齊，跟墨西哥那排不同 -->
         <div v-if="pickEgypt" class="flex flex-wrap -mx-[15px] mt-12">
-          <!-- 埃及在桌機是「圖在左、文在右」,markup 裡圖片寫在前面,手機沒有 order 的話就會維持 DOM 順序,
-               變成圖片跑到 02 方框上面——手機也要明講順序,確保永遠是「方框>標題>內文>按鈕>照片」 -->
+          <!-- 桌機圖在左、文在右；手機用 order 讓圖片排到最後 -->
           <div class="w-full md:w-1/2 px-[15px] order-2 md:order-1">
             <img v-aos:zoom-in :src="HERO_IMAGES.index.pickEgypt" alt="埃及" class="w-full" />
           </div>
@@ -241,7 +226,7 @@
       </div>
     </section>
 
-    <!-- 享生活/享美食/享樂 -->
+    <!-- 享生活、享美食、享樂 -->
     <section
       class="relative zones bg-cover bg-center bg-no-repeat bg-fixed"
       :style="{ backgroundImage: `url(${HERO_IMAGES.index.zoneDecBg})` }"
@@ -264,9 +249,7 @@
     <section class="bs-container zones">
       <SectionTitle title="旅客怎麼說" class="mb-12" />
 
-      <!-- 舊版是 no-gutters(0 間距),整塊照片+引言拼在一起看起來像一體的拼貼,不是分開的卡片。
-           手機版面是另一套排法(不是直接把桌機 12 欄收成 1 欄),10 個項目在兩種斷點只有「照片1/引言1」
-           順序互換,其餘完全相同,用 order 明確控制,照片給基本高度、引言手機不強制跟照片同高只看內文 -->
+      <!-- 照片和引言無間距拼貼；手機和桌機只有第一組照片、引言的順序對調，用 order 控制 -->
       <div class="grid grid-cols-2 md:grid-cols-12 gap-0">
         <div
           v-aos:flip-up

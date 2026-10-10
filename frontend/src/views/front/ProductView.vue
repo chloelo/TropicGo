@@ -27,8 +27,8 @@
   const subtotal = computed(() => (Number(quantity.value) || 0) * (tour.value?.price ?? 0))
 
   async function loadTour(id: string) {
-    // 只有第一次進來(還沒有任何行程)才切成載入狀態;從「猜您可能會喜歡」換行程時保留舊內容,
-    // 頁面高度不會瞬間縮短,下面的平滑捲動才看得到,等新資料回來再替換(期間有全域 loader)
+    // 只有第一次進來才切成載入狀態；從「猜您可能會喜歡」換產品時保留舊內容，
+    // 頁面高度不會瞬間縮短，平滑捲動才看得到
     if (!tour.value) loading.value = true
     activeImageIndex.value = 0
     quantity.value = 1
@@ -37,13 +37,13 @@
       tour.value = data.data
       if (tour.value?.title) setPageTitle(tour.value.title)
 
-      // 舊版「猜您可能會喜歡」列出同地區的全部行程(排除自己),不限筆數
+      // 「猜您可能會喜歡」列出同地區的全部產品（排除自己），不限筆數
       if (tour.value?.region.slug) {
         const { data: listRes } = await api.tours.getTours({ region: tour.value.region.slug })
         relatedTours.value = listRes.data.filter((t: Tour) => t.id !== tour.value?.id)
       }
     } catch {
-      // 查不到行程(ID 亂打、已下架):畫面顯示 404 元件,分頁標題也跟一般 404 頁一致
+      // 查不到（id 打錯、已下架）：顯示 404 元件，分頁標題也跟一般 404 頁一致
       tour.value = null
       setPageTitle('找不到頁面')
     } finally {
@@ -51,7 +51,7 @@
     }
   }
 
-  // 人數框可以直接輸入,清空或打小數、負數時拉回至少 1 的整數
+  // 人數框可以直接輸入，清空、小數或負數時拉回至少 1 的整數
   function normalizeQuantity() {
     const n = Math.floor(Number(quantity.value))
     quantity.value = Number.isFinite(n) && n >= 1 ? n : 1
@@ -69,8 +69,7 @@
   }
 
   onMounted(() => loadTour(route.params.id as string))
-  // 舊版 Product.vue 的 toProduct():詳情頁換到另一個詳情頁時,用動畫慢慢滑回頂部
-  // (其他換頁是直接跳到頂部,由 router 的 scrollBehavior 處理)
+  // 詳情頁換到另一個詳情頁時，用動畫慢慢滑回頂部（其他換頁由 router 的 scrollBehavior 直接跳到頂部）
   watch(
     () => route.params.id,
     (id) => {
@@ -82,13 +81,12 @@
 </script>
 
 <template>
-  <!-- 載入中的提示交給全域 loader,這裡只先撐住高度 -->
+  <!-- 載入提示交給全域 loader，這裡只先撐住高度 -->
   <main v-if="loading" class="min-h-screen" />
 
   <NotFoundView v-else-if="!tour" heading="找不到這個行程" message="這個行程可能已經下架，或是網址打錯了。" />
 
   <main v-else>
-    <!-- 舊版 .zone_detail_bg:用產品第一張圖當背景、模糊 1px、疊 70% 黑色遮罩,高度固定 250px -->
     <section
       v-if="coverImage"
       class="relative h-[250px] bg-cover bg-center bg-no-repeat blur-[1px]"
@@ -97,9 +95,8 @@
       <div class="absolute inset-0 bg-black/70" />
     </section>
 
-    <!-- 桌機:產品大圖往上壓到 KV 上 70px;992px 以下整個區塊往上拉 220px 疊在 KV 上,
-         圖片再往下推 30px(舊版 _product.scss 的 max-991 規則)。
-         relative 讓這一層畫在 KV(有 filter,自成一層)之上 -->
+    <!-- 桌機：產品大圖往上壓到 KV 上 70px；lg 以下整個區塊往上拉 220px 疊在 KV 上，圖片再往下推 30px。
+         relative：讓這一層畫在 KV 之上（KV 有 filter，自成一個圖層） -->
     <section class="relative pt-[30px] pb-[60px] -mt-[220px] lg:mt-0">
       <div class="bs-container">
         <div class="flex flex-wrap -mx-[15px]">
@@ -145,11 +142,11 @@
             >
               {{ tour.title }}
             </h2>
-            <!-- 摘要是列表卡片上那句,進詳情頁先看到同一句,內容才接得上;舊版沒有這段 -->
+            <!-- 摘要跟列表卡片上的那句相同，進詳情頁先看到同一句，內容才接得上 -->
             <p class="text-[18px] leading-[1.5] text-[#495057] mb-3">{{ tour.summary }}</p>
             <p class="leading-6 mb-4">{{ tour.content }}</p>
 
-            <!-- 成團人數、費用已含資料庫沒有欄位,照舊版寫死 -->
+            <!-- 成團人數、費用已含：資料庫沒有這些欄位，照原設計寫死 -->
             <ul class="mb-4">
               <li v-if="tour.is_popular" class="flex items-center mb-[10px]">
                 <span
@@ -193,7 +190,7 @@
               </div>
             </div>
 
-            <!-- 舊版 .form-row:人數加減、立即報名各佔一半,768px 以下上下堆疊;全站沒有圓角 -->
+            <!-- 人數加減、立即報名各佔一半，手機上下堆疊 -->
             <div class="mt-4 grid grid-cols-1 md:grid-cols-2 md:gap-x-[10px]">
               <div class="mb-4 flex h-[38px]">
                 <button
@@ -252,7 +249,6 @@
       </div>
     </section>
 
-    <!-- 舊版 .description-wrap:淺米色底、右下角剪影圖 -->
     <section
       class="pt-[60px] pb-[35px] bg-[#fffbf9] bg-no-repeat"
       :style="{
@@ -278,7 +274,7 @@
 </template>
 
 <style scoped>
-  /* 介紹是後台存的 HTML,base.css 把標題/段落的 margin 都歸零了,這裡比照舊版 Bootstrap 的預設補回來 */
+  /* 介紹是後台存的 HTML，base.css 把標題、段落的 margin 都歸零了，這裡補回來 */
   .description :deep(h3) {
     font-size: 28px;
     font-weight: 500;
