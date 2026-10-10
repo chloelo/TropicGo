@@ -9,7 +9,10 @@
     "start": "node ./app.js",
     "seed": "node ./scripts/seed.js",
     "format": "prettier --write \"**/*.js\"",
-    "seed:tours": "node ./scripts/seed-tours.js"
+    "seed:tours": "node ./scripts/seed-tours.js",
+    "migration:generate": "typeorm migration:generate -d db/data-source.js -o",
+    "migration:run": "typeorm migration:run -d db/data-source.js",
+    "migration:revert": "typeorm migration:revert -d db/data-source.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
