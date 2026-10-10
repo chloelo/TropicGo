@@ -140,7 +140,9 @@
   }
 
   function handleDelete(tour: Tour) {
-    naiveDialog.warning({
+    // 刪除是不能復原的操作:用「危險」類型(紅色圖示和刪除鈕);取消鈕維持灰色,
+    // 畫面上只有刪除鈕有顏色(灰色的焦點、hover 樣式在 utils/naive-theme.ts 的 Dialog 設定)
+    naiveDialog.error({
       title: '刪除行程',
       content: `確定要刪除「${tour.title}」嗎?`,
       positiveText: '刪除',
@@ -193,10 +195,15 @@
       render: (row) =>
         h(NSpace, null, {
           default: () => [
-            h(NButton, { size: 'small', onClick: () => openEdit(row) }, { default: () => '編輯' }),
+            // 列表上的動作按鈕:綠色外框+文字(後台的 primary 是綠色,見 utils/naive-theme.ts)
             h(
               NButton,
-              { size: 'small', type: 'error', onClick: () => handleDelete(row) },
+              { size: 'small', type: 'primary', ghost: true, onClick: () => openEdit(row) },
+              { default: () => '編輯' },
+            ),
+            h(
+              NButton,
+              { size: 'small', type: 'error', ghost: true, onClick: () => handleDelete(row) },
               { default: () => '刪除' },
             ),
           ],
@@ -278,7 +285,7 @@
 
       <template #footer>
         <n-space justify="end">
-          <n-button @click="closeDialog">取消</n-button>
+          <n-button type="primary" ghost @click="closeDialog">取消</n-button>
           <n-button type="primary" :loading="submitting" @click="handleSubmit">儲存</n-button>
         </n-space>
       </template>

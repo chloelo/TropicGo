@@ -13,7 +13,7 @@
 
 <template>
   <header class="h-14 flex items-center justify-between px-6 border-b border-gray-200 bg-white">
-    <span class="font-bold text-emerald-700">TropicGo 後台</span>
+    <span class="font-bold text-primary">TropicGo 後台</span>
     <div class="flex items-center gap-3">
       <span class="text-sm text-gray-500">{{ authStore.admin?.name }}</span>
       <n-button size="small" @click="handleLogout">登出</n-button>

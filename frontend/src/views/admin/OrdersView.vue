@@ -93,10 +93,11 @@
     {
       title: '操作',
       key: 'actions',
+      // 列表上的動作按鈕:綠色外框+文字,跟產品、優惠券的編輯按鈕一致
       render: (row) =>
         h(
           NButton,
-          { size: 'small', onClick: () => openDetail(row) },
+          { size: 'small', type: 'primary', ghost: true, onClick: () => openDetail(row) },
           { default: () => '查看明細' },
         ),
     },
@@ -175,7 +176,7 @@
 
       <template #footer>
         <n-space justify="end">
-          <n-button @click="closeDialog">取消</n-button>
+          <n-button type="primary" ghost @click="closeDialog">取消</n-button>
           <n-button type="primary" :loading="updating" @click="handleUpdateStatus">
             更新狀態
           </n-button>
