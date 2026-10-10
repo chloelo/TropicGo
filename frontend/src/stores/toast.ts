@@ -9,9 +9,10 @@ export interface Toast {
   status: ToastStatus
 }
 
-// 舊版 Toasts.vue:右上角疊加顯示,5 秒後自動移除,也可以按 × 提早關掉
+// 5 秒後自動移除，也可以按 × 提早關掉
 const AUTO_DISMISS_MS = 5000
 
+/** 右上角的提示訊息，可以同時疊加多則 */
 export const useToastStore = defineStore('toast', () => {
   const toasts = ref<Toast[]>([])
   let nextId = 0

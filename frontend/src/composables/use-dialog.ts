@@ -8,6 +8,7 @@ export interface DialogOptions<T = unknown> {
   data?: T
 }
 
+/** 管理 modal 的開關，以及打開時帶進去的標題和資料 */
 export function useDialog<T = unknown>() {
   const showDialog = ref(false)
   const dialogOptions = ref<DialogOptions<T>>({} as DialogOptions<T>)

@@ -3,9 +3,10 @@ import { useToastStore } from '@/stores/toast'
 
 const STORAGE_KEY = 'tropicgo_favorites'
 
-// 用 module-level 的共用 ref 當簡易全域狀態,不用 Pinia 也能跨元件共享(純 localStorage,沒有會員系統)
+// 放在 module 層級的共用 ref，不用 Pinia 也能跨元件共享（存在 localStorage，沒有會員系統）
 const favoriteIds = useLocalStorage<string[]>(STORAGE_KEY, [])
 
+/** 我的收藏：記錄產品 id */
 export function useFavorites() {
   const toast = useToastStore()
 

@@ -1,6 +1,4 @@
-// 舊版各頁用到的背景/裝飾圖——原本連去 hexschool-api 這個教學單位附帶的 S3 bucket。
-// 那個 bucket 不是設計給人長期外部引用的服務,隨時可能被收掉,所以全部下載下來改成本地素材,
-// 不再依賴我們控制不了的第三方服務(跟 Unsplash 不同,Unsplash 本來就是公開 CDN,可以放心繼續引用)。
+// 各頁的背景、裝飾圖都放在專案裡，不外連第三方空間：外部連結隨時可能失效
 import aboutContent1 from '@/assets/images/hero/about-content-1.png'
 import aboutContent2Desktop from '@/assets/images/hero/about-content-2-desktop.png'
 import aboutContent2Mobile from '@/assets/images/hero/about-content-2-mobile.png'
@@ -33,6 +31,7 @@ import indexZoneSelectedBg from '@/assets/images/hero/index-zone-selected-bg.png
 import ogImage from '@/assets/images/hero/og-image.jpg'
 import productDescriptionWatermark from '@/assets/images/hero/product-description-watermark.png'
 
+/** 各頁的 Hero 背景圖和裝飾圖，依頁面分組 */
 export const HERO_IMAGES = {
   products: { desktop: heroProductsDesktop, mobile: heroProductsMobile },
   cart: { desktop: heroCartDesktop, mobile: heroCartMobile },

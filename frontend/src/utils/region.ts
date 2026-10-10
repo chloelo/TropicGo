@@ -4,17 +4,17 @@ import iconAsia from '@/assets/images/icon-asia.png'
 import iconOceania from '@/assets/images/icon-oceania.png'
 import iconWorld from '@/assets/images/icon-world.png'
 
-// 舊版 ProductsFilter.vue 的分類是寫死在陣列裡的固定順序(亞洲/美洲/非洲/大洋洲),
-// 這裡改成從 API 撈,但 API 沒有保證順序,後端回傳順序不穩定會讓首頁卡片的交錯位移效果跑掉
-// (例如非洲剛好跟大洋洲疊在同一欄),所以撈回來後統一照這個固定順序排一次
+// 地區的顯示順序。API 不保證回傳順序，順序一亂首頁卡片的交錯位移就會跑掉
 const REGION_ORDER = ['asia', 'america', 'africa', 'oceania']
 
+/** 照固定順序排列地區 */
 export function sortRegions<T extends { slug: string }>(regions: T[]): T[] {
   return [...regions].sort((a, b) => REGION_ORDER.indexOf(a.slug) - REGION_ORDER.indexOf(b.slug))
 }
 
-// UnoCSS 是靜態掃描 class 字串產生 CSS,動態組字串(如 `bg-${slug}`)掃描不到,
-// 這裡統一用完整列出字串的寫法,跟 TourCard / ProductsView 共用
+// 下面的 class 都完整寫出來：UnoCSS 靜態掃描原始碼，`bg-${slug}` 這種動態組出的字串掃不到
+
+/** 地區的背景色 class */
 export const REGION_BG: Record<string, string> = {
   world: 'bg-world',
   asia: 'bg-asia',
@@ -23,6 +23,7 @@ export const REGION_BG: Record<string, string> = {
   oceania: 'bg-oceania',
 }
 
+/** 地區的 icon 圖片 */
 export const REGION_ICON: Record<string, string> = {
   world: iconWorld,
   asia: iconAsia,
@@ -31,7 +32,7 @@ export const REGION_ICON: Record<string, string> = {
   oceania: iconOceania,
 }
 
-// 首頁分類卡「立即前往」:舊版是 Bootstrap 的 a.text-{color},hover 時文字變深
+/** 首頁分類卡「立即前往」的文字色，hover 時變深 */
 export const REGION_TEXT: Record<string, string> = {
   world: 'text-world hover:text-world-link',
   asia: 'text-asia hover:text-asia-link',
@@ -40,7 +41,7 @@ export const REGION_TEXT: Record<string, string> = {
   oceania: 'text-oceania hover:text-oceania-link',
 }
 
-// 首頁分類卡的簡介文字——原版 ProductsFilter.vue 裡的文案
+/** 首頁分類卡的簡介文字 */
 export const REGION_TEASER: Record<string, string> = {
   asia: '最熟悉的陌生人，想靠近卻又不敢太近，是愛情嗎？',
   america: '瑪雅文化、哈瓦那夕陽、熱帶雨林，如此豐富多變的景色，try it！',

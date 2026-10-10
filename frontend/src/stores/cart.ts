@@ -4,6 +4,7 @@ import { useLocalStorage } from '@vueuse/core'
 import type { Tour } from '@/api/tropicgo-api'
 import { useToastStore } from '@/stores/toast'
 
+/** 購物車品項：加入時把產品資料存一份，購物車頁不用再向 API 撈 */
 export interface CartItem {
   tourId: string
   title: string
@@ -16,13 +17,15 @@ export interface CartItem {
 const STORAGE_KEY = 'tropicgo_cart'
 const PENDING_ORDER_KEY = 'tropicgo_pending_order'
 
+/** 購物車，存在 localStorage */
 export const useCartStore = defineStore('cart', () => {
-  // 自動讀寫 localStorage(JSON 轉換、解析失敗退回預設值、深層變動同步都由 VueUse 處理)
   const items = useLocalStorage<CartItem[]>(STORAGE_KEY, [])
-  // 已送出但還沒付款的訂單 id(空字串 = 沒有)。送出訂單後購物車就清空了,
-  // 客人關掉分頁或逛到別頁,還能從 header 購物車彈窗的「前往付款」回到付款步驟
+  /**
+   * 已送出但還沒付款的訂單 id（空字串表示沒有）。送出訂單後購物車就清空了，
+   * 客人關掉分頁或逛到別頁，還能從 header 購物車彈窗的「前往付款」回到付款步驟
+   */
   const pendingOrderId = useLocalStorage(PENDING_ORDER_KEY, '')
-  // 通知寫在 action 裡,不管從哪個頁面/元件呼叫都會跳 toast(舊版的訊息文字)
+  // 通知寫在 action 裡，不管從哪裡呼叫都會跳出提示
   const toast = useToastStore()
 
   function addItem(tour: Tour, quantity = 1) {
@@ -47,6 +50,7 @@ export const useCartStore = defineStore('cart', () => {
     toast.push('成功刪除購物車品項')
   }
 
+  /** 更新人數，最少 1；數量沒變就不更新、不跳提示 */
   function updateQuantity(tourId: string, quantity: number) {
     const item = items.value.find((i) => i.tourId === tourId)
     const next = Math.max(1, quantity)

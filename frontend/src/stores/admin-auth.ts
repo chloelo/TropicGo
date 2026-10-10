@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { api, getAdminToken, setAdminToken } from '@/api/client'
 import type { Admin } from '@/api/tropicgo-api'
 
+/** 後台登入狀態，token 存在 localStorage */
 export const useAdminAuthStore = defineStore('admin-auth', () => {
   const admin = ref<Admin | null>(null)
   const checked = ref(false)
@@ -20,7 +21,7 @@ export const useAdminAuthStore = defineStore('admin-auth', () => {
     admin.value = null
   }
 
-  // app 啟動時呼叫一次:如果 localStorage 有 token,去後端驗證是否還有效
+  /** app 啟動時呼叫一次：localStorage 有 token 的話，向後端確認是否還有效 */
   async function checkAuth() {
     if (!getAdminToken()) {
       checked.value = true
