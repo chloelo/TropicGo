@@ -17,12 +17,11 @@ function waitForScrollable(position: { left: number; top: number }) {
 
 const router = createRouter({
   history: createWebHistory(),
-  // 舊版 router/index.js 也是直接 return {x:0,y:0},切頁一定從頂部開始。
-  // 同一頁只改 query(產品列表切換地區 tab)時不捲動——舊版切 tab 沒有換路由,畫面也不會跳
-  // 詳情頁換到另一個詳情頁也不在這裡處理,改由 ProductView 用動畫慢慢滑上去(舊版的效果)
+  // 換頁一律回到頂部。同一頁只改 query（產品列表切換地區）時不捲動；
+  // 詳情頁換到另一個詳情頁由 ProductView 自己用動畫滑上去
   scrollBehavior(to, from, savedPosition) {
-    // 瀏覽器上一頁/下一頁:回到離開時的捲動位置。頁面資料是進來後才向 API 撈,
-    // 剛切過來時頁面還不夠高、捲不到原本的位置,所以等頁面長到夠高再捲(最多等 2 秒)
+    // 瀏覽器上一頁、下一頁：回到離開時的捲動位置。資料是進頁面後才向 API 撈的，剛切過來時頁面還不夠高，
+    // 所以等頁面長到夠高再捲（最多等 2 秒）
     if (savedPosition) return waitForScrollable(savedPosition)
     if (to.path === from.path) return false
     if (to.name === 'product' && from.name === 'product') return false
@@ -41,7 +40,7 @@ const router = createRouter({
           meta: { title: '產品列表' },
         },
         {
-          // 標題在 ProductView 載入行程後改成行程名稱
+          // 標題在 ProductView 載入產品後改成產品名稱
           path: 'products/:id',
           name: 'product',
           component: () => import('@/views/front/ProductView.vue'),

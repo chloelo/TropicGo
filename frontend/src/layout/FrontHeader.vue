@@ -10,21 +10,19 @@
   const router = useRouter()
   const cartStore = useCartStore()
   const mobileOpen = ref(false)
-  // 舊版 NavbarFront.vue:滾動超過 10px 才加上 .shadows(白底+陰影),沒滾動時是透明的疊在 Hero 圖上
+  // 捲動超過 10px 才變白底加陰影；沒捲動時透明，疊在 Hero 圖上
   const { y } = useWindowScroll()
   const scrolled = computed(() => y.value >= 10)
 
   const navLinks = [
     { label: '首頁', to: '/' },
-    // 舊版 header 寫的是「產品列表」(首頁 Hero 的按鈕才是「找行程」)
+    // 選單寫「產品列表」（原設計），首頁 Hero 的按鈕才是「找行程」
     { label: '產品列表', to: '/products' },
     { label: '關於我們', to: '/about' },
   ]
 
-  // RouterLink 的 active-class 是「加」在既有 class 後面,不是取代,active 時顏色 class 跟
-  // 原本 :class 綁的顏色 class 同層級競爭,勝出的是看 UnoCSS 產生順序而不是誰該贏,只能用 !important
-  // 硬壓。改成自己判斷 active、顏色整個收在同一個函式回傳單一 class 字串,同一時間只會有一個
-  // 顏色 class 生效,沒有競爭,也就不需要 !important
+  // active 顏色自己判斷，同一時間只回傳一組顏色 class：RouterLink 的 active-class 是疊加上去的，
+  // 會跟原本的顏色 class 同層級競爭，結果取決於 CSS 產生的順序
   function desktopLinkClass(to: string) {
     if (route.path === to) {
       return scrolled.value ? 'text-africa font-medium' : 'text-sunbright font-medium'
@@ -36,9 +34,8 @@
     return route.path === to ? 'text-africa font-medium' : 'text-gray-700 hover:text-sun'
   }
 
-  // 舊版愛心、購物車 icon 跟選單文字共用 .nav-link 的顏色:白底時灰色、hover 黃橘、所在頁赤陶色;
-  // 桌機透明底時白色、hover 白 80%、所在頁亮黃。lg 以下 header 一直是白底,所以沒捲動時也要先給白底的顏色,
-  // 桌機(lg)再蓋成透明底的顏色
+  // 愛心、購物車 icon 跟選單文字同一套顏色：白底時灰色、hover 黃橘、所在頁赤陶色；
+  // 桌機透明底時白色、hover 白 80%、所在頁亮黃。lg 以下 header 一直是白底，所以先給白底的顏色，lg 再蓋成透明底的顏色
   function iconClass(active: boolean) {
     if (active) return scrolled.value ? 'text-africa' : 'text-africa lg:text-sunbright'
     return scrolled.value
@@ -46,18 +43,16 @@
       : 'text-gray-700 hover:text-sun lg:text-white lg:hover:text-white/80'
   }
 
-  // 購物車彈窗打開時,白底的 icon 維持黃橘色(舊版 .nav-link[aria-expanded="true"])
+  // 購物車彈窗打開時，白底的 icon 維持黃橘色
   function cartIconClass() {
     if (!cartOpen.value) return iconClass(false)
     return scrolled.value ? 'text-sun' : 'text-sun lg:text-white lg:hover:text-white/80'
   }
 
-  // 購物車彈窗改成自己控制開關:點「查看購物車/前去逛逛」換頁時要順便收起來,
-  // 不然 header 不會重新渲染,彈窗會一直開著蓋在新頁面上
+  // 彈窗自己控制開關：點彈窗裡的按鈕換頁時要收起來，不然 header 不會重新渲染，彈窗會一直開著
   const cartOpen = ref(false)
 
-  // 換頁時把手機選單和購物車彈窗都收起來(舊版 NavbarFront.vue 也是 watch $route 收合選單),
-  // 不管是點選單連結、logo、收藏愛心還是瀏覽器上一頁,都不會留著蓋在新頁面上
+  // 換頁時把手機選單和購物車彈窗都收起來，不管是點連結、logo 還是瀏覽器上一頁
   watch(
     () => route.fullPath,
     () => {
@@ -71,7 +66,7 @@
     router.push(cartStore.items.length ? '/cart' : '/products')
   }
 
-  // 有送出但還沒付款的訂單:帶訂單 id 回購物車頁,會直接顯示確認付款那一步
+  // 有送出但還沒付款的訂單：帶訂單 id 回購物車頁，會直接顯示確認付款那一步
   function goToPayment() {
     cartOpen.value = false
     router.push({ path: '/cart', query: { order: cartStore.pendingOrderId } })
@@ -92,7 +87,7 @@
         <img :src="logo" alt="TropicGo" class="h-7 sm:h-9 w-auto" />
       </RouterLink>
 
-      <!-- 舊版 navbar-nav 是 ml-auto,跟後面的 icon 群組貼在一起靠右,不是跟 logo 平均分散置中 -->
+      <!-- 選單用 ml-auto 跟右邊的 icon 群組貼在一起靠右（原設計），不是跟 logo 平均分散 -->
       <nav class="hidden lg:flex items-center gap-6 ml-auto mr-6">
         <RouterLink
           v-for="link in navLinks"
@@ -116,8 +111,8 @@
           <span class="i-fa6-heart" />
         </RouterLink>
 
-        <!-- :to="false" 讓彈出視窗直接放在 header 裡,跟著 fixed 的 header 一起固定;
-             預設放到 body 底下時,捲動頁面每次都要重算位置追上 header,會慢半拍看起來在晃 -->
+        <!-- :to="false"：彈窗直接放在 header 裡，跟著 fixed 的 header 一起固定；
+             放到 body 底下的話，捲動時每次都要重算位置，看起來會晃 -->
         <n-popover v-model:show="cartOpen" trigger="click" placement="bottom-end" :width="280" :to="false">
           <template #trigger>
             <button
@@ -155,9 +150,9 @@
 
             <p class="font-bold text-sm text-gray-700 mb-2">已選擇行程</p>
 
-            <!-- 品項多時只有清單這段捲動(標題列黏在上面),總計和按鈕固定在下方不用滑到底 -->
-            <!-- table-fixed:數量/單價固定寬度、品名吃剩下的空間,表格寬度永遠等於容器,
-                 不會被長品名或直向卷軸擠出橫向卷軸(一般表格的格子不遵守 max-width,會被內容撐寬) -->
+            <!-- 品項多時只有清單捲動（標題列黏在上方），總計和按鈕固定在下面。
+                 table-fixed：數量、單價固定寬度，品名吃剩下的空間；一般表格的格子不遵守 max-width，
+                 長品名或捲軸會把表格撐寬，出現橫向捲軸 -->
             <div v-if="cartStore.items.length" class="max-h-[300px] overflow-y-auto">
               <table class="w-full table-fixed text-sm">
                 <thead class="sticky top-0 bg-white">
@@ -169,7 +164,7 @@
                 </thead>
                 <tbody>
                   <tr v-for="item in cartStore.items" :key="item.tourId">
-                    <!-- 被截斷時滑鼠移上去會跳出完整品名,沒截斷就不會跳 -->
+                    <!-- 品名被截斷時，滑鼠移上去才會跳出完整名稱 -->
                     <td class="py-1 pr-2"><n-ellipsis>{{ item.title }}</n-ellipsis></td>
                     <td class="text-center py-1">{{ item.quantity }}</td>
                     <td class="text-right py-1 whitespace-nowrap">{{ formatCurrency(item.price) }}</td>
@@ -197,7 +192,7 @@
           </div>
         </n-popover>
 
-        <!-- 跟旁邊的愛心、購物車一樣:hover 變黃橘,選單展開時維持黃橘(只在 lg 以下出現,header 一定是白底) -->
+        <!-- 跟旁邊的 icon 一樣：hover 變黃橘，選單展開時維持黃橘（只在 lg 以下出現，header 一定是白底） -->
         <button
           type="button"
           class="lg:hidden text-lg transition-colors"

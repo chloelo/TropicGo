@@ -1,7 +1,6 @@
-/* 捲動進場動畫(搭配 directives/aos.ts)。數值照 aos@2.3.4 的 dist/aos.css,
-   全站預設 duration 600ms、easing ease(舊版 AOS.init({ duration: 600 }))。
-   選擇器刻意重複兩次(跟原版一樣)拉高優先權,元素上就算也有 transition-* 之類的 utility class
-   也不會把動畫設定蓋掉。delay 只加在 .aos-animate 上:進場延遲、離場立即收回 */
+/* 捲動進場動畫（搭配 directives/aos.ts），數值照 aos@2.3.4 的 dist/aos.css，預設 duration 600ms、easing ease。
+   選擇器刻意重複兩次拉高優先權，元素上有 transition-* 之類的 class 也不會蓋掉動畫設定。
+   delay 只加在 .aos-animate 上：進場延遲、離場立即收回 */
 [data-aos][data-aos] {
   transition-duration: 0.6s;
   transition-timing-function: ease;

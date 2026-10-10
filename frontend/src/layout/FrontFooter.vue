@@ -4,11 +4,10 @@
 
   const year = new Date().getFullYear()
 
-  // CakeResume 沒有品牌 icon,Font Awesome 免費版的履歷類 icon 又都不是方的,
-  // 改用 Boxicons 的人像方塊(SVG 直接寫在 uno.config.ts),才跟方形的 GitHub/LinkedIn 一致;
-  // title 讓滑鼠移上去看得到是什麼連結
+  // CakeResume 沒有品牌 icon，改用 Boxicons 的人像方塊（SVG 定義在 uno.config.ts），
+  // 才會跟方形的 GitHub、LinkedIn icon 一致
   const socialLinks = [
-    { label: '履歷(CakeResume)', href: 'https://www.cake.me/resumes/chloe-lo', icon: 'i-boxicons-user-square-filled' },
+    { label: '履歷（CakeResume）', href: 'https://www.cake.me/resumes/chloe-lo', icon: 'i-boxicons-user-square-filled' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/lo-yihsin', icon: 'i-fa6-brands-linkedin' },
     { label: 'GitHub', href: 'https://github.com/chloelo/TropicGo', icon: 'i-fa6-brands-square-github' },
   ]
@@ -16,16 +15,13 @@
 
 <template>
   <div>
-    <!-- img 預設是 inline,會貼著文字基線,底下留一截行高造成的小縫隙——block 才會跟下面的色塊整個貼齊 -->
+    <!-- block：img 預設是 inline，底下會多出一截行高的縫隙，跟下面的色塊接不起來 -->
     <img :src="HERO_IMAGES.footerDecorative" alt="" loading="lazy" class="w-full block" />
   </div>
   <footer class="bg-africa text-white">
     <div class="bs-container py-[30px]">
-      <!-- 舊版 logo/社群 icon 這排是單純 d-flex justify-content-between,沒有允許換行,
-           手機寬度也是硬擠在同一排——我多加了 flex-wrap,窄螢幕擠不下就整個 icon 掉到下一行、跟 logo 沒對齊 -->
       <div class="flex items-center justify-between gap-4">
         <RouterLink to="/">
-          <!-- 舊版 _footer.scss:768px 以下 logo 縮到 130px 寬 -->
           <img :src="logo" alt="TropicGo" class="w-[130px] md:w-[195px] h-auto block" />
         </RouterLink>
         <ul class="flex gap-4 text-xl list-none">
@@ -44,7 +40,6 @@
         </ul>
       </div>
 
-      <!-- 舊版 align-items-md-end:桌機版權宣告跟左邊 email 那行對齊在底部;手機上下排,中間 4px -->
       <div class="mt-6 flex flex-col md:flex-row md:items-end justify-between gap-1 text-white/80">
         <div>
           <p>03-456-7890</p>
