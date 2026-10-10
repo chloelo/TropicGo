@@ -1,11 +1,12 @@
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import { useMessage } from 'naive-ui'
   import loginBg from '@/assets/images/login-bg.jpg'
   import { useAdminAuthStore } from '@/stores/admin-auth'
   import { apiErrorMessage } from '@/utils/api-error'
 
+  const route = useRoute()
   const router = useRouter()
   const message = useMessage()
   const authStore = useAdminAuthStore()
@@ -19,12 +20,24 @@
     loading.value = true
     try {
       await authStore.login(email.value, password.value)
-      router.push({ name: 'admin-dashboard' })
+      // 用 replace：登入頁不留在瀏覽紀錄裡，登入後按上一頁不會又回到這裡
+      router.replace(redirectTarget())
     } catch (error) {
       message.error(apiErrorMessage(error, '登入失敗，請確認帳號密碼'))
     } finally {
       loading.value = false
     }
+  }
+
+  // 登入後回到原本要去的後台頁面。網址上的 redirect 可以被任意修改，
+  // 所以只接受需要登入的後台頁，其他值一律回儀表板
+  function redirectTarget() {
+    const redirect = route.query.redirect
+    if (typeof redirect === 'string') {
+      const target = router.resolve(redirect)
+      if (target.meta.requiresAuth) return target.fullPath
+    }
+    return { name: 'admin-dashboard' }
   }
 
   // 示範帳號是公開給面試官的（只能瀏覽），帳密由環境變數帶入；沒設定就不顯示這個按鈕
@@ -54,6 +67,12 @@
       >
         請先登入
       </h2>
+      <p
+        v-if="authStore.sessionExpired"
+        class="mb-4 px-4 py-3 rounded-[10px] bg-[#fff3cd] border border-[#ffeeba] text-[#856404]"
+      >
+        登入已逾時，請重新登入
+      </p>
       <form @submit.prevent="handleSubmit">
         <div class="mb-4">
           <label for="login-email" class="block mb-2 text-africa">Email address</label>

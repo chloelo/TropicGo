@@ -1,4 +1,6 @@
+import { isAxiosError } from 'axios'
 import { createRouter, createWebHistory } from 'vue-router'
+import { api } from '@/api/client'
 import { useAdminAuthStore } from '@/stores/admin-auth'
 import { setPageTitle } from '@/utils/page-title'
 import HomeView from '@/views/front/HomeView.vue'
@@ -76,7 +78,7 @@ const router = createRouter({
       path: '/admin/login',
       name: 'admin-login',
       component: () => import('@/views/admin/LoginView.vue'),
-      meta: { title: '後台登入' },
+      meta: { title: '後台登入', guestOnly: true },
     },
     {
       path: '/admin',
@@ -112,16 +114,42 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach(async (to) => {
-  if (!to.meta.requiresAuth) return true
+router.beforeEach(async (to, from) => {
+  if (!to.meta.requiresAuth && !to.meta.guestOnly) return true
 
   const authStore = useAdminAuthStore()
   if (!authStore.checked) await authStore.checkAuth()
-  if (!authStore.isLoggedIn) return { name: 'admin-login' }
+
+  // 登入頁只給沒登入的人看；要換帳號就先登出
+  if (to.meta.guestOnly) {
+    if (!authStore.isLoggedIn) return true
+    // 在網站內切過來（例如按上一頁）就留在原頁；網址列直接輸入會整個重新載入，
+    // 不知道原本在哪一頁，所以回儀表板
+    return from.matched.length > 0 ? false : { name: 'admin-dashboard' }
+  }
+
+  // 沒登入：導到登入頁，並記下原本要去的頁面，登入後回到這裡
+  if (!authStore.isLoggedIn) return { name: 'admin-login', query: { redirect: to.fullPath } }
   return true
 })
 
-router.afterEach((to) => {
+// 使用中 token 過期（或失效），後台 API 會回 401：清掉登入狀態，導回登入頁，登入後回到目前這頁。
+// 只在已登入時處理：開站時 checkAuth 遇到失效的 token 會自己清掉
+api.instance.interceptors.response.use(undefined, (error) => {
+  const authStore = useAdminAuthStore()
+  if (isAxiosError(error) && error.response?.status === 401 && authStore.isLoggedIn) {
+    authStore.expireSession()
+    router.replace({
+      name: 'admin-login',
+      query: { redirect: router.currentRoute.value.fullPath },
+    })
+  }
+  return Promise.reject(error)
+})
+
+router.afterEach((to, _from, failure) => {
+  // 被守衛取消的換頁（例如已登入時進登入頁、留在原頁）也會走到這裡，這時不能把標題改成目標頁的
+  if (failure) return
   setPageTitle(typeof to.meta.title === 'string' ? to.meta.title : undefined)
 })
 
