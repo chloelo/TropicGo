@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TropicGo</title>
 
-    <!-- OG meta tags——圖片是本地重新寄存的素材(見 public/og-image.jpg),og:url 要在實際部署網域確定後再更新 -->
+    <!-- 分享預覽（OG）：網址由環境變數 VITE_SITE_URL 帶入，換部署網域不用改程式；圖片在 public/og-image.jpg -->
     <meta property="og:title" content="TropicGo 熱趣" />
     <meta property="og:description" content="TropicGo 熱趣，藏在回歸線裡的熱情面紗，等你來一探究竟！" />
-    <meta property="og:url" content="https://tropicgo.vercel.app/" />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://tropicgo.vercel.app/og-image.jpg" />
+    <meta property="og:image" content="%VITE_SITE_URL%/og-image.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
