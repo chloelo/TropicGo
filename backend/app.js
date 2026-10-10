@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const config = require('./config');
 
 const { dataSource } = require('./db/data-source');
@@ -16,7 +17,10 @@ const adminOrdersRouter = require('./routes/adminOrders');
 
 const app = express();
 
-app.use(cors());
+// 部署平台前面有一層代理，要信任它轉送的使用者 IP，登入次數限制才會以每個使用者計算，不會全部算成同一個 IP
+app.set('trust proxy', 1);
+app.use(helmet());
+app.use(cors({ origin: config.get('web.corsOrigins') }));
 app.use(express.json());
 
 // 健康檢查（不是 JSON、不在 /api 底下），給 Docker healthcheck 和部署平台使用
@@ -44,13 +48,18 @@ app.use((req, res, next) => {
   next(appError(404, '無此路由'));
 });
 
-// 全域錯誤處理（要有 4 個參數，Express 才會當成錯誤處理 middleware）
+// 全域錯誤處理（要有 4 個參數，Express 才會當成錯誤處理 middleware）。
+// 有 status 的是預期內的錯誤（appError），訊息可以直接給前端；其他是預期外的錯誤，
+// 訊息可能帶有資料庫的細節，只記在 log，前端只收到「伺服器錯誤」
 app.use((err, req, res, next) => {
-  const statusCode = err.status || 500;
-  res.status(statusCode).json({
-    status: statusCode === 500 ? 'error' : 'failed',
-    message: err.message || '伺服器錯誤',
-  });
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ status: 'failed', message: '請求內容格式錯誤' });
+  }
+  if (err.status && err.status < 500) {
+    return res.status(err.status).json({ status: 'failed', message: err.message });
+  }
+  console.error(err);
+  res.status(500).json({ status: 'error', message: '伺服器錯誤' });
 });
 
 dataSource

@@ -246,6 +246,11 @@ components:
       content:
         application/json:
           schema: { $ref: '#/components/schemas/ErrorResponse' }
+    TooManyRequests:
+      description: 請求太頻繁（登入失敗次數過多、短時間內送出太多次）
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
 
 paths:
   /regions:
@@ -352,6 +357,7 @@ paths:
                           title: { type: string }
                           percent: { type: integer }
         '400': { $ref: '#/components/responses/BadRequest' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
 
   /orders:
     post:
@@ -376,6 +382,7 @@ paths:
                     properties:
                       data: { $ref: '#/components/schemas/Order' }
         '400': { $ref: '#/components/responses/BadRequest' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
 
   /orders/{id}:
     get:
@@ -424,6 +431,7 @@ paths:
                     properties:
                       data: { $ref: '#/components/schemas/Order' }
         '400': { $ref: '#/components/responses/BadRequest' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
 
   /admin/auth/login:
     post:
@@ -458,6 +466,7 @@ paths:
                           token: { type: string }
                           admin: { $ref: '#/components/schemas/Admin' }
         '400': { $ref: '#/components/responses/BadRequest' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
 
   /admin/auth/check:
     get:
