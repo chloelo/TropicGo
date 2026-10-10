@@ -6,13 +6,13 @@ export function formatCurrency(value: number | null | undefined): string {
   return `NT$ ${value.toLocaleString('zh-TW')}`
 }
 
-/** 日期格式：2026/10/10，沒有值時顯示「—」 */
+/** 日期格式：YYYY/MM/DD，沒有值時顯示「—」 */
 export function formatDate(value?: string | number | null): string {
   if (!value) return '—'
   return dayjs(value).format('YYYY/MM/DD')
 }
 
-/** 日期時間格式：2026/10/10 18:30，沒有值時顯示「—」 */
+/** 日期時間格式：YYYY/MM/DD HH:mm，沒有值時顯示「—」 */
 export function formatDateTime(value?: string | number | null): string {
   if (!value) return '—'
   return dayjs(value).format('YYYY/MM/DD HH:mm')

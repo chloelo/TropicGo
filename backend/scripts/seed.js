@@ -10,13 +10,20 @@ const REGIONS = [
   { name: '大洋洲', slug: 'oceania' },
 ];
 
-// 首頁「最新優惠」彈窗圖片上寫的折扣碼（percent 是要付的百分比，90 代表打 9 折）
+// 從今天往後算幾年，日期不寫死
+function yearsFromNow(years) {
+  const date = new Date();
+  date.setFullYear(date.getFullYear() + years);
+  return date;
+}
+
+// 首頁「最新優惠」彈窗圖片上寫的折扣碼（percent 是要付的百分比，90 代表打 9 折），到期日是執行 seed 當天起算 5 年
 const COUPONS = [
   {
     title: '全站 9 折優惠',
     code: 'tropicgo90',
     percent: 90,
-    due_date: new Date('2030-12-31T23:59:59+08:00'),
+    due_date: yearsFromNow(5),
     is_enabled: true,
   },
 ];
