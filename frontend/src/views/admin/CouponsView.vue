@@ -49,7 +49,7 @@
   }
 
   const form = reactive(emptyForm())
-  // n-date-picker 用的是時間戳(ms),送出時再轉成後端要的日期字串
+  // n-date-picker 用的是時間戳（ms），送出時再轉成後端要的日期字串
   const dueDateTimestamp = ref<number | null>(null)
 
   const rules: FormRules = {
@@ -113,8 +113,8 @@
   }
 
   function handleDelete(coupon: Coupon) {
-    // 刪除是不能復原的操作:用「危險」類型(紅色圖示和刪除鈕);取消鈕維持灰色,
-    // 畫面上只有刪除鈕有顏色(灰色的焦點、hover 樣式在 utils/naive-theme.ts 的 Dialog 設定)
+    // 刪除不能復原：用「危險」類型（紅色圖示和刪除鈕）；取消鈕維持灰色，畫面上只有刪除鈕有顏色
+    // （灰色的焦點、hover 樣式在 utils/naive-theme.ts）
     naiveDialog.error({
       title: '刪除優惠券',
       content: `確定要刪除「${coupon.title}」嗎？`,
@@ -153,7 +153,7 @@
       render: (row) =>
         h(NSpace, null, {
           default: () => [
-            // 列表上的動作按鈕:綠色外框+文字(後台的 primary 是綠色,見 utils/naive-theme.ts)
+            // 列表上的動作按鈕：綠色外框和文字（後台的 primary 是綠色）
             h(
               NButton,
               { size: 'small', type: 'primary', ghost: true, onClick: () => openEdit(row) },
@@ -191,7 +191,7 @@
       remote
     />
 
-    <!-- 最高到視窗高度扣掉上下各 40px:標題和底部按鈕固定,只有中間的內容捲動,內容再多按鈕也不會被推到畫面外 -->
+    <!-- 最高到視窗高度減上下各 40px：標題和底部按鈕固定，只有中間內容捲動，內容再多按鈕也不會被推出畫面 -->
     <n-modal
       v-model:show="showDialog"
       preset="card"

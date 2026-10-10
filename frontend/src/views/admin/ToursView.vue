@@ -44,7 +44,7 @@
   const isEdit = ref(false)
   const editingId = ref<string | null>(null)
 
-  // 出發城市是下拉選單,編輯舊資料時如果不在選項裡就先清空(null),讓必填驗證提醒重新選
+  // 出發城市是下拉選單，編輯時如果原本的值不在選項裡就先清空（null），讓必填驗證提醒重新選
   type TourForm = Omit<TourInput, 'images' | 'departure_city'> & {
     departure_city: DepartureCity | null
   }
@@ -68,7 +68,7 @@
   }
 
   const form = reactive(emptyForm())
-  // 圖片網址用一行一個的文字框輸入,送出時再切成陣列(比動態增減欄位簡單,也不受限於陣列筆數)
+  // 圖片網址用一行一個的文字框輸入，送出時再切成陣列（比動態增減欄位簡單）
   const imagesText = ref('')
 
   const rules: FormRules = {
@@ -127,7 +127,7 @@
       return
     }
 
-    // 出發城市必選(上面的驗證已經擋掉 null),這裡的檢查只是讓型別確定不是 null
+    // 上面的驗證已經擋掉 null，這裡的檢查只是讓型別確定出發城市不是 null
     const departureCity = form.departure_city
     if (!departureCity) return
 
@@ -152,8 +152,8 @@
   }
 
   function handleDelete(tour: Tour) {
-    // 刪除是不能復原的操作:用「危險」類型(紅色圖示和刪除鈕);取消鈕維持灰色,
-    // 畫面上只有刪除鈕有顏色(灰色的焦點、hover 樣式在 utils/naive-theme.ts 的 Dialog 設定)
+    // 刪除不能復原：用「危險」類型（紅色圖示和刪除鈕）；取消鈕維持灰色，畫面上只有刪除鈕有顏色
+    // （灰色的焦點、hover 樣式在 utils/naive-theme.ts）
     naiveDialog.error({
       title: '刪除產品',
       content: `確定要刪除「${tour.title}」嗎？`,
@@ -207,7 +207,7 @@
       render: (row) =>
         h(NSpace, null, {
           default: () => [
-            // 列表上的動作按鈕:綠色外框+文字(後台的 primary 是綠色,見 utils/naive-theme.ts)
+            // 列表上的動作按鈕：綠色外框和文字（後台的 primary 是綠色）
             h(
               NButton,
               { size: 'small', type: 'primary', ghost: true, onClick: () => openEdit(row) },
@@ -245,7 +245,7 @@
       remote
     />
 
-    <!-- 最高到視窗高度扣掉上下各 40px:標題和底部按鈕固定,只有中間的內容捲動,內容再多按鈕也不會被推到畫面外 -->
+    <!-- 最高到視窗高度減上下各 40px：標題和底部按鈕固定，只有中間內容捲動，內容再多按鈕也不會被推出畫面 -->
     <n-modal
       v-model:show="showDialog"
       preset="card"
@@ -293,8 +293,8 @@
             placeholder="https://example.com/1.jpg&#10;https://example.com/2.jpg"
           />
         </n-form-item>
-        <!-- 兩個開關都很短:同一排左右各佔一半,文字在左、開關緊接在文字右邊。
-             不用 n-form-item 的 label:左側 label 的寬度是整個表單統一算的,短的「上架」前面會空一截 -->
+        <!-- 兩個開關同一排各佔一半，文字在左、開關緊接在右邊。
+             不用 n-form-item 的 label：左側 label 的寬度是整個表單統一算的，短的「上架」前面會空一截 -->
         <div class="grid grid-cols-2">
           <n-form-item :show-label="false">
             <span class="mr-3">熱門產品</span>

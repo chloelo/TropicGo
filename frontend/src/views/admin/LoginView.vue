@@ -13,7 +13,7 @@
   const password = ref('')
   const loading = ref(false)
 
-  // 欄位有 required / type="email",沒填或格式不對時瀏覽器會先擋下來,不會送到這裡(舊版也是這樣)
+  // 欄位有 required、type="email"，沒填或格式不對時瀏覽器會先擋下來，不會送到這裡
   async function handleSubmit() {
     loading.value = true
     try {
@@ -28,8 +28,7 @@
 </script>
 
 <template>
-  <!-- 舊版 Login.vue + _login.scss:整頁風景照背景,中間半透明白卡片,赤陶色標題、膠囊形輸入框和按鈕。
-       這頁不在 FrontLayout 底下,字級行高要自己設回舊版 Bootstrap 的 16px / 1.5 -->
+  <!-- 這頁不在 FrontLayout 底下，字級和行高要自己設成 16px／1.5 -->
   <div
     class="min-h-screen w-full flex items-center justify-center bg-cover bg-center bg-no-repeat text-[16px] leading-[1.5]"
     :style="{ backgroundImage: `url(${loginBg})` }"

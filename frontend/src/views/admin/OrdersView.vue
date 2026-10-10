@@ -93,7 +93,7 @@
     {
       title: '操作',
       key: 'actions',
-      // 列表上的動作按鈕:綠色外框+文字,跟產品、優惠券的編輯按鈕一致
+      // 列表上的動作按鈕：綠色外框和文字，跟產品、優惠券的編輯按鈕一致
       render: (row) =>
         h(
           NButton,
@@ -121,7 +121,7 @@
       remote
     />
 
-    <!-- 最高到視窗高度扣掉上下各 40px:標題和底部按鈕固定,只有中間的內容捲動,內容再多按鈕也不會被推到畫面外 -->
+    <!-- 最高到視窗高度減上下各 40px：標題和底部按鈕固定，只有中間內容捲動，內容再多按鈕也不會被推出畫面 -->
     <n-modal
       v-model:show="showDialog"
       preset="card"
@@ -143,7 +143,7 @@
           <n-descriptions-item label="地址">
             {{ dialogOptions.data.customer_address }}
           </n-descriptions-item>
-          <!-- 付款方式是後來才加的欄位,更早建立的訂單沒有值就不顯示 -->
+          <!-- 付款方式是後來才加的欄位，更早建立的訂單沒有值就不顯示 -->
           <n-descriptions-item v-if="dialogOptions.data.payment_method" label="付款方式">
             {{ paymentLabel(dialogOptions.data.payment_method) }}
           </n-descriptions-item>
