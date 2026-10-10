@@ -1,5 +1,5 @@
-// scripts/seed-tours.js — 塞入 13 筆行程範例資料。圖片是本地檔案(frontend/public/images/products),
-// 價格為含台灣來回機票的團費,天數與價格參考台灣旅行社同類行程的市場行情
+// 產品範例資料（13 筆）。圖片是 frontend/public/images/products 裡的本地檔案，
+// 價格是含台灣來回機票的團費，天數和價格參考台灣旅行社同類行程的行情
 require('dotenv').config();
 const { dataSource } = require('../db/data-source');
 
@@ -278,8 +278,8 @@ const TOURS = [
   },
 ];
 
-// 比對既有行程時去掉標題結尾的天數(「 9 日」「 一日」)和所有空白,調整天數或中英文間的空格時
-// 才不會被當成新行程重建、換掉行程 id(收藏和購物車都是用 id 記的,id 一換就失效)
+// 比對既有產品時忽略標題結尾的天數和所有空白：調整天數或空格時會原地更新，
+// 不會被當成新產品重建、換掉 id（收藏和購物車都是用 id 記錄）
 const baseTitle = (title) => title.replace(/\s*(\d+|一)\s*日$/, '').replace(/\s+/g, '');
 
 async function seed() {
@@ -297,9 +297,7 @@ async function seed() {
     const exists = existingTours.find((t) => baseTitle(t.title) === baseTitle(item.title));
 
     if (exists) {
-      // 不能只補 content——改了 images 之後重跑 seed 卻完全沒更新到資料庫,之前就因為這裡
-      // 只 patch content 吃過一次虧(圖片改了但資料庫沒變),這裡統一改成每個欄位都同步,
-      // 圖片也整組刪掉重灌(TourImage 本身沒有能拿來比對新舊的自然鍵,刪掉重建最簡單可靠)
+      // 每個欄位都同步；圖片整組刪掉重建（TourImage 沒有可以比對新舊的欄位，重建最簡單可靠）
       await tourRepo.update(exists.id, {
         title: item.title,
         summary: item.summary,
@@ -340,8 +338,7 @@ async function seed() {
     console.log(`+ 新增: ${item.title}`);
   }
 
-  // 清掉已經從 TOURS 陣列移除、但資料庫裡還留著的舊行程(例如墨西哥坎昆)——
-  // 只刪沒有訂單引用的,避免誤刪掉已經有真實訂單資料的行程
+  // 清掉已經從 TOURS 移除、但資料庫還留著的產品；有訂單引用的保留，避免刪到真實訂單的資料
   const currentTitles = TOURS.map((item) => baseTitle(item.title));
   const allTours = await tourRepo.find();
   const orderItemRepo = dataSource.getRepository('OrderItem');

@@ -1,4 +1,4 @@
-// entities/Coupon.js — 優惠券
+// 優惠券
 const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({

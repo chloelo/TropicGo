@@ -1,4 +1,4 @@
-// entities/Tour.js — 行程主檔(對應舊版 Product)
+// 產品主檔
 const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({
@@ -28,8 +28,8 @@ module.exports = new EntitySchema({
     },
     content: {
       type: 'text',
-      nullable: false, // 費用包含(簡短條列,跟 description 的長文介紹分開)
-      default: '', // 現有資料表已有舊資料,加新欄位時先給預設值,避免 NOT NULL 遷移失敗
+      nullable: false, // 費用包含（簡短條列，跟 description 的長文介紹分開）
+      default: '', // 加這個欄位時資料表已有資料，先給預設值，NOT NULL 才不會失敗
     },
     unit: {
       type: 'varchar',
@@ -73,7 +73,7 @@ module.exports = new EntitySchema({
   },
 
   relations: {
-    // 所屬地區,透過 region_id 對應到 Region
+    // 所屬地區，透過 region_id 對應到 Region
     region: {
       type: 'many-to-one',
       target: 'Region',

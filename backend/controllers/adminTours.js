@@ -4,7 +4,7 @@ const { isValidString, isNonNegativeInteger } = require('../utils/validUtils');
 
 const PAGE_SIZE = 10;
 
-// 後台「出發城市」下拉選單的選項(舊版就是這四個),跟 docs/openapi.yaml 的 TourInput.departure_city enum 要一致
+// 出發城市的選項，跟 docs/openapi.yaml 的 TourInput.departure_city enum 要一致
 const DEPARTURE_CITIES = ['台北', '桃園', '台中', '高雄'];
 
 function validateTourInput(body) {
@@ -138,8 +138,8 @@ const adminToursController = {
     if (!existing) return next(appError(400, '行程不存在'));
 
     try {
-      // 包在 transaction 裡:刪圖片、刪行程要嘛一起成功,要嘎 Tour 因為有訂單關聯刪不掉時,
-      // 連同前面已經刪的圖片一起 rollback,不會留下「行程還在但圖片被清空」的半殘狀態
+      // 包在 transaction 裡：產品因為有訂單關聯刪不掉時，前面刪掉的圖片也會一起 rollback，
+      // 不會留下「產品還在、圖片被清空」的狀態
       await dataSource.transaction(async (manager) => {
         await manager.getRepository('TourImage').delete({ tour: { id } });
         await manager.getRepository('Tour').delete(id);

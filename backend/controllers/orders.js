@@ -3,10 +3,10 @@ const { dataSource } = require('../db/data-source');
 const appError = require('../utils/appError');
 const { isValidString, isNonNegativeInteger } = require('../utils/validUtils');
 
-// 不含容易看錯的字元(0/O、1/I/L),訂單編號給客服人工對單時比較不會唸錯、抄錯
+// 訂單編號不含容易看錯的字元（0/O、1/I/L），客服人工對單時比較不會唸錯、抄錯
 const generateOrderNumber = customAlphabet('23456789ABCDEFGHJKMNPQRSTUVWXYZ', 10);
 
-// 結帳頁「購買方式」的選項(存英文代碼,畫面顯示中文由前端 utils/payment.ts 對應),
+// 付款方式的選項（存英文代碼，畫面上的中文由前端 utils/payment.ts 對應），
 // 跟 docs/openapi.yaml 的 OrderInput.payment_method enum 要一致
 const PAYMENT_METHODS = ['Credit', 'LinePay', 'ApplePay', 'GooglePay', 'ATM', 'CVS'];
 
@@ -39,22 +39,21 @@ const ordersController = {
     } = req.body;
 
     try {
-      // 整個建立訂單的過程包在一個 transaction 裡
-      // manager 底下的所有操作,要嘛全部成功一起 commit,要嘎中途丟錯一起 rollback
+      // 整個建立訂單的過程包在 transaction 裡：中途任何一步丟錯，前面存的資料都會一起 rollback
       const savedOrder = await dataSource.transaction(async (manager) => {
         const tourRepo = manager.getRepository('Tour');
         const orderRepo = manager.getRepository('Order');
         const orderItemRepo = manager.getRepository('OrderItem');
         const couponRepo = manager.getRepository('Coupon');
 
-        // 1. 逐一查詢行程目前的價格,組成訂單明細(這就是「價格快照」)
+        // 1. 逐一查詢產品目前的價格，組成訂單明細（價格快照）
         const orderItemsData = [];
         let rawTotal = 0;
 
         for (const item of items) {
           const tour = await tourRepo.findOneBy({ id: item.tour_id, is_enabled: true });
           if (!tour) {
-            // 丟出的 Error 會讓 transaction 整個 rollback,前面存的東西都不會留下
+            // 丟出錯誤會讓整個 transaction rollback
             throw appError(400, `行程不存在或已下架:${item.tour_id}`);
           }
           const subtotal = tour.price * item.quantity;
@@ -68,7 +67,7 @@ const ordersController = {
           });
         }
 
-        // 2. 如果有帶優惠碼,驗證後套用折扣(percent: 90 代表打 9 折,要付原價的 90%)
+        // 2. 有帶優惠碼的話，驗證後套用折扣（percent 90 代表打 9 折，付原價的 90%）
         let coupon = null;
         let totalAmount = rawTotal;
         if (coupon_code) {
@@ -92,7 +91,7 @@ const ordersController = {
           total_amount: totalAmount,
         });
 
-        // 4. 建立訂單明細,關聯回訂單
+        // 4. 建立訂單明細，關聯回訂單
         await orderItemRepo.save(
           orderItemsData.map((item) => ({ ...item, order: { id: order.id } })),
         );
@@ -125,7 +124,7 @@ const ordersController = {
   },
 
   // POST /api/orders/:id/pay
-  // 模擬付款(沒有串真的金流):客人在結帳流程按「確認付款」,待付款的訂單改成已付款
+  // 模擬付款（沒有串金流）：結帳時按「確認付款」，待付款的訂單改成已付款
   async payOrder(req, res, next) {
     const { id } = req.params;
     const orderRepo = dataSource.getRepository('Order');

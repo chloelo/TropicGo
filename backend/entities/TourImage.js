@@ -1,4 +1,4 @@
-// entities/TourImage.js — 行程圖片(一對多,取代舊版 imageUrl[] 陣列)
+// 產品圖片（一個產品多張，依 sort_order 排序）
 const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({

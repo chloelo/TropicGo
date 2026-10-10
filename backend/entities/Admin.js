@@ -1,4 +1,4 @@
-// entities/Admin.js — 後台管理員
+// 後台管理員
 const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({

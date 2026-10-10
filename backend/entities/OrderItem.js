@@ -1,4 +1,4 @@
-// entities/OrderItem.js — 訂單明細(價格快照,不受後續 Tour 漲跌價影響)
+// 訂單明細：存下單當時的名稱和價格（價格快照），不受之後產品改價影響
 const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({

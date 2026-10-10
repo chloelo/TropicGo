@@ -18,8 +18,7 @@ const toursController = {
     const tours = await tourRepo.find({
       where,
       relations: { region: true, images: true },
-      // images 沒指定排序的話,TypeORM 不保證順序跟 sort_order 一致,列表跟詳情頁各自查出來的
-      // 第一張可能不同——卡片封面跟進去詳情頁看到的主圖對不上,就是這裡漏寫的
+      // 圖片要指定排序：沒指定的話 TypeORM 不保證順序，列表的封面和詳情頁的主圖可能不同
       order: { created_at: 'DESC', images: { sort_order: 'ASC' } },
     });
 

@@ -1,4 +1,4 @@
-// entities/Region.js — 地區分類(亞洲/美洲/非洲/大洋洲)
+// 地區分類（亞洲、美洲、非洲、大洋洲）
 const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({

@@ -1,4 +1,4 @@
-// scripts/seed.js — 塞入開發用的基本資料(地區 + 優惠券 + 一個管理員帳號)
+// 開發用的基本資料：地區、優惠券、一個管理員帳號
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const { dataSource } = require('../db/data-source');
@@ -10,7 +10,7 @@ const REGIONS = [
   { name: '大洋洲', slug: 'oceania' },
 ];
 
-// 首頁「最新優惠」彈窗圖片上寫的折扣碼(percent 是要付的百分比,90 = 打 9 折)
+// 首頁「最新優惠」彈窗圖片上寫的折扣碼（percent 是要付的百分比，90 代表打 9 折）
 const COUPONS = [
   {
     title: '全站 9 折優惠',
