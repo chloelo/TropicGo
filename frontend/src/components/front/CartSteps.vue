@@ -3,7 +3,6 @@
 
   const props = defineProps<{ step: number }>()
 
-  // 舊版 Cart.vue 的四個步驟(Font Awesome 5 的 luggage-cart、list-alt、money-check-alt 在 FA6 改名了)
   const steps = [
     { label: '確認清單', icon: 'i-fa6-cart-flatbed-suitcase' },
     { label: '填寫資料', icon: 'i-fa6-rectangle-list' },
@@ -11,15 +10,14 @@
     { label: '完成訂單', icon: 'i-fa6-address-card' },
   ]
 
-  // 進度線從第一個圓的中心畫到最後一個圓的中心,每前進一步多 1/3
+  // 進度線從第一個圓的中心畫到最後一個圓的中心，每前進一步多 1/3
   const progressWidth = computed(() => `${((props.step - 1) / (steps.length - 1)) * 100}%`)
 </script>
 
 <template>
-  <!-- 舊版 _cart.scss 的 .zone_process:圓形步驟疊在進度線上;
-       relative 讓圓形畫在後面那條進度線(-mt 往上拉進來)的上層 -->
   <div class="flex justify-center -mx-[15px]">
     <div class="w-full md:w-10/12 px-[15px]">
+      <!-- relative：讓圓形畫在進度線（下面用 -mt 往上拉進來）的上層 -->
       <ol class="relative flex justify-between">
         <li
           v-for="(item, index) in steps"

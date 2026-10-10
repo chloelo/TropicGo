@@ -5,7 +5,6 @@
 </script>
 
 <template>
-  <!-- 樣式照舊版 Bootstrap 4 的 .toast 量出來的數值 -->
   <div class="fixed top-[15px] right-[15px] z-[10000] w-max max-w-[calc(100vw-30px)]">
     <TransitionGroup
       enter-from-class="opacity-0"

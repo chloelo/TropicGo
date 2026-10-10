@@ -5,8 +5,8 @@
   import type { CartItem } from '@/stores/cart'
   import { formatCurrency } from '@/utils/format'
 
-  // orderedItems:送出訂單前購物車的內容(送出後購物車就清空了),
-  // 訂單明細沒有圖片和單位,從這裡用行程名稱對回來
+  // orderedItems：送出訂單前購物車的內容（送出後購物車就清空了）。
+  // 訂單明細沒有圖片和單位，用產品名稱從這裡對回來
   const props = defineProps<{
     order: Order
     orderedItems: CartItem[]
@@ -27,7 +27,6 @@
 </script>
 
 <template>
-  <!-- 舊版 .zone_order:置中 8/12 欄,上面訂單明細、下面聯絡人資料和確認付款按鈕 -->
   <div class="flex justify-center -mx-[15px]">
     <div class="w-full md:w-2/3 px-[15px]">
       <div class="p-4 mb-12 border border-[#dee2e6]">
@@ -36,7 +35,7 @@
         >
           訂單明細
         </h4>
-        <!-- 舊版沒有訂單編號,新版補上,客人之後要查詢訂單時用得到 -->
+        <!-- 顯示訂單編號：客人之後查詢訂單時用得到 -->
         <div class="flex justify-between mb-4">
           <p class="font-bold">訂單編號</p>
           <p>{{ order.order_number }}</p>

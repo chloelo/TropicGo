@@ -5,7 +5,6 @@
 </script>
 
 <template>
-  <!-- 舊版 vue-loading-overlay 的預設樣子:全頁、白色 50% 遮罩、中間 64px 的黑色旋轉圓環 -->
   <Transition
     enter-from-class="opacity-0"
     leave-to-class="opacity-0"

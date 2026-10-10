@@ -6,9 +6,8 @@
 </script>
 
 <template>
-  <!-- 舊版詳情頁「猜您可能會喜歡」、收藏頁「熱門推薦」共用的卡片(Bootstrap .card.shadow-sm):
-       只有「前往查看」按鈕,沒有加入購物車、熱門標籤,跟行程列表的 TourCard 不一樣。
-       mb-6 是舊版 .col.mb-4:每張卡片下面都有 24px,最後一排也有,所以不用 grid 的 gap-y -->
+  <!-- 只有「前往查看」的簡易卡片（詳情頁「猜您可能會喜歡」、收藏頁「熱門推薦」共用），跟產品列表的 TourCard 不同。
+       每張卡片下方固定留 24px（最後一排也有），所以用 mb-6，不用 grid 的 gap-y -->
   <div class="flex flex-col bg-white shadow-[0_2px_4px_0_rgba(0,0,0,0.075)] mb-6">
     <div class="h-[185px] overflow-hidden">
       <img :src="tour.images[0]?.url" :alt="tour.title" loading="lazy" class="w-full h-full object-cover" />

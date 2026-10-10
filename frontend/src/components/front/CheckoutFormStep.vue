@@ -23,7 +23,7 @@
   // 下拉選單顯示中文、送出英文代碼
   const paymentOptions = Object.entries(PAYMENT_LABEL).map(([value, label]) => ({ label, value }))
 
-  // 錯誤訊息照舊版 vee-validate 的中文訊息格式
+  // 錯誤訊息沿用原設計的格式：「欄位名稱 為必填」
   const rules: FormRules = {
     name: { required: true, message: '聯絡人姓名 為必填', trigger: ['input', 'blur'] },
     tel: [
@@ -38,14 +38,13 @@
     payment: { required: true, message: '購買方式 為必填', trigger: ['change', 'blur'] },
   }
 
-  // 舊版 _cart.scss 的 .zone_form:輸入框淺灰綠底、沒有框線、直角,高度 38px,
-  // label 16px、下面留 8px,每個欄位之間 30px(錯誤訊息就顯示在這 30px 裡,不會把下面的欄位往下推)
+  // 輸入框淺灰綠底、無框線、直角；欄位之間 30px，錯誤訊息就顯示在這 30px 裡，不會把下面的欄位往下推
   const FOCUS_SHADOW = '0 0 0 0.2rem rgba(163, 101, 73, 0.25)'
   const ERROR_BORDER = '1px solid #dc3545'
   const formTheme: GlobalThemeOverrides = {
     Form: {
       labelFontSizeTopMedium: '16px',
-      // label 的高度包含下面的 padding:文字 24px + 間距 8px
+      // label 高度包含下方的 padding：文字 24px + 間距 8px
       labelHeightMedium: '32px',
       lineHeight: '1.5',
       labelPaddingVertical: '0 0 8px 0',
@@ -110,8 +109,7 @@
 </script>
 
 <template>
-  <!-- 舊版 .zone_form:桌機左邊表單 8/12、右邊訂單明細 4/12;平板各一半;手機上下堆疊,明細在上面
-       (DOM 裡明細寫在前面,用 flex-row-reverse 讓它在大螢幕排到右邊) -->
+  <!-- 明細在 DOM 裡寫在前面，手機版會排在表單上方；大螢幕用 flex-row-reverse 排到右邊 -->
   <div class="flex flex-wrap flex-row-reverse -mx-[15px]">
     <div class="w-full md:w-1/2 lg:w-1/3 px-[15px]">
       <div class="p-4 mb-12 border border-[#dee2e6]">

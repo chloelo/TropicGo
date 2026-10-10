@@ -5,7 +5,7 @@
 
   const props = defineProps<{ order: Order }>()
 
-  // 付款方式是後來才加的欄位,更早建立的訂單沒有值
+  // 付款方式是後來才加的欄位，更早建立的訂單沒有值
   const rows = computed(() => [
     { label: '聯絡人姓名', value: props.order.customer_name },
     { label: '聯絡人電話', value: props.order.customer_phone },
@@ -17,7 +17,6 @@
 </script>
 
 <template>
-  <!-- 舊版 .order-infos:淺灰綠底,每一行之間用虛線隔開。確認付款那一步會把按鈕放進 slot -->
   <div class="p-4 mb-12 bg-[#f4f7f6]">
     <h4
       class="mb-6 pb-2 text-center text-[24px] font-medium leading-[1.2] border-b border-[#dee2e6]"
@@ -41,6 +40,7 @@
         {{ paid ? '已付款' : '尚未付款' }}
       </p>
     </div>
+    <!-- 確認付款那一步會把按鈕放進來 -->
     <slot />
   </div>
 </template>

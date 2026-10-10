@@ -5,14 +5,14 @@
   import { useToastStore } from '@/stores/toast'
   import { formatCurrency } from '@/utils/format'
 
-  // 驗證優惠碼的 API 不會回傳代碼本身,送出訂單時要用,所以把客人輸入的代碼一起記下來
+  /** 套用中的優惠券。驗證優惠碼的 API 不會回傳代碼本身，送出訂單時要用，所以把客人輸入的代碼一起存下來 */
   export interface AppliedCoupon {
     code: string
     title: string
     percent: number
   }
 
-  // payable(折扣後應付金額)由 CartView 算好傳進來,後面填資料、確認付款的步驟也要用同一個數字
+  // 折扣後的應付金額由 CartView 計算後傳入，後面的步驟也用同一個數字
   const props = defineProps<{ payable: number }>()
   const coupon = defineModel<AppliedCoupon | null>('coupon', { required: true })
   const emit = defineEmits<{ next: [] }>()
@@ -22,14 +22,13 @@
 
   const discount = computed(() => cartStore.totalPrice - props.payable)
 
-  // 結帳成功後也會呼叫 cartStore.clear(),那時不該跳「清除購物車」,所以通知只放在按鈕這裡
+  // 結帳成功時也會清空購物車，那時不該跳「成功清除購物車」，所以通知只放在這個按鈕
   function clearCart() {
     cartStore.clear()
     toast.push('成功清除購物車')
   }
 
-  // 數量框可以直接輸入(舊版是 @change 才更新):打小數取整數,清空或小於 1 就不改,
-  // 最後把框裡的字改回實際數量,避免畫面停在打錯的值
+  // 數量框可以直接輸入：小數取整數，清空或小於 1 就不更新，最後把框裡的文字改回實際數量
   function handleQuantityChange(item: CartItem, event: Event) {
     const input = event.target as HTMLInputElement
     const n = Math.floor(Number(input.value))
@@ -37,7 +36,7 @@
     input.value = String(item.quantity)
   }
 
-  // 舊版 findCoupon():套用後不管成功失敗都清空輸入框;失敗時保留原本已套用的優惠
+  // 套用後不論成功失敗都清空輸入框（原設計）；失敗時保留原本已套用的優惠
   const couponCode = ref('')
 
   async function applyCoupon() {
@@ -58,9 +57,8 @@
 </script>
 
 <template>
-  <!-- 舊版 .zone_cartList:左邊 8/12 欄購物清單、右邊 4/12 欄金額。
-       舊版在 768px 就分兩欄,但新版金額顯示成「NT$ 378,000」比舊版「$378,000」長,
-       平板寬度的 4/12 欄放不下(小計、應付金額都會折行),改成 992px 以上才分兩欄,以下上下堆疊 -->
+  <!-- 寬螢幕左右兩欄（清單 8/12、金額 4/12），以下上下堆疊：
+       金額顯示為「NT$ 378,000」，平板寬度的 4/12 欄放不下，小計和應付金額會折行 -->
   <div class="flex flex-wrap justify-center -mx-[15px]">
     <div class="w-full lg:w-2/3 px-[15px]">
       <template v-if="cartStore.items.length">
@@ -90,9 +88,8 @@
           <div class="pl-4">
             <img :src="item.image" :alt="item.title" class="w-[120px] h-auto align-middle" />
           </div>
-          <!-- min-w-0:數量輸入框本身有預設寬度,不加的話手機版這欄縮不下來,會整個超出灰底卡片 -->
+          <!-- min-w-0：數量輸入框有預設寬度，不加的話手機版這欄縮不下來，會超出卡片 -->
           <div class="relative w-full min-w-0 p-4">
-            <!-- 舊版 Bootstrap .close:半透明灰色叉叉,hover 變比較不透明 -->
             <button
               type="button"
               class="absolute top-4 right-4 text-[20px] leading-none text-[#adb5bd] opacity-50 hover:opacity-75"
@@ -106,7 +103,7 @@
               {{ formatCurrency(item.price) }} / {{ item.unit }}
             </p>
 
-            <!-- 數量加減佔一半寬、小計靠右(中間至少留 12px);768px 以下數量加減佔滿一整行,小計換到下一行 -->
+            <!-- 數量加減佔一半寬、小計靠右；手機版數量加減佔滿一行，小計換到下一行 -->
             <div class="mt-2 flex flex-wrap items-center gap-x-3 md:flex-nowrap">
               <div class="flex w-full h-[38px] mb-[10px] md:w-1/2 md:mb-0">
                 <button
@@ -157,7 +154,6 @@
       </template>
     </div>
 
-    <!-- 金額一律不折行,標題和金額中間至少留 12px -->
     <div class="w-full lg:w-1/3 px-[15px]">
       <div class="p-4 mb-4 border border-[#dee2e6]">
         <div class="flex justify-between gap-3">

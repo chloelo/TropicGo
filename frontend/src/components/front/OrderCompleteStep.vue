@@ -5,12 +5,10 @@
 
   defineProps<{ order: Order }>()
 
-  // 舊版用 Bootstrap collapse:按「查看訂單」展開/收合聯絡人資料
   const showOrder = ref(false)
 </script>
 
 <template>
-  <!-- 舊版 .zone_checkout:置中 8/12 欄 -->
   <div class="flex justify-center -mx-[15px]">
     <div class="w-full md:w-2/3 px-[15px] mt-12">
       <div class="text-center">

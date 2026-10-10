@@ -34,8 +34,8 @@
           熱門
         </span>
       </div>
-      <!-- 舊版 .badge 在圖片右下角、right:-5px 往右凸出卡片一點點。圖片外框為了 hover 放大
-           要 overflow-hidden,徽章放在裡面會被裁掉,所以拉到外框外面定位 -->
+      <!-- 徽章往右凸出卡片一點點；圖片外框為了 hover 放大要 overflow-hidden，
+           徽章放在裡面會被裁掉，所以放在外框外面定位 -->
       <span
         v-if="tour.region"
         class="absolute -right-[5px] bottom-[7px] z-10 px-2 py-1 rounded-full text-xs font-medium text-white"
@@ -54,8 +54,7 @@
         <span class="text-lg font-bold text-primary">{{ formatCurrency(tour.price) }}/{{ tour.unit }}</span>
       </div>
     </div>
-    <!-- 舊版 .btn-addTocart 釘在卡片最底部、寬度 100%,直接接在灰底內文下方、中間沒有空隙。
-         內文區 flex-1 撐滿,按鈕當最後一個 flex 子元素,同一排卡片的按鈕也會對齊在底部 -->
+    <!-- 內文區 flex-1 撐滿、按鈕放最後：同一排卡片的按鈕都會對齊在底部 -->
     <button
       type="button"
       class="w-full py-2 bg-secondary text-white flex items-center justify-center gap-2 hover:bg-secondary-dark transition-colors"

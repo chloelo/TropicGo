@@ -2,7 +2,7 @@
   import { computed } from 'vue'
   import { useWindowScroll } from '@vueuse/core'
 
-  // 舊版 ToTop.vue:捲動超過 300px 才顯示,顯示時 bottom 從 30px 收到 15px、opacity 0→0.8
+  // 捲動超過 300px 才淡入顯示
   const { y } = useWindowScroll()
   const visible = computed(() => y.value >= 300)
 
