@@ -146,7 +146,7 @@
             <p class="text-[18px] leading-[1.5] text-[#495057] mb-3">{{ tour.summary }}</p>
             <p class="leading-6 mb-4">{{ tour.content }}</p>
 
-            <!-- 成團人數、費用已含：資料庫沒有這些欄位，照原設計寫死 -->
+            <!-- 費用已含：資料庫沒有這個欄位，照原設計寫死 -->
             <ul class="mb-4">
               <li v-if="tour.is_popular" class="flex items-center mb-[10px]">
                 <span
@@ -170,7 +170,7 @@
                 >
                   <span class="i-fa6-users" />
                 </span>
-                成團人數：15 人
+                成團人數：{{ tour.min_group_size }} 人
               </li>
               <li class="flex items-center mb-[10px]">
                 <span

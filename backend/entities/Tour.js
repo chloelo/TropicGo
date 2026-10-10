@@ -50,6 +50,12 @@ module.exports = new EntitySchema({
       type: 'integer',
       nullable: false,
     },
+    // 成團人數：報名滿這個人數才會出團
+    min_group_size: {
+      type: 'integer',
+      default: 15,
+      nullable: false,
+    },
     is_popular: {
       type: 'boolean',
       default: false,

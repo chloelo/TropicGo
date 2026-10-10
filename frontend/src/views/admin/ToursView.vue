@@ -61,6 +61,7 @@
       content: '',
       unit: '人',
       departure_city: '桃園',
+      min_group_size: 15,
       origin_price: 0,
       price: 0,
       is_popular: false,
@@ -106,6 +107,7 @@
       content: tour.content,
       unit: tour.unit,
       departure_city: isDepartureCity(tour.departure_city) ? tour.departure_city : null,
+      min_group_size: tour.min_group_size,
       origin_price: tour.origin_price,
       price: tour.price,
       is_popular: tour.is_popular,
@@ -279,6 +281,9 @@
             :options="departureCityOptions"
             placeholder="請選擇"
           />
+        </n-form-item>
+        <n-form-item label="成團人數">
+          <n-input-number v-model:value="form.min_group_size" :min="1" style="width: 100%" />
         </n-form-item>
         <n-form-item label="原價">
           <n-input-number v-model:value="form.origin_price" :min="0" style="width: 100%" />

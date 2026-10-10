@@ -10,7 +10,7 @@ const DEPARTURE_CITIES = ['台北', '桃園', '台中', '高雄'];
 function validateTourInput(body) {
   const {
     title, region_id, summary, description, content,
-    unit, departure_city, origin_price, price, images,
+    unit, departure_city, min_group_size, origin_price, price, images,
   } = body;
 
   if (!isValidString(title)) return '請輸入行程名稱';
@@ -20,6 +20,7 @@ function validateTourInput(body) {
   if (!isValidString(content)) return '請輸入費用包含說明';
   if (!isValidString(unit)) return '請輸入單位';
   if (!DEPARTURE_CITIES.includes(departure_city)) return '請選擇出發城市';
+  if (!isNonNegativeInteger(min_group_size) || min_group_size < 1) return '成團人數格式錯誤';
   if (!isNonNegativeInteger(origin_price)) return '原價格式錯誤';
   if (!isNonNegativeInteger(price)) return '優惠價格式錯誤';
   if (!Array.isArray(images) || images.length === 0 || !images.every(isValidString)) {
@@ -63,7 +64,7 @@ const adminToursController = {
     if (errorMessage) return next(appError(400, errorMessage));
 
     const {
-      title, region_id, summary, description, content, unit, departure_city,
+      title, region_id, summary, description, content, unit, departure_city, min_group_size,
       origin_price, price, is_popular, is_enabled, images,
     } = req.body;
 
@@ -73,7 +74,7 @@ const adminToursController = {
 
     const tourRepo = dataSource.getRepository('Tour');
     const tour = await tourRepo.save({
-      title, summary, description, content, unit, departure_city, origin_price, price,
+      title, summary, description, content, unit, departure_city, min_group_size, origin_price, price,
       is_popular: Boolean(is_popular),
       is_enabled: is_enabled === undefined ? true : Boolean(is_enabled),
       region: { id: region_id },
@@ -102,7 +103,7 @@ const adminToursController = {
     if (errorMessage) return next(appError(400, errorMessage));
 
     const {
-      title, region_id, summary, description, content, unit, departure_city,
+      title, region_id, summary, description, content, unit, departure_city, min_group_size,
       origin_price, price, is_popular, is_enabled, images,
     } = req.body;
 
@@ -111,7 +112,7 @@ const adminToursController = {
     if (!region) return next(appError(400, '地區不存在'));
 
     await tourRepo.update(id, {
-      title, summary, description, content, unit, departure_city, origin_price, price,
+      title, summary, description, content, unit, departure_city, min_group_size, origin_price, price,
       is_popular: Boolean(is_popular),
       is_enabled: Boolean(is_enabled),
       region: { id: region_id },

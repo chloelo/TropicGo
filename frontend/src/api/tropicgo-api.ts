@@ -39,6 +39,11 @@ export interface Tour {
   unit: string
   /** @example "桃園" */
   departure_city: string
+  /**
+   * 成團人數
+   * @example 15
+   */
+  min_group_size: number
   origin_price: number
   price: number
   is_popular: boolean
@@ -61,6 +66,11 @@ export interface TourInput {
   content: string
   unit: string
   departure_city: '台北' | '桃園' | '台中' | '高雄'
+  /**
+   * 成團人數
+   * @min 1
+   */
+  min_group_size: number
   origin_price: number
   price: number
   is_popular?: boolean

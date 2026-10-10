@@ -55,6 +55,7 @@ components:
           content,
           unit,
           departure_city,
+          min_group_size,
           origin_price,
           price,
           is_popular,
@@ -72,6 +73,7 @@ components:
         content: { type: string, description: 費用包含(簡短條列) }
         unit: { type: string, example: 人 }
         departure_city: { type: string, example: 桃園 }
+        min_group_size: { type: integer, description: 成團人數, example: 15 }
         origin_price: { type: integer }
         price: { type: integer }
         is_popular: { type: boolean }
@@ -85,7 +87,20 @@ components:
 
     TourInput:
       type: object
-      required: [title, region_id, summary, description, content, unit, departure_city, origin_price, price, images]
+      required:
+        [
+          title,
+          region_id,
+          summary,
+          description,
+          content,
+          unit,
+          departure_city,
+          min_group_size,
+          origin_price,
+          price,
+          images,
+        ]
       properties:
         title: { type: string }
         region_id: { type: string, format: uuid }
@@ -97,6 +112,7 @@ components:
         departure_city:
           type: string
           enum: [台北, 桃園, 台中, 高雄]
+        min_group_size: { type: integer, minimum: 1, description: 成團人數 }
         origin_price: { type: integer }
         price: { type: integer }
         is_popular: { type: boolean }
