@@ -6,7 +6,7 @@
   import SectionTitle from '@/components/front/SectionTitle.vue'
   import TourLinkCard from '@/components/front/TourLinkCard.vue'
   import NotFoundView from '@/views/front/NotFoundView.vue'
-  import { useCartStore } from '@/stores/cart'
+  import { MAX_QUANTITY, useCartStore } from '@/stores/cart'
   import { useFavorites } from '@/composables/use-favorites'
   import { formatCurrency } from '@/utils/format'
   import { HERO_IMAGES } from '@/utils/hero-images'
@@ -51,10 +51,10 @@
     }
   }
 
-  // 人數框可以直接輸入，清空、小數或負數時拉回至少 1 的整數
+  // 人數框可以直接輸入：清空、小數或負數時拉回至少 1 的整數，超過上限時改成上限
   function normalizeQuantity() {
     const n = Math.floor(Number(quantity.value))
-    quantity.value = Number.isFinite(n) && n >= 1 ? n : 1
+    quantity.value = Number.isFinite(n) && n >= 1 ? Math.min(n, MAX_QUANTITY) : 1
   }
 
   function handleAddToCart() {
@@ -205,14 +205,16 @@
                   v-model.number="quantity"
                   type="number"
                   min="1"
+                  :max="MAX_QUANTITY"
                   class="flex-1 min-w-0 -mx-px border border-secondary text-secondary text-center outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   aria-label="人數"
                   @blur="normalizeQuantity"
                 />
                 <button
                   type="button"
-                  class="px-3 border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors"
-                  @click="quantity = (Number(quantity) || 0) + 1"
+                  class="px-3 border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors disabled:opacity-65 disabled:pointer-events-none"
+                  :disabled="quantity >= MAX_QUANTITY"
+                  @click="quantity = Math.min((Number(quantity) || 0) + 1, MAX_QUANTITY)"
                 >
                   <span class="i-fa6-plus" />
                 </button>

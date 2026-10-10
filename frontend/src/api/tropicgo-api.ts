@@ -131,7 +131,10 @@ export interface OrderInput {
   items: {
     /** @format uuid */
     tour_id: string
-    /** @min 1 */
+    /**
+     * @min 1
+     * @max 20
+     */
     quantity: number
   }[]
 }

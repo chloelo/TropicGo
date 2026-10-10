@@ -10,6 +10,9 @@ const generateOrderNumber = customAlphabet('23456789ABCDEFGHJKMNPQRSTUVWXYZ', 10
 // 跟 docs/openapi.yaml 的 OrderInput.payment_method enum 要一致
 const PAYMENT_METHODS = ['Credit', 'LinePay', 'ApplePay', 'GooglePay', 'ATM', 'CVS'];
 
+// 每個產品一次最多報名的人數，跟前端 stores/cart.ts 的 MAX_QUANTITY、openapi.yaml 要一致
+const MAX_QUANTITY = 20;
+
 function validateOrderInput(body) {
   const { customer_name, customer_email, customer_phone, customer_address, payment_method, items } = body;
 
@@ -23,6 +26,7 @@ function validateOrderInput(body) {
   for (const item of items) {
     if (!isValidString(item.tour_id)) return '行程資料錯誤';
     if (!isNonNegativeInteger(item.quantity) || item.quantity <= 0) return '數量格式錯誤';
+    if (item.quantity > MAX_QUANTITY) return `每個產品最多報名 ${MAX_QUANTITY} 人`;
   }
   return null;
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed, ref } from 'vue'
   import { api } from '@/api/client'
-  import { useCartStore, type CartItem } from '@/stores/cart'
+  import { MAX_QUANTITY, useCartStore, type CartItem } from '@/stores/cart'
   import { useToastStore } from '@/stores/toast'
   import { apiErrorMessage } from '@/utils/api-error'
   import { formatCurrency } from '@/utils/format'
@@ -120,14 +120,16 @@
                   :value="item.quantity"
                   type="number"
                   min="1"
+                  :max="MAX_QUANTITY"
                   class="flex-1 min-w-0 pl-4 pr-3 border-y border-secondary text-secondary text-center outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   aria-label="人數"
                   @change="handleQuantityChange(item, $event)"
                 />
                 <button
                   type="button"
-                  class="px-3 border border-l-0 border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors"
+                  class="px-3 border border-l-0 border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors disabled:opacity-65 disabled:pointer-events-none"
                   aria-label="增加人數"
+                  :disabled="item.quantity >= MAX_QUANTITY"
                   @click="cartStore.updateQuantity(item.tourId, item.quantity + 1)"
                 >
                   <span class="i-fa6-plus" />
