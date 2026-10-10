@@ -1,0 +1,19 @@
+import { isAxiosError } from 'axios'
+
+// 這兩種錯誤的原因跟使用者填的內容無關，直接顯示後端的說明比較清楚
+const SHOW_SERVER_MESSAGE = [403, 429]
+
+/**
+ * 取得要顯示給使用者的錯誤訊息：示範帳號不能修改（403）、請求太頻繁（429）時顯示後端回傳的說明，
+ * 其他錯誤用呼叫端傳入的預設文字
+ */
+export function apiErrorMessage(error: unknown, fallback: string): string {
+  if (isAxiosError<{ message?: unknown }>(error)) {
+    const status = error.response?.status
+    const message = error.response?.data?.message
+    if (status && SHOW_SERVER_MESSAGE.includes(status) && typeof message === 'string') {
+      return message
+    }
+  }
+  return fallback
+}

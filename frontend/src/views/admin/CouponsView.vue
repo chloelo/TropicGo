@@ -11,6 +11,7 @@
     type FormRules,
   } from 'naive-ui'
   import { api } from '@/api/client'
+  import { apiErrorMessage } from '@/utils/api-error'
   import type { Coupon, CouponInput } from '@/api/tropicgo-api'
   import { useDialog } from '@/composables/use-dialog'
   import { useTable } from '@/composables/use-table'
@@ -105,8 +106,8 @@
       }
       closeDialog()
       await load(page.value)
-    } catch {
-      message.error('儲存失敗，優惠碼可能重複')
+    } catch (error) {
+      message.error(apiErrorMessage(error, '儲存失敗，優惠碼可能重複'))
     } finally {
       submitting.value = false
     }
@@ -125,8 +126,8 @@
           await api.admin.adminDeleteCoupon(coupon.id)
           message.success('刪除成功')
           await load(page.value)
-        } catch {
-          message.error('刪除失敗，此優惠券可能已被訂單使用，可改為停用')
+        } catch (error) {
+          message.error(apiErrorMessage(error, '刪除失敗，此優惠券可能已被訂單使用，可改為停用'))
         }
       },
     })

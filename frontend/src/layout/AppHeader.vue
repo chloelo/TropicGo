@@ -16,6 +16,9 @@
     <span class="font-bold text-primary">TropicGo 後台</span>
     <div class="flex items-center gap-3">
       <span class="text-sm text-gray-500">{{ authStore.admin?.name }}</span>
+      <n-tag v-if="authStore.admin?.role === 'demo'" size="small" type="warning">
+        示範帳號（唯讀）
+      </n-tag>
       <n-button size="small" @click="handleLogout">登出</n-button>
     </div>
   </header>

@@ -28,6 +28,13 @@ module.exports = new EntitySchema({
       length: 50,
       nullable: false,
     },
+    // admin：完整權限；demo：公開給面試官的示範帳號，只能瀏覽，不能新增、修改、刪除
+    role: {
+      type: 'enum',
+      enum: ['admin', 'demo'],
+      default: 'admin',
+      nullable: false,
+    },
     created_at: {
       type: 'timestamp',
       createDate: true,

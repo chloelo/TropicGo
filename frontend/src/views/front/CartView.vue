@@ -11,6 +11,7 @@
   import OrderConfirmStep from '@/components/front/OrderConfirmStep.vue'
   import { useCartStore, type CartItem } from '@/stores/cart'
   import { useToastStore } from '@/stores/toast'
+  import { apiErrorMessage } from '@/utils/api-error'
   import { HERO_IMAGES } from '@/utils/hero-images'
 
   const route = useRoute()
@@ -74,8 +75,8 @@
       step.value = 3
       // 訂單 id 放進網址：離開再回來、重新整理，都能用下面的 watch 把訂單抓回來
       router.replace({ query: { order: data.data.id } })
-    } catch {
-      toast.push('建立訂單失敗', 'danger')
+    } catch (error) {
+      toast.push(apiErrorMessage(error, '建立訂單失敗'), 'danger')
     } finally {
       submitting.value = false
     }
@@ -131,8 +132,8 @@
       createdOrder.value = data.data
       forgetPendingOrder(data.data.id)
       step.value = 4
-    } catch {
-      toast.push('付款失敗', 'danger')
+    } catch (error) {
+      toast.push(apiErrorMessage(error, '付款失敗'), 'danger')
     } finally {
       paying.value = false
     }

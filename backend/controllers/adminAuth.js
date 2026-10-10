@@ -33,7 +33,7 @@ const adminAuthController = {
       status: 'success',
       data: {
         token,
-        admin: { id: admin.id, name: admin.name, email: admin.email },
+        admin: { id: admin.id, name: admin.name, email: admin.email, role: admin.role },
       },
     });
   },
@@ -42,7 +42,7 @@ const adminAuthController = {
   async check(req, res) {
     res.json({
       status: 'success',
-      data: { id: req.admin.id, name: req.admin.name, email: req.admin.email },
+      data: { id: req.admin.id, name: req.admin.name, email: req.admin.email, role: req.admin.role },
     });
   },
 };

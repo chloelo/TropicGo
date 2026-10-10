@@ -43,6 +43,7 @@ declare module 'vue' {
     NStep: typeof import('naive-ui')['NStep']
     NSteps: typeof import('naive-ui')['NSteps']
     NSwitch: typeof import('naive-ui')['NSwitch']
+    NTag: typeof import('naive-ui')['NTag']
     OrderCompleteStep: typeof import('./src/components/front/OrderCompleteStep.vue')['default']
     OrderConfirmStep: typeof import('./src/components/front/OrderConfirmStep.vue')['default']
     OrderContactInfo: typeof import('./src/components/front/OrderContactInfo.vue')['default']

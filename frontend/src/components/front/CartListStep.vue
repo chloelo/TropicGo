@@ -3,6 +3,7 @@
   import { api } from '@/api/client'
   import { useCartStore, type CartItem } from '@/stores/cart'
   import { useToastStore } from '@/stores/toast'
+  import { apiErrorMessage } from '@/utils/api-error'
   import { formatCurrency } from '@/utils/format'
 
   /** 套用中的優惠券。驗證優惠碼的 API 不會回傳代碼本身，送出訂單時要用，所以把客人輸入的代碼一起存下來 */
@@ -50,8 +51,8 @@
       const { data } = await api.coupons.checkCoupon({ code })
       coupon.value = { code, title: data.data.title, percent: data.data.percent }
       toast.push('優惠碼正確，已幫您折扣囉')
-    } catch {
-      toast.push('折扣碼無效喔', 'danger')
+    } catch (error) {
+      toast.push(apiErrorMessage(error, '折扣碼無效喔'), 'danger')
     }
   }
 </script>

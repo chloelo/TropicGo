@@ -1,4 +1,4 @@
-// 開發用的基本資料：地區、優惠券、一個管理員帳號
+// 基本資料：地區、優惠券、管理員和示範帳號
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const { dataSource } = require('../db/data-source');
@@ -21,11 +21,22 @@ const COUPONS = [
   },
 ];
 
-const ADMIN = {
-  email: 'admin@tropicgo.test',
-  password: 'Tropic2026',
-  name: '管理員',
-};
+// 帳號密碼從環境變數讀，不寫在程式碼裡（repo 是公開的）。
+// 管理員是完整權限；示範帳號只能瀏覽，帳號密碼會寫在 README 給面試官登入看後台
+const ACCOUNTS = [
+  {
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD,
+    name: '管理員',
+    role: 'admin',
+  },
+  {
+    email: process.env.DEMO_EMAIL,
+    password: process.env.DEMO_PASSWORD,
+    name: '示範帳號',
+    role: 'demo',
+  },
+];
 
 async function seed() {
   await dataSource.initialize();
@@ -49,13 +60,19 @@ async function seed() {
   }
 
   const adminRepo = dataSource.getRepository('Admin');
-  const existsAdmin = await adminRepo.findOneBy({ email: ADMIN.email });
-  if (!existsAdmin) {
-    const hashed = await bcrypt.hash(ADMIN.password, 10);
-    await adminRepo.save({ email: ADMIN.email, password: hashed, name: ADMIN.name });
-    console.log(`+ Admin: ${ADMIN.email} / 密碼: ${ADMIN.password}`);
-  } else {
-    console.log(`= Admin 已存在: ${ADMIN.email}`);
+  for (const account of ACCOUNTS) {
+    if (!account.email || !account.password) {
+      console.log(`! 略過 ${account.role} 帳號：環境變數沒有設定帳號或密碼`);
+      continue;
+    }
+    const exists = await adminRepo.findOneBy({ email: account.email });
+    if (exists) {
+      console.log(`= 帳號已存在：${account.email}`);
+      continue;
+    }
+    const hashed = await bcrypt.hash(account.password, 10);
+    await adminRepo.save({ ...account, password: hashed });
+    console.log(`+ 建立 ${account.role} 帳號：${account.email}`);
   }
 
   await dataSource.destroy();

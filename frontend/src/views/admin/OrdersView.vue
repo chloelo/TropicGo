@@ -2,6 +2,7 @@
   import { computed, h, onMounted, ref } from 'vue'
   import { NButton, NTag, useMessage, type DataTableColumns, type SelectOption } from 'naive-ui'
   import { api } from '@/api/client'
+  import { apiErrorMessage } from '@/utils/api-error'
   import type { Order } from '@/api/tropicgo-api'
   import { useDialog } from '@/composables/use-dialog'
   import { useTable } from '@/composables/use-table'
@@ -65,8 +66,8 @@
       message.success('狀態更新成功')
       closeDialog()
       await load(page.value)
-    } catch {
-      message.error('更新失敗')
+    } catch (error) {
+      message.error(apiErrorMessage(error, '更新失敗'))
     } finally {
       updating.value = false
     }

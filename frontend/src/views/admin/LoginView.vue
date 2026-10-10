@@ -4,6 +4,7 @@
   import { useMessage } from 'naive-ui'
   import loginBg from '@/assets/images/login-bg.jpg'
   import { useAdminAuthStore } from '@/stores/admin-auth'
+  import { apiErrorMessage } from '@/utils/api-error'
 
   const router = useRouter()
   const message = useMessage()
@@ -19,8 +20,8 @@
     try {
       await authStore.login(email.value, password.value)
       router.push({ name: 'admin-dashboard' })
-    } catch {
-      message.error('登入失敗，請確認帳號密碼')
+    } catch (error) {
+      message.error(apiErrorMessage(error, '登入失敗，請確認帳號密碼'))
     } finally {
       loading.value = false
     }
