@@ -9,6 +9,8 @@ export const useAdminAuthStore = defineStore('admin-auth', () => {
   const checked = ref(false)
 
   const isLoggedIn = computed(() => !!admin.value)
+  /** 示範帳號只能瀏覽：前端用來停用按鈕、把表單改成唯讀，真正的權限檢查在後端 */
+  const isDemo = computed(() => admin.value?.role === 'demo')
 
   async function login(email: string, password: string) {
     const { data } = await api.admin.adminLogin({ email, password })
@@ -38,5 +40,5 @@ export const useAdminAuthStore = defineStore('admin-auth', () => {
     }
   }
 
-  return { admin, isLoggedIn, checked, login, logout, checkAuth }
+  return { admin, isLoggedIn, isDemo, checked, login, logout, checkAuth }
 })

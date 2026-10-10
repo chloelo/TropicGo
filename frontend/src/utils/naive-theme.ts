@@ -38,6 +38,13 @@ export const adminThemeOverrides: GlobalThemeOverrides = {
     itemColorActive: 'rgba(163, 101, 73, 0.1)',
     itemColorActiveHover: 'rgba(163, 101, 73, 0.1)',
   },
+  // 示範帳號的唯讀表單：停用的欄位文字維持正常深色（預設是淺灰，內容不好讀），灰底就足以表示不能編輯
+  Input: {
+    textColorDisabled: 'rgb(51, 54, 57)',
+  },
+  InternalSelection: {
+    textColorDisabled: 'rgb(51, 54, 57)',
+  },
   // 確認框的內距統一成跟編輯 modal 一樣（預設左右比較寬）。
   // 取消鈕：確認框打開時會自動取得焦點，預設在焦點、hover 時會變成 primary 綠色，
   // 擺在紅色刪除鈕旁邊會搶眼，所以維持灰色，只把框線加深當作回饋

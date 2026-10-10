@@ -3,6 +3,7 @@
   import { NButton, NTag, useMessage, type DataTableColumns, type SelectOption } from 'naive-ui'
   import { api } from '@/api/client'
   import { apiErrorMessage } from '@/utils/api-error'
+  import { useAdminAuthStore } from '@/stores/admin-auth'
   import type { Order } from '@/api/tropicgo-api'
   import { useDialog } from '@/composables/use-dialog'
   import { useTable } from '@/composables/use-table'
@@ -30,6 +31,7 @@
   )
 
   const message = useMessage()
+  const authStore = useAdminAuthStore()
 
   const {
     data: orders,
@@ -171,16 +173,26 @@
         </div>
 
         <n-form-item label="訂單狀態" label-placement="left">
-          <n-select v-model:value="selectedStatus" :options="STATUS_OPTIONS" />
+          <n-select
+            v-model:value="selectedStatus"
+            :options="STATUS_OPTIONS"
+            :disabled="authStore.isDemo"
+          />
         </n-form-item>
       </template>
 
       <template #footer>
         <n-space justify="end">
-          <n-button type="primary" ghost @click="closeDialog">取消</n-button>
-          <n-button type="primary" :loading="updating" @click="handleUpdateStatus">
-            更新狀態
+          <!-- 示範帳號：訂單狀態唯讀，只留關閉 -->
+          <n-button v-if="authStore.isDemo" type="primary" ghost @click="closeDialog">
+            關閉
           </n-button>
+          <template v-else>
+            <n-button type="primary" ghost @click="closeDialog">取消</n-button>
+            <n-button type="primary" :loading="updating" @click="handleUpdateStatus">
+              更新狀態
+            </n-button>
+          </template>
         </n-space>
       </template>
     </n-modal>

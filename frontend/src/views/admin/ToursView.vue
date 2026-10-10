@@ -13,13 +13,16 @@
   } from 'naive-ui'
   import { api } from '@/api/client'
   import { apiErrorMessage } from '@/utils/api-error'
+  import { useAdminAuthStore } from '@/stores/admin-auth'
   import type { Region, Tour, TourInput } from '@/api/tropicgo-api'
+  import DemoLock from '@/components/admin/DemoLock.vue'
   import { useDialog } from '@/composables/use-dialog'
   import { useTable } from '@/composables/use-table'
   import { DEPARTURE_CITIES, isDepartureCity, type DepartureCity } from '@/utils/departure-city'
   import { formatCurrency } from '@/utils/format'
 
   const message = useMessage()
+  const authStore = useAdminAuthStore()
   const naiveDialog = useNaiveDialog()
 
   const regions = ref<Region[]>([])
@@ -112,7 +115,8 @@
       is_enabled: tour.is_enabled,
     })
     imagesText.value = tour.images.map((img) => img.url).join('\n')
-    openDialog({ title: '編輯產品' })
+    // 示範帳號一樣打開表單，但整張唯讀，可以看到完整內容
+    openDialog({ title: authStore.isDemo ? '檢視產品' : '編輯產品' })
   }
 
   async function handleSubmit() {
@@ -212,13 +216,22 @@
             h(
               NButton,
               { size: 'small', type: 'primary', ghost: true, onClick: () => openEdit(row) },
-              { default: () => '編輯' },
+              { default: () => (authStore.isDemo ? '檢視' : '編輯') },
             ),
-            h(
-              NButton,
-              { size: 'small', type: 'error', ghost: true, onClick: () => handleDelete(row) },
-              { default: () => '刪除' },
-            ),
+            h(DemoLock, null, {
+              default: () =>
+                h(
+                  NButton,
+                  {
+                    size: 'small',
+                    type: 'error',
+                    ghost: true,
+                    disabled: authStore.isDemo,
+                    onClick: () => handleDelete(row),
+                  },
+                  { default: () => '刪除' },
+                ),
+            }),
           ],
         }),
     },
@@ -234,7 +247,11 @@
 <template>
   <n-card title="產品管理">
     <template #header-extra>
-      <n-button type="primary" @click="openCreate">新增產品</n-button>
+      <DemoLock>
+        <n-button type="primary" :disabled="authStore.isDemo" @click="openCreate">
+          新增產品
+        </n-button>
+      </DemoLock>
     </template>
 
     <n-data-table
@@ -254,7 +271,14 @@
       style="width: 600px; max-height: calc(100vh - 80px)"
       content-scrollable
     >
-      <n-form ref="formRef" :model="form" :rules="rules" label-placement="top">
+      <n-form
+        ref="formRef"
+        :model="form"
+        :rules="rules"
+        label-placement="top"
+        :disabled="authStore.isDemo"
+        :show-require-mark="!authStore.isDemo"
+      >
         <n-form-item label="產品名稱" path="title">
           <n-input v-model:value="form.title" />
         </n-form-item>
@@ -313,8 +337,14 @@
 
       <template #footer>
         <n-space justify="end">
-          <n-button type="primary" ghost @click="closeDialog">取消</n-button>
-          <n-button type="primary" :loading="submitting" @click="handleSubmit">儲存</n-button>
+          <!-- 示範帳號：表單唯讀，只留關閉 -->
+          <n-button v-if="authStore.isDemo" type="primary" ghost @click="closeDialog">
+            關閉
+          </n-button>
+          <template v-else>
+            <n-button type="primary" ghost @click="closeDialog">取消</n-button>
+            <n-button type="primary" :loading="submitting" @click="handleSubmit">儲存</n-button>
+          </template>
         </n-space>
       </template>
     </n-modal>
