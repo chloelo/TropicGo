@@ -14,13 +14,14 @@ services:
 
   # 本地開發用的 PostgreSQL。日常開發只開這個容器，backend 直接用 npm run dev 跑在本機（熱重載較快）。
   postgres:
-    image: postgres:16.4-alpine3.20
+    image: postgres:18.6-alpine3.24
     environment:
       - POSTGRES_USER=student
       - POSTGRES_PASSWORD=student666
       - POSTGRES_DB=tropicgo
     volumes:
-      - pgData:/var/lib/postgresql/data
+      # Postgres 18 起映像的資料目錄改為 /var/lib/postgresql/18/docker，volume 要掛在上一層
+      - pgData:/var/lib/postgresql
     ports:
       - "5432:5432"
     healthcheck:
