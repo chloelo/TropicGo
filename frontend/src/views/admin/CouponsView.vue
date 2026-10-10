@@ -17,20 +17,18 @@
   import { useTable } from '@/composables/use-table'
   import { formatDate, toLocalDateString } from '@/utils/format'
 
-  const PAGE_SIZE = 10
-
   const message = useMessage()
   const naiveDialog = useNaiveDialog()
 
   const {
     data: coupons,
     page,
-    total,
+    totalPages,
     loading,
     load,
   } = useTable<Coupon>(async (p) => {
     const { data } = await api.admin.adminGetCoupons({ page: p })
-    return { data: data.data, total: data.meta.total }
+    return { data: data.data, meta: data.meta }
   })
 
   const { showDialog, dialogOptions, openDialog, closeDialog } = useDialog()
@@ -172,7 +170,7 @@
 
   const pagination = computed(() => ({
     page: page.value,
-    pageCount: Math.max(1, Math.ceil(total.value / PAGE_SIZE)),
+    pageCount: totalPages.value,
     onUpdatePage: (p: number) => load(p),
   }))
 </script>

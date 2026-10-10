@@ -9,8 +9,6 @@
   import { formatCurrency, formatDateTime } from '@/utils/format'
   import { paymentLabel } from '@/utils/payment'
 
-  const PAGE_SIZE = 10
-
   type OrderStatus = 'PENDING' | 'PAID' | 'CANCELLED' | 'COMPLETED'
 
   const STATUS_LABEL: Record<OrderStatus, string> = {
@@ -36,12 +34,12 @@
   const {
     data: orders,
     page,
-    total,
+    totalPages,
     loading,
     load,
   } = useTable<Order>(async (p) => {
     const { data } = await api.admin.adminGetOrders({ page: p })
-    return { data: data.data, total: data.meta.total }
+    return { data: data.data, meta: data.meta }
   })
 
   const { showDialog, dialogOptions, openDialog, closeDialog } = useDialog<Order>()
@@ -106,7 +104,7 @@
 
   const pagination = computed(() => ({
     page: page.value,
-    pageCount: Math.max(1, Math.ceil(total.value / PAGE_SIZE)),
+    pageCount: totalPages.value,
     onUpdatePage: (p: number) => load(p),
   }))
 </script>

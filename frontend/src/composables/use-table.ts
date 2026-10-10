@@ -1,13 +1,16 @@
 import { ref, shallowRef } from 'vue'
+import type { PaginationMeta } from '@/api/tropicgo-api'
 
 /**
- * 後台分頁表格的資料載入。
+ * 後台分頁表格的資料載入。總頁數直接用 API 回傳的 meta，每頁筆數只在後端定義一次。
  * data 用 shallowRef：每次整批替換陣列，不需要深層響應式，也避開泛型陣列的型別推斷問題
  */
-export function useTable<T>(fetchPage: (page: number) => Promise<{ data: T[]; total: number }>) {
+export function useTable<T>(
+  fetchPage: (page: number) => Promise<{ data: T[]; meta: PaginationMeta }>,
+) {
   const data = shallowRef<T[]>([])
   const page = ref(1)
-  const total = ref(0)
+  const totalPages = ref(1)
   const loading = ref(false)
 
   async function load(targetPage = page.value) {
@@ -15,12 +18,12 @@ export function useTable<T>(fetchPage: (page: number) => Promise<{ data: T[]; to
     try {
       const result = await fetchPage(targetPage)
       data.value = result.data
-      total.value = result.total
+      totalPages.value = Math.max(1, result.meta.totalPages)
       page.value = targetPage
     } finally {
       loading.value = false
     }
   }
 
-  return { data, page, total, loading, load }
+  return { data, page, totalPages, loading, load }
 }

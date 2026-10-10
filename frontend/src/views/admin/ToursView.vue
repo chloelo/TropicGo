@@ -19,8 +19,6 @@
   import { DEPARTURE_CITIES, isDepartureCity, type DepartureCity } from '@/utils/departure-city'
   import { formatCurrency } from '@/utils/format'
 
-  const PAGE_SIZE = 10
-
   const message = useMessage()
   const naiveDialog = useNaiveDialog()
 
@@ -30,12 +28,12 @@
   const {
     data: tours,
     page,
-    total,
+    totalPages,
     loading,
     load,
   } = useTable<Tour>(async (p) => {
     const { data } = await api.admin.adminGetTours({ page: p })
-    return { data: data.data, total: data.meta.total }
+    return { data: data.data, meta: data.meta }
   })
 
   const { showDialog, dialogOptions, openDialog, closeDialog } = useDialog()
@@ -228,7 +226,7 @@
 
   const pagination = computed(() => ({
     page: page.value,
-    pageCount: Math.max(1, Math.ceil(total.value / PAGE_SIZE)),
+    pageCount: totalPages.value,
     onUpdatePage: (p: number) => load(p),
   }))
 </script>
