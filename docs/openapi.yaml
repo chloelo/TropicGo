@@ -25,8 +25,8 @@ components:
       scheme: bearer
       bearerFormat: JWT
 
-  # 回應用的 schema 都把欄位列進 required(資料庫欄位都是 NOT NULL、relation 也一定會一起查回來),
-  # 產生出來的 TS 型別才不會每個欄位都是「可能沒有」,前端就不用到處寫 ! 或 ?? 硬撐
+  # 回應的 schema 把欄位都列進 required（資料庫欄位都是 NOT NULL、relation 也一定會一起查回來），
+  # 產生的 TS 型別才不會每個欄位都是 optional，前端不需要用 ! 或 ?? 處理
   schemas:
     Region:
       type: object
@@ -70,7 +70,7 @@ components:
         title: { type: string }
         summary: { type: string }
         description: { type: string }
-        content: { type: string, description: 費用包含(簡短條列) }
+        content: { type: string, description: 費用包含（簡短條列） }
         unit: { type: string, example: 人 }
         departure_city: { type: string, example: 桃園 }
         min_group_size: { type: integer, description: 成團人數, example: 15 }
@@ -106,7 +106,7 @@ components:
         region_id: { type: string, format: uuid }
         summary: { type: string }
         description: { type: string }
-        content: { type: string, description: 費用包含(簡短條列) }
+        content: { type: string, description: 費用包含（簡短條列） }
         unit: { type: string }
         # 跟 backend/controllers/adminTours.js 的 DEPARTURE_CITIES 要一致
         departure_city:
@@ -130,7 +130,7 @@ components:
         code: { type: string }
         percent:
           type: integer
-          description: 要付的百分比,90 代表打 9 折
+          description: 要付的百分比，90 代表打 9 折
         due_date: { type: string, format: date-time }
         is_enabled: { type: boolean }
 
@@ -156,7 +156,7 @@ components:
 
     Order:
       type: object
-      # message、coupon 一定會有這個欄位,只是值可能是 null(nullable)
+      # message、coupon 一定會有這個欄位，只是值可能是 null（nullable）
       required:
         [
           id,
@@ -180,7 +180,6 @@ components:
         customer_email: { type: string }
         customer_phone: { type: string }
         customer_address: { type: string }
-        # 這個欄位是後來才加的,之前建立的訂單沒有值(null)
         payment_method: { type: string, nullable: true }
         message: { type: string, nullable: true }
         total_amount: { type: integer }
@@ -240,8 +239,8 @@ components:
           type: string
           enum: [admin, demo]
 
-    # 不放 data:這裡寫 data: {} 會被產生成 any,跟各 API 自己的 data 型別交集後整個變 any,型別檢查就失效了。
-    # 各 API 的 data 型別在自己的 response 裡定義(刪除這類 data 為 null 的就不寫)
+    # 不放 data：這裡寫 data: {} 會被產生成 any，跟各 API 自己的 data 型別交集後整個變 any，型別檢查就失效了。
+    # 各 API 的 data 型別在自己的 response 裡定義（刪除這類 data 為 null 的就不寫）
     SuccessResponse:
       type: object
       required: [status]
@@ -302,13 +301,13 @@ paths:
     get:
       tags: [Tours]
       operationId: getTours
-      summary: 取得行程列表(可依地區篩選)
+      summary: 取得行程列表（可依地區篩選）
       parameters:
         - name: region
           in: query
           schema: { type: string }
           example: asia
-          description: 地區 slug,不帶則回傳全部已上架行程
+          description: 地區 slug，不帶則回傳全部已上架行程
       responses:
         '200':
           description: 成功
@@ -388,7 +387,7 @@ paths:
     post:
       tags: [Orders]
       operationId: createOrder
-      summary: 建立訂單(結帳送出)
+      summary: 建立訂單（結帳送出）
       requestBody:
         required: true
         content:
@@ -413,7 +412,7 @@ paths:
     get:
       tags: [Orders]
       operationId: getOrder
-      summary: 查詢單一訂單(客人用訂單 id 查詢,不需登入)
+      summary: 查詢單一訂單（客人用訂單 id 查詢，不需登入）
       parameters:
         - name: id
           in: path
@@ -437,7 +436,7 @@ paths:
     post:
       tags: [Orders]
       operationId: payOrder
-      summary: 模擬付款(沒有串金流,待付款的訂單直接改成已付款)
+      summary: 模擬付款（沒有串金流，待付款的訂單直接改成已付款）
       parameters:
         - name: id
           in: path
@@ -475,7 +474,7 @@ paths:
                 password: { type: string }
       responses:
         '200':
-          description: 登入成功,回傳 JWT
+          description: 登入成功，回傳 JWT
           content:
             application/json:
               schema:
@@ -501,7 +500,7 @@ paths:
       security: [{ bearerAuth: [] }]
       responses:
         '200':
-          description: 成功,回傳目前登入的管理員
+          description: 成功，回傳目前登入的管理員
           content:
             application/json:
               schema:
@@ -517,7 +516,7 @@ paths:
     get:
       tags: [Admin Tours]
       operationId: adminGetTours
-      summary: 行程列表(分頁,含未上架)
+      summary: 行程列表（分頁，含未上架）
       security: [{ bearerAuth: [] }]
       parameters:
         - name: page
@@ -569,7 +568,7 @@ paths:
     get:
       tags: [Admin Tours]
       operationId: adminGetTour
-      summary: 取得單一行程(含未上架)
+      summary: 取得單一行程（含未上架）
       security: [{ bearerAuth: [] }]
       parameters:
         - name: id
@@ -593,7 +592,7 @@ paths:
     put:
       tags: [Admin Tours]
       operationId: adminUpdateTour
-      summary: 更新行程(圖片整批替換)
+      summary: 更新行程（圖片整批替換）
       security: [{ bearerAuth: [] }]
       parameters:
         - name: id
@@ -623,7 +622,7 @@ paths:
     delete:
       tags: [Admin Tours]
       operationId: adminDeleteTour
-      summary: 刪除行程(已有訂單關聯則會被擋下)
+      summary: 刪除行程（已有訂單關聯則會被擋下）
       security: [{ bearerAuth: [] }]
       parameters:
         - name: id
@@ -644,7 +643,7 @@ paths:
     get:
       tags: [Admin Coupons]
       operationId: adminGetCoupons
-      summary: 優惠券列表(分頁)
+      summary: 優惠券列表（分頁）
       security: [{ bearerAuth: [] }]
       parameters:
         - name: page
@@ -726,7 +725,7 @@ paths:
     delete:
       tags: [Admin Coupons]
       operationId: adminDeleteCoupon
-      summary: 刪除優惠券(已被訂單使用則會被擋下)
+      summary: 刪除優惠券（已被訂單使用則會被擋下）
       security: [{ bearerAuth: [] }]
       parameters:
         - name: id
@@ -747,7 +746,7 @@ paths:
     get:
       tags: [Admin Orders]
       operationId: adminGetOrders
-      summary: 訂單列表(分頁)
+      summary: 訂單列表（分頁）
       security: [{ bearerAuth: [] }]
       parameters:
         - name: page

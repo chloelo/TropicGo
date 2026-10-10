@@ -102,7 +102,7 @@
     try {
       await formRef.value?.validate()
     } catch {
-      return // 驗證沒過:錯誤訊息已經顯示在各欄位下面
+      return // 驗證沒過：錯誤訊息已經顯示在各欄位下面
     }
     emit('submit')
   }

@@ -17,7 +17,7 @@ const dataSource = new DataSource({
   username: config.get('db.username'),
   password: config.get('db.password'),
   database: config.get('db.database'),
-  // 資料表結構改用 migration 管理，不讓 TypeORM 依 entity 自動改表（可能直接刪掉欄位、遺失資料）
+  // 資料表結構由 migration 管理，不讓 TypeORM 依 entity 自動同步（可能刪掉欄位、遺失資料）
   synchronize: config.get('db.synchronize'),
   ssl: config.get('db.ssl'),
   entities: [Region, Tour, TourImage, Coupon, Admin, Order, OrderItem],

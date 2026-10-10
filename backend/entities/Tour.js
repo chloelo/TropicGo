@@ -29,7 +29,7 @@ module.exports = new EntitySchema({
     content: {
       type: 'text',
       nullable: false, // 費用包含（簡短條列，跟 description 的長文介紹分開）
-      default: '', // 加這個欄位時資料表已有資料，先給預設值，NOT NULL 才不會失敗
+      default: '',
     },
     unit: {
       type: 'varchar',

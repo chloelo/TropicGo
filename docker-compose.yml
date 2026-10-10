@@ -2,7 +2,7 @@ volumes:
   pgData:
 
 services:
-  # API 文件(Swagger UI),瀏覽 + Try it out 試打 API。開發時可選擇性開啟:docker compose up -d swagger
+  # API 文件（Swagger UI），瀏覽 + Try it out 試打 API。開發時可選擇性開啟：docker compose up -d swagger
   swagger:
     image: swaggerapi/swagger-ui:v5.17.14
     environment:
@@ -12,7 +12,7 @@ services:
     ports:
       - "8081:8080"
 
-  # 本地開發用的 PostgreSQL。日常開發只開這個容器,backend 直接用 npm run dev 跑在本機(熱重載較快)。
+  # 本地開發用的 PostgreSQL。日常開發只開這個容器，backend 直接用 npm run dev 跑在本機（熱重載較快）。
   postgres:
     image: postgres:16.4-alpine3.20
     environment:
@@ -29,7 +29,7 @@ services:
       timeout: 3s
       retries: 3
 
-  # 想測試完整容器化(前端+後端+資料庫全部用 Docker 跑)時才需要這個服務。
+  # 想測試完整容器化（前端 + 後端 + 資料庫全部用 Docker 跑）時才需要這個服務。
   backend:
     build:
       context: ./backend

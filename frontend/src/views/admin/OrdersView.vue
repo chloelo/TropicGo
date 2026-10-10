@@ -144,7 +144,6 @@
           <n-descriptions-item label="地址">
             {{ dialogOptions.data.customer_address }}
           </n-descriptions-item>
-          <!-- 付款方式是後來才加的欄位，更早建立的訂單沒有值就不顯示 -->
           <n-descriptions-item v-if="dialogOptions.data.payment_method" label="付款方式">
             {{ paymentLabel(dialogOptions.data.payment_method) }}
           </n-descriptions-item>

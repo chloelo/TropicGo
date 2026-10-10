@@ -5,7 +5,6 @@
 
   const props = defineProps<{ order: Order }>()
 
-  // 付款方式是後來才加的欄位，更早建立的訂單沒有值
   const rows = computed(() => [
     { label: '聯絡人姓名', value: props.order.customer_name },
     { label: '聯絡人電話', value: props.order.customer_phone },

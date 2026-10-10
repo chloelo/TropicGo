@@ -102,7 +102,7 @@
       </div>
     </section>
 
-    <!-- 熱門推薦：用簡易卡片 TourLinkCard，不用產品列表的 TourCard（那個有熱門標籤，在這裡每張都標熱門很多餘） -->
+    <!-- 熱門推薦用 TourLinkCard：TourCard 帶有「熱門」標籤，放在推薦區每張都會標示 -->
     <section v-if="!loading && popularTours.length" class="pb-[60px]">
       <div class="bs-container">
         <SectionTitle title="熱門推薦" tag="h3" class="mb-12" />

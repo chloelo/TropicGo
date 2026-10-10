@@ -2,7 +2,7 @@ import { ref, shallowRef } from 'vue'
 import type { PaginationMeta } from '@/api/tropicgo-api'
 
 /**
- * 後台分頁表格的資料載入。總頁數直接用 API 回傳的 meta，每頁筆數只在後端定義一次。
+ * 後台分頁表格的資料載入。總頁數直接用 API 回傳的 meta，每頁筆數由後端決定。
  * data 用 shallowRef：每次整批替換陣列，不需要深層響應式，也避開泛型陣列的型別推斷問題
  */
 export function useTable<T>(

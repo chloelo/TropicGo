@@ -29,7 +29,7 @@ const COUPONS = [
 ];
 
 // 帳號密碼從環境變數讀，不寫在程式碼裡（repo 是公開的）。
-// 管理員是完整權限；示範帳號只能瀏覽，帳號密碼會寫在 README 給面試官登入看後台
+// 管理員有完整權限；示範帳號只能瀏覽，帳號密碼公開在 README
 const ACCOUNTS = [
   {
     email: process.env.ADMIN_EMAIL,

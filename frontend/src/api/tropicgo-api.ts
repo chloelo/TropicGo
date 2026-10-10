@@ -33,7 +33,7 @@ export interface Tour {
   title: string
   summary: string
   description: string
-  /** 費用包含(簡短條列) */
+  /** 費用包含（簡短條列） */
   content: string
   /** @example "人" */
   unit: string
@@ -62,7 +62,7 @@ export interface TourInput {
   region_id: string
   summary: string
   description: string
-  /** 費用包含(簡短條列) */
+  /** 費用包含（簡短條列） */
   content: string
   unit: string
   departure_city: '台北' | '桃園' | '台中' | '高雄'
@@ -83,7 +83,7 @@ export interface Coupon {
   id: string
   title: string
   code: string
-  /** 要付的百分比,90 代表打 9 折 */
+  /** 要付的百分比，90 代表打 9 折 */
   percent: number
   /** @format date-time */
   due_date: string
@@ -371,13 +371,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Tours
      * @name GetTours
-     * @summary 取得行程列表(可依地區篩選)
+     * @summary 取得行程列表（可依地區篩選）
      * @request GET:/tours
      */
     getTours: (
       query?: {
         /**
-         * 地區 slug,不帶則回傳全部已上架行程
+         * 地區 slug，不帶則回傳全部已上架行程
          * @example "asia"
          */
         region?: string
@@ -458,7 +458,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Orders
      * @name CreateOrder
-     * @summary 建立訂單(結帳送出)
+     * @summary 建立訂單（結帳送出）
      * @request POST:/orders
      */
     createOrder: (data: OrderInput, params: RequestParams = {}) =>
@@ -481,7 +481,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Orders
      * @name GetOrder
-     * @summary 查詢單一訂單(客人用訂單 id 查詢,不需登入)
+     * @summary 查詢單一訂單（客人用訂單 id 查詢，不需登入）
      * @request GET:/orders/{id}
      */
     getOrder: (id: string, params: RequestParams = {}) =>
@@ -502,7 +502,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Orders
      * @name PayOrder
-     * @summary 模擬付款(沒有串金流,待付款的訂單直接改成已付款)
+     * @summary 模擬付款（沒有串金流，待付款的訂單直接改成已付款）
      * @request POST:/orders/{id}/pay
      */
     payOrder: (id: string, params: RequestParams = {}) =>
@@ -580,7 +580,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Admin Tours
      * @name AdminGetTours
-     * @summary 行程列表(分頁,含未上架)
+     * @summary 行程列表（分頁，含未上架）
      * @request GET:/admin/tours
      * @secure
      */
@@ -636,7 +636,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Admin Tours
      * @name AdminGetTour
-     * @summary 取得單一行程(含未上架)
+     * @summary 取得單一行程（含未上架）
      * @request GET:/admin/tours/{id}
      * @secure
      */
@@ -659,7 +659,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Admin Tours
      * @name AdminUpdateTour
-     * @summary 更新行程(圖片整批替換)
+     * @summary 更新行程（圖片整批替換）
      * @request PUT:/admin/tours/{id}
      * @secure
      */
@@ -684,7 +684,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Admin Tours
      * @name AdminDeleteTour
-     * @summary 刪除行程(已有訂單關聯則會被擋下)
+     * @summary 刪除行程（已有訂單關聯則會被擋下）
      * @request DELETE:/admin/tours/{id}
      * @secure
      */
@@ -702,7 +702,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Admin Coupons
      * @name AdminGetCoupons
-     * @summary 優惠券列表(分頁)
+     * @summary 優惠券列表（分頁）
      * @request GET:/admin/coupons
      * @secure
      */
@@ -783,7 +783,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Admin Coupons
      * @name AdminDeleteCoupon
-     * @summary 刪除優惠券(已被訂單使用則會被擋下)
+     * @summary 刪除優惠券（已被訂單使用則會被擋下）
      * @request DELETE:/admin/coupons/{id}
      * @secure
      */
@@ -801,7 +801,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Admin Orders
      * @name AdminGetOrders
-     * @summary 訂單列表(分頁)
+     * @summary 訂單列表（分頁）
      * @request GET:/admin/orders
      * @secure
      */

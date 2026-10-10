@@ -40,7 +40,7 @@
     return { name: 'admin-dashboard' }
   }
 
-  // 示範帳號是公開給面試官的（只能瀏覽），帳密由環境變數帶入；沒設定就不顯示這個按鈕
+  // 示範帳號是公開的唯讀帳號，帳密由環境變數帶入；沒設定就不顯示這個按鈕
   const demoEmail = import.meta.env.VITE_DEMO_EMAIL
   const demoPassword = import.meta.env.VITE_DEMO_PASSWORD
 
