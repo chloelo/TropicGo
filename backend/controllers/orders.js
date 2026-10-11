@@ -7,7 +7,7 @@ const { isValidString, isNonNegativeInteger } = require('../utils/validUtils');
 const generateOrderNumber = customAlphabet('23456789ABCDEFGHJKMNPQRSTUVWXYZ', 10);
 
 // 付款方式的選項（存英文代碼，畫面上的中文由前端 utils/payment.ts 對應），
-// 跟 docs/openapi.yaml 的 OrderInput.payment_method enum 要一致
+// 跟 openapi.yaml 的 OrderInput.payment_method enum 要一致
 const PAYMENT_METHODS = ['Credit', 'LinePay', 'ApplePay', 'GooglePay', 'ATM', 'CVS'];
 
 // 每個產品一次最多報名的人數，跟前端 stores/cart.ts 的 MAX_QUANTITY、openapi.yaml 要一致

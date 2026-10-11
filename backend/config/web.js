@@ -6,4 +6,9 @@ module.exports = {
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean),
+  // API 文件頁面（/api-docs）：沒設定時開發環境開啟、正式環境關閉，要公開就設 API_DOCS_ENABLED=true
+  apiDocsEnabled:
+    process.env.API_DOCS_ENABLED === undefined
+      ? process.env.NODE_ENV !== 'production'
+      : process.env.API_DOCS_ENABLED === 'true',
 };

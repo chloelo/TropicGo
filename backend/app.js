@@ -1,6 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const fs = require('node:fs');
+const path = require('node:path');
+const YAML = require('yaml');
+const swaggerUi = require('swagger-ui-express');
 const config = require('./config');
 
 const { dataSource } = require('./db/data-source');
@@ -32,6 +36,13 @@ app.get('/healthcheck', async (req, res) => {
     res.status(503).send('Service Unavailable');
   }
 });
+
+// API 文件（Swagger UI）。servers 改成相對路徑，Try it out 會打到目前這台伺服器，本機和正式環境都不用另外設定
+if (config.get('web.apiDocsEnabled')) {
+  const openapi = YAML.parse(fs.readFileSync(path.join(__dirname, 'openapi.yaml'), 'utf8'));
+  openapi.servers = [{ url: '/api' }];
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapi));
+}
 
 // 路由
 app.use('/api/regions', regionsRouter);

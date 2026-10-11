@@ -9,7 +9,7 @@
     "build-only": "vite build",
     "preview": "vite preview",
     "type-check": "vue-tsc --build",
-    "gen-api": "swagger-typescript-api generate -p ../docs/openapi.yaml -o ./src/api -n tropicgo-api.ts --axios",
+    "gen-api": "swagger-typescript-api generate -p ../backend/openapi.yaml -o ./src/api -n tropicgo-api.ts --axios",
     "lint": "eslint . --fix",
     "format": "prettier --write src/"
   },

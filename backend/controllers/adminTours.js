@@ -4,7 +4,7 @@ const { isValidString, isNonNegativeInteger } = require('../utils/validUtils');
 
 const PAGE_SIZE = 10;
 
-// 出發城市的選項，跟 docs/openapi.yaml 的 TourInput.departure_city enum 要一致
+// 出發城市的選項，跟 openapi.yaml 的 TourInput.departure_city enum 要一致
 const DEPARTURE_CITIES = ['台北', '桃園', '台中', '高雄'];
 
 function validateTourInput(body) {
