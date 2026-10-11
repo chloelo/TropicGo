@@ -29,7 +29,7 @@ const COUPONS = [
 ];
 
 // 帳號密碼從環境變數讀，不寫在程式碼裡（repo 是公開的）。
-// 管理員有完整權限；示範帳號只能瀏覽，帳號密碼公開在 README
+// 管理員有完整權限；示範帳號只能瀏覽，後台登入頁有「使用示範帳號登入」按鈕
 const ACCOUNTS = [
   {
     email: process.env.ADMIN_EMAIL,
@@ -72,6 +72,7 @@ async function seed() {
       console.log(`! 略過 ${account.role} 帳號：環境變數沒有設定帳號或密碼`);
       continue;
     }
+    // 只建立不存在的帳號，不會改動已存在帳號的密碼；要改密碼用 npm run reset-password
     const exists = await adminRepo.findOneBy({ email: account.email });
     if (exists) {
       console.log(`= 帳號已存在：${account.email}`);
