@@ -1,6 +1,7 @@
 // 產品範例資料（13 筆）。圖片是 frontend/public/images/products 裡的本地檔案，
 // 價格是含台灣來回機票的團費，天數和價格參考台灣旅行社同類行程的行情
 require('dotenv').config();
+const config = require('../config');
 const { dataSource } = require('../db/data-source');
 
 const TOURS = [
@@ -282,7 +283,19 @@ const TOURS = [
 // 不會被當成新產品重建、換掉 id（收藏和購物車都是用 id 記錄）
 const baseTitle = (title) => title.replace(/\s*(\d+|一)\s*日$/, '').replace(/\s+/g, '');
 
+// 會覆蓋既有產品、刪除不在 TOURS 裡的產品，後台修改過的資料都會不見。
+// 連到本機以外的資料庫（例如正式環境）時，必須加上 --allow-remote 才會執行
+const LOCAL_DB_HOSTS = ['localhost', '127.0.0.1', 'postgres'];
+
 async function seed() {
+  const dbHost = config.get('db.host');
+  if (!LOCAL_DB_HOSTS.includes(dbHost) && !process.argv.includes('--allow-remote')) {
+    console.error(
+      `已停止：目前連線的資料庫不是本機（${dbHost}），這個指令會覆蓋和刪除產品資料。確定要執行請加上 --allow-remote`,
+    );
+    process.exit(1);
+  }
+
   await dataSource.initialize();
 
   const regionRepo = dataSource.getRepository('Region');
