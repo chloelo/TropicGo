@@ -27,14 +27,10 @@ app.use(helmet());
 app.use(cors({ origin: config.get('web.corsOrigins') }));
 app.use(express.json());
 
-// 健康檢查（不是 JSON、不在 /api 底下），給 Docker healthcheck 和部署平台使用
-app.get('/healthcheck', async (req, res) => {
-  try {
-    await dataSource.query('SELECT 1');
-    res.status(200).send('OK');
-  } catch {
-    res.status(503).send('Service Unavailable');
-  }
+// 健康檢查（不是 JSON、不在 /api 底下），給 Docker healthcheck 和部署平台使用。
+// 不查資料庫：監控每 5 分鐘呼叫一次，查資料庫會讓 Neon 一直無法進入休眠，耗盡免費方案的運算額度
+app.get('/healthcheck', (req, res) => {
+  res.status(200).send('OK');
 });
 
 // API 文件（Swagger UI）。servers 改成相對路徑，Try it out 會打到目前這台伺服器，本機和正式環境都不用另外設定

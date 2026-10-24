@@ -213,7 +213,7 @@ npm --prefix backend run reset-password -- admin
 | Vercel | 前端 | 根目錄 `frontend`，Vite preset，Node.js 24.x；`frontend/vercel.json` 讓所有路徑導回 `index.html` |
 | Render | 後端 | 根目錄 `backend`，Docker，Singapore，Free；健康檢查 `/healthcheck` |
 | Neon | PostgreSQL | Singapore，Postgres 18 |
-| UptimeRobot | 監控 | 每 5 分鐘呼叫 `/healthcheck`，同時讓 Render 免費方案不休眠 |
+| UptimeRobot | 監控 | 每 5 分鐘呼叫 `/healthcheck`，同時讓 Render 免費方案不休眠。`/healthcheck` 不查資料庫，Neon 閒置時才能休眠、不耗用運算額度 |
 
 ### 部署
 
