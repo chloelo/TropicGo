@@ -93,5 +93,10 @@ module.exports = new EntitySchema({
       target: 'TourImage',
       inverseSide: 'tour',
     },
+    departures: {
+      type: 'one-to-many',
+      target: 'TourDeparture',
+      inverseSide: 'tour',
+    },
   },
 });
