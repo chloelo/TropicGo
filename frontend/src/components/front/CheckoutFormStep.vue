@@ -2,7 +2,7 @@
   import { ref } from 'vue'
   import type { FormInst, FormRules, GlobalThemeOverrides } from 'naive-ui'
   import { useCartStore } from '@/stores/cart'
-  import { formatCurrency } from '@/utils/format'
+  import { formatCurrency, formatDate } from '@/utils/format'
   import { PAYMENT_LABEL, type PaymentMethod } from '@/utils/payment'
 
   export interface CheckoutForm {
@@ -115,7 +115,7 @@
       <div class="p-4 mb-12 border border-[#dee2e6]">
         <div
           v-for="item in cartStore.items"
-          :key="item.tourId"
+          :key="item.departureId"
           class="flex mb-4"
         >
           <img
@@ -128,6 +128,7 @@
               <p class="mr-2 font-bold">{{ item.title }}</p>
               <p class="whitespace-nowrap">{{ formatCurrency(item.price) }}</p>
             </div>
+            <p class="text-[14px] text-[#6c757d]">{{ formatDate(item.departureDate) }} 出發</p>
             <p class="font-bold">x {{ item.quantity }}</p>
           </div>
         </div>

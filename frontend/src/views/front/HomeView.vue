@@ -70,7 +70,7 @@
       <!-- 留白和寬度限制分兩層：padding 放在 max-width 裡會吃掉可用寬度，標題會提早換行 -->
       <div class="relative z-10 text-white px-4 md:px-12 lg:px-[120px]">
         <div class="max-w-[360px] md:max-w-[504px] lg:max-w-[720px]">
-          <!-- prettier-ignore：句子中間夾著 <span>，拆成多行的話 Vue 會把換行變成空白，「熱情」前後會多出空格 -->
+          <!-- 句子中間夾著 <span>，拆成多行會在「熱情」前後多出空格 -->
           <!-- prettier-ignore -->
           <h2
             v-aos:zoom-in

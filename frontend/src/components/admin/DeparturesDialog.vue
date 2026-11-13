@@ -24,7 +24,7 @@
   const naiveDialog = useNaiveDialog()
   const authStore = useAdminAuthStore()
 
-  // 梯次的規則錯誤（已有人報名、名額不足等）要顯示後端的說明，預設文字說不清楚原因
+  // 梯次的規則錯誤（已有人報名、名額不足等）顯示後端的說明
   const SHOW_BAD_REQUEST = [400]
 
   const departures = ref<TourDeparture[]>([])

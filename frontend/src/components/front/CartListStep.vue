@@ -4,7 +4,7 @@
   import { MAX_QUANTITY, useCartStore, type CartItem } from '@/stores/cart'
   import { useToastStore } from '@/stores/toast'
   import { apiErrorMessage } from '@/utils/api-error'
-  import { formatCurrency } from '@/utils/format'
+  import { formatCurrency, formatDate } from '@/utils/format'
 
   /** 套用中的優惠券。驗證優惠碼的 API 不會回傳代碼本身，送出訂單時要用，所以把客人輸入的代碼一起存下來 */
   export interface AppliedCoupon {
@@ -33,7 +33,7 @@
   function handleQuantityChange(item: CartItem, event: Event) {
     const input = event.target as HTMLInputElement
     const n = Math.floor(Number(input.value))
-    if (Number.isFinite(n) && n >= 1) cartStore.updateQuantity(item.tourId, n)
+    if (Number.isFinite(n) && n >= 1) cartStore.updateQuantity(item.departureId, n)
     input.value = String(item.quantity)
   }
 
@@ -83,7 +83,7 @@
 
         <div
           v-for="item in cartStore.items"
-          :key="item.tourId"
+          :key="item.departureId"
           class="flex items-center bg-[#f8f9fa] mb-6"
         >
           <div class="pl-4">
@@ -99,11 +99,12 @@
               type="button"
               class="absolute top-4 right-4 text-[20px] leading-none text-[#adb5bd] opacity-50 hover:opacity-75"
               aria-label="刪除品項"
-              @click="cartStore.removeItem(item.tourId)"
+              @click="cartStore.removeItem(item.departureId)"
             >
               <span class="i-fa6-xmark" />
             </button>
             <p class="font-bold pr-6 text-africa">{{ item.title }}</p>
+            <p class="text-[14px] text-[#6c757d]">{{ formatDate(item.departureDate) }} 出發</p>
             <p class="mb-1 text-[14px] text-[#6c757d]">
               {{ formatCurrency(item.price) }} / {{ item.unit }}
             </p>
@@ -116,7 +117,7 @@
                   class="px-3 border border-r-0 border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors disabled:opacity-65 disabled:pointer-events-none"
                   :disabled="item.quantity <= 1"
                   aria-label="減少人數"
-                  @click="cartStore.updateQuantity(item.tourId, item.quantity - 1)"
+                  @click="cartStore.updateQuantity(item.departureId, item.quantity - 1)"
                 >
                   <span class="i-fa6-minus" />
                 </button>
@@ -134,7 +135,7 @@
                   class="px-3 border border-l-0 border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors disabled:opacity-65 disabled:pointer-events-none"
                   aria-label="增加人數"
                   :disabled="item.quantity >= MAX_QUANTITY"
-                  @click="cartStore.updateQuantity(item.tourId, item.quantity + 1)"
+                  @click="cartStore.updateQuantity(item.departureId, item.quantity + 1)"
                 >
                   <span class="i-fa6-plus" />
                 </button>

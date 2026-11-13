@@ -1,30 +1,62 @@
 <script setup lang="ts">
-  import { computed, onMounted, ref, watch } from 'vue'
+  import { computed, nextTick, onMounted, ref, watch } from 'vue'
   import { useRoute } from 'vue-router'
+  import dayjs from 'dayjs'
   import { api } from '@/api/client'
-  import type { Tour } from '@/api/tropicgo-api'
+  import type { Tour, TourDepartureOption, TourDetail } from '@/api/tropicgo-api'
   import SectionTitle from '@/components/front/SectionTitle.vue'
   import TourLinkCard from '@/components/front/TourLinkCard.vue'
   import NotFoundView from '@/views/front/NotFoundView.vue'
   import { MAX_QUANTITY, useCartStore } from '@/stores/cart'
+  import { useToastStore } from '@/stores/toast'
   import { useFavorites } from '@/composables/use-favorites'
-  import { formatCurrency } from '@/utils/format'
+  import { formatCurrency, formatDate } from '@/utils/format'
   import { HERO_IMAGES } from '@/utils/hero-images'
   import { setPageTitle } from '@/utils/page-title'
 
   const route = useRoute()
   const cartStore = useCartStore()
+  const toast = useToastStore()
   const { isFavorite, toggleFavorite } = useFavorites()
 
-  const tour = ref<Tour | null>(null)
+  const tour = ref<TourDetail | null>(null)
   const relatedTours = ref<Tour[]>([])
   const loading = ref(true)
   const activeImageIndex = ref(0)
   const quantity = ref(1)
+  // 選中的梯次 id，空字串代表還沒選
+  const departureId = ref('')
+  const bookingRef = ref<HTMLElement | null>(null)
+  const departureSelectRef = ref<HTMLSelectElement | null>(null)
+  const mainImageRef = ref<HTMLImageElement | null>(null)
 
   const activeImage = computed(() => tour.value?.images[activeImageIndex.value]?.url)
   const coverImage = computed(() => tour.value?.images[0]?.url)
   const subtotal = computed(() => (Number(quantity.value) || 0) * (tour.value?.price ?? 0))
+
+  const departures = computed(() => tour.value?.departures ?? [])
+  const selectedDeparture = computed(() =>
+    departures.value.find((departure) => departure.id === departureId.value),
+  )
+  // 人數上限：每個梯次最多 MAX_QUANTITY 人，也不超過剩餘名額
+  const maxQuantity = computed(() =>
+    Math.min(MAX_QUANTITY, selectedDeparture.value?.remaining_seats ?? MAX_QUANTITY),
+  )
+
+  // 人數超過上限就立刻降到上限：輸入時打太大，或換了剩餘名額較少的梯次
+  watch([quantity, maxQuantity], ([value, max]) => {
+    if (value > max) quantity.value = max
+  })
+
+  const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六']
+
+  // 下拉選項的文字：2027/01/15（五）剩 8 位・已成團；額滿的選項不能選
+  function departureLabel(departure: TourDepartureOption) {
+    const date = `${formatDate(departure.departure_date)}（${WEEKDAYS[dayjs(departure.departure_date).day()]}）`
+    if (departure.remaining_seats === 0) return `${date}額滿`
+    const confirmed = departure.is_confirmed ? '・已成團' : ''
+    return `${date}剩 ${departure.remaining_seats} 位${confirmed}`
+  }
 
   async function loadTour(id: string) {
     // 只有第一次進來才切成載入狀態；從「猜您可能會喜歡」換產品時保留舊內容，
@@ -32,6 +64,7 @@
     if (!tour.value) loading.value = true
     activeImageIndex.value = 0
     quantity.value = 1
+    departureId.value = ''
     try {
       const { data } = await api.tours.getTour(id)
       tour.value = data.data
@@ -49,18 +82,39 @@
     } finally {
       loading.value = false
     }
+    if (route.hash === '#booking') scrollToBooking()
+  }
+
+  // 從列表卡片的「我要報名」進來（網址帶 #booking）：捲到報名區，讓出發日期選單取得焦點。
+  // 手機版大圖在報名區上方、沒有預留高度，先等大圖載入（最多 2 秒），以免捲完被推出畫面
+  async function scrollToBooking() {
+    await nextTick()
+    const image = mainImageRef.value
+    if (image && !image.complete) {
+      await new Promise((resolve) => {
+        image.addEventListener('load', resolve, { once: true })
+        image.addEventListener('error', resolve, { once: true })
+        setTimeout(resolve, 2000)
+      })
+    }
+    bookingRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    departureSelectRef.value?.focus({ preventScroll: true })
   }
 
   // 人數框可以直接輸入：清空、小數或負數時拉回至少 1 的整數，超過上限時改成上限
   function normalizeQuantity() {
     const n = Math.floor(Number(quantity.value))
-    quantity.value = Number.isFinite(n) && n >= 1 ? Math.min(n, MAX_QUANTITY) : 1
+    quantity.value = Number.isFinite(n) && n >= 1 ? Math.min(n, maxQuantity.value) : 1
   }
 
   function handleAddToCart() {
     if (!tour.value) return
+    if (!selectedDeparture.value) {
+      toast.push('請選擇出發日期', 'danger')
+      return
+    }
     normalizeQuantity()
-    cartStore.addItem(tour.value, quantity.value)
+    cartStore.addItem(tour.value, selectedDeparture.value, quantity.value)
   }
 
   function handleToggleFavorite() {
@@ -110,6 +164,7 @@
           <div class="w-full lg:w-7/12 px-[15px]">
             <div class="mt-[30px] lg:-mt-[70px] mb-4">
               <img
+                ref="mainImageRef"
                 :src="activeImage"
                 :alt="tour.title"
                 class="w-full h-auto block"
@@ -212,13 +267,51 @@
               </div>
             </div>
 
+            <!-- 出發日期：選項直接顯示剩餘名額和是否已成團；沒有可報名的梯次時改成文字說明。
+                 id="booking"：列表卡片的「我要報名」會帶到這裡 -->
+            <div
+              id="booking"
+              ref="bookingRef"
+              class="mt-4"
+            >
+              <select
+                v-if="departures.length"
+                ref="departureSelectRef"
+                v-model="departureId"
+                class="w-full h-[38px] px-3 border border-secondary text-secondary bg-white outline-none transition-shadow focus:shadow-[0_0_0_0.2rem_rgba(98,125,82,0.25)]"
+                aria-label="出發日期"
+              >
+                <option
+                  value=""
+                  disabled
+                >
+                  請選擇出發日期
+                </option>
+                <option
+                  v-for="departure in departures"
+                  :key="departure.id"
+                  :value="departure.id"
+                  :disabled="departure.remaining_seats === 0"
+                >
+                  {{ departureLabel(departure) }}
+                </option>
+              </select>
+              <p
+                v-else
+                class="h-[38px] flex items-center justify-center gap-2 border border-primary/40 bg-primary/5 text-primary"
+              >
+                <span class="i-fa6-calendar-xmark" />
+                目前沒有可報名的出發日期
+              </p>
+            </div>
+
             <!-- 人數加減、立即報名各佔一半，手機上下堆疊 -->
             <div class="mt-4 grid grid-cols-1 md:grid-cols-2 md:gap-x-[10px]">
               <div class="mb-4 flex h-[38px]">
                 <button
                   type="button"
                   class="px-3 border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors disabled:opacity-65 disabled:pointer-events-none"
-                  :disabled="quantity <= 1"
+                  :disabled="!departures.length || quantity <= 1"
                   @click="quantity = Math.max(1, quantity - 1)"
                 >
                   <span class="i-fa6-minus" />
@@ -227,16 +320,17 @@
                   v-model.number="quantity"
                   type="number"
                   min="1"
-                  :max="MAX_QUANTITY"
-                  class="flex-1 min-w-0 -mx-px border border-secondary text-secondary text-center outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  :max="maxQuantity"
+                  :disabled="!departures.length"
+                  class="flex-1 min-w-0 -mx-px border border-secondary text-secondary text-center bg-white outline-none disabled:opacity-65 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   aria-label="人數"
                   @blur="normalizeQuantity"
                 />
                 <button
                   type="button"
                   class="px-3 border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors disabled:opacity-65 disabled:pointer-events-none"
-                  :disabled="quantity >= MAX_QUANTITY"
-                  @click="quantity = Math.min((Number(quantity) || 0) + 1, MAX_QUANTITY)"
+                  :disabled="!departures.length || quantity >= maxQuantity"
+                  @click="quantity = Math.min((Number(quantity) || 0) + 1, maxQuantity)"
                 >
                   <span class="i-fa6-plus" />
                 </button>
@@ -244,7 +338,8 @@
               <div class="mb-4">
                 <button
                   type="button"
-                  class="w-full h-[38px] bg-secondary text-white flex items-center justify-center gap-2 hover:bg-secondary-dark transition-colors"
+                  class="w-full h-[38px] bg-secondary text-white flex items-center justify-center gap-2 hover:bg-secondary-dark transition-colors disabled:opacity-65 disabled:pointer-events-none"
+                  :disabled="!departures.length"
                   @click="handleAddToCart"
                 >
                   <span class="i-fa6-cart-shopping" />

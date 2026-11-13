@@ -66,7 +66,10 @@
         payment_method: paymentMethod,
         message: form.value.message || undefined,
         coupon_code: appliedCoupon.value?.code,
-        items: cartStore.items.map((item) => ({ tour_id: item.tourId, quantity: item.quantity })),
+        items: cartStore.items.map((item) => ({
+          departure_id: item.departureId,
+          quantity: item.quantity,
+        })),
       })
       createdOrder.value = data.data
       orderedItems.value = [...cartStore.items]
@@ -76,7 +79,8 @@
       // 訂單 id 放進網址：離開再回來、重新整理，都能用下面的 watch 把訂單抓回來
       router.replace({ query: { order: data.data.id } })
     } catch (error) {
-      toast.push(apiErrorMessage(error, '建立訂單失敗'), 'danger')
+      // 400 是「名額不足，剩 N 位」「已截止報名」這類原因，顯示後端的說明，客人才知道要改什麼
+      toast.push(apiErrorMessage(error, '建立訂單失敗', [400]), 'danger')
     } finally {
       submitting.value = false
     }

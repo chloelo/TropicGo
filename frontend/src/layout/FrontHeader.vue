@@ -4,7 +4,7 @@
   import { useWindowScroll } from '@vueuse/core'
   import logo from '@/assets/images/logo.png'
   import { useCartStore } from '@/stores/cart'
-  import { formatCurrency } from '@/utils/format'
+  import { formatCurrency, formatDate } from '@/utils/format'
 
   const route = useRoute()
   const router = useRouter()
@@ -181,11 +181,12 @@
                 <tbody>
                   <tr
                     v-for="item in cartStore.items"
-                    :key="item.tourId"
+                    :key="item.departureId"
                   >
-                    <!-- 品名被截斷時，滑鼠移上去才會跳出完整名稱 -->
+                    <!-- 品名被截斷時，滑鼠移上去才會跳出完整名稱；同一個行程可能有不同日期，下面一行顯示出發日期 -->
                     <td class="py-1 pr-2">
                       <n-ellipsis>{{ item.title }}</n-ellipsis>
+                      <p class="text-xs text-gray-400">{{ formatDate(item.departureDate) }} 出發</p>
                     </td>
                     <td class="text-center py-1">{{ item.quantity }}</td>
                     <td class="text-right py-1 whitespace-nowrap">

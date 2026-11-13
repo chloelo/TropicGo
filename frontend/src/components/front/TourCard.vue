@@ -1,15 +1,17 @@
 <script setup lang="ts">
+  import { useRouter } from 'vue-router'
   import type { Tour } from '@/api/tropicgo-api'
-  import { useCartStore } from '@/stores/cart'
   import { formatCurrency } from '@/utils/format'
   import { REGION_BG } from '@/utils/region'
 
   const props = defineProps<{ tour: Tour }>()
 
-  const cartStore = useCartStore()
+  const router = useRouter()
 
-  function addToCart() {
-    cartStore.addItem(props.tour, 1)
+  // 報名要先選出發日期，卡片上沒有地方選：點卡片停在產品頁最上方看介紹，
+  // 點「我要報名」則帶到產品頁的報名區（#booking），直接選日期
+  function goToBooking() {
+    router.push({ path: `/products/${props.tour.id}`, hash: '#booking' })
   }
 </script>
 
@@ -60,7 +62,7 @@
     <button
       type="button"
       class="w-full py-2 bg-secondary text-white flex items-center justify-center gap-2 hover:bg-secondary-dark transition-colors"
-      @click.prevent.stop="addToCart"
+      @click.prevent.stop="goToBooking"
     >
       <span class="i-fa6-cart-shopping" />
       我要報名
