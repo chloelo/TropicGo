@@ -146,7 +146,12 @@
       content-scrollable
     >
       <template v-if="dialogOptions.data">
-        <n-descriptions :column="1" label-placement="left" bordered size="small">
+        <n-descriptions
+          :column="1"
+          label-placement="left"
+          bordered
+          size="small"
+        >
           <n-descriptions-item label="客戶">
             {{ dialogOptions.data.customer_name }}
           </n-descriptions-item>
@@ -159,13 +164,22 @@
           <n-descriptions-item label="地址">
             {{ dialogOptions.data.customer_address }}
           </n-descriptions-item>
-          <n-descriptions-item v-if="dialogOptions.data.payment_method" label="付款方式">
+          <n-descriptions-item
+            v-if="dialogOptions.data.payment_method"
+            label="付款方式"
+          >
             {{ paymentLabel(dialogOptions.data.payment_method) }}
           </n-descriptions-item>
-          <n-descriptions-item v-if="dialogOptions.data.message" label="備註">
+          <n-descriptions-item
+            v-if="dialogOptions.data.message"
+            label="備註"
+          >
             {{ dialogOptions.data.message }}
           </n-descriptions-item>
-          <n-descriptions-item v-if="dialogOptions.data.coupon" label="使用優惠券">
+          <n-descriptions-item
+            v-if="dialogOptions.data.coupon"
+            label="使用優惠券"
+          >
             {{ dialogOptions.data.coupon.title }}（{{ dialogOptions.data.coupon.code }}）
           </n-descriptions-item>
         </n-descriptions>
@@ -188,7 +202,10 @@
           <span>{{ formatCurrency(dialogOptions.data.total_amount) }}</span>
         </div>
 
-        <n-form-item label="訂單狀態" label-placement="left">
+        <n-form-item
+          label="訂單狀態"
+          label-placement="left"
+        >
           <n-select
             v-model:value="selectedStatus"
             :options="statusOptions"
@@ -200,12 +217,27 @@
       <template #footer>
         <n-space justify="end">
           <!-- 示範帳號：訂單狀態唯讀，只留關閉 -->
-          <n-button v-if="authStore.isDemo" type="primary" ghost @click="closeDialog">
+          <n-button
+            v-if="authStore.isDemo"
+            type="primary"
+            ghost
+            @click="closeDialog"
+          >
             關閉
           </n-button>
           <template v-else>
-            <n-button type="primary" ghost @click="closeDialog">取消</n-button>
-            <n-button type="primary" :loading="updating" @click="handleUpdateStatus">
+            <n-button
+              type="primary"
+              ghost
+              @click="closeDialog"
+            >
+              取消
+            </n-button>
+            <n-button
+              type="primary"
+              :loading="updating"
+              @click="handleUpdateStatus"
+            >
               更新狀態
             </n-button>
           </template>

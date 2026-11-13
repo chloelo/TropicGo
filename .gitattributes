@@ -1,0 +1,3 @@
+# 文字檔在電腦上一律用 LF 換行，跟 Prettier 的 endOfLine: lf 一致（Windows 的 git 預設會轉成 CRLF）
+# text=auto：由 git 判斷是不是文字檔，圖片等二進位檔不會被轉換
+* text=auto eol=lf

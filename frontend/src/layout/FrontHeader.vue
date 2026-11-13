@@ -83,8 +83,15 @@
     "
   >
     <div class="px-4 h-16 flex items-center">
-      <RouterLink to="/" class="shrink-0">
-        <img :src="logo" alt="TropicGo" class="h-7 sm:h-9 w-auto" />
+      <RouterLink
+        to="/"
+        class="shrink-0"
+      >
+        <img
+          :src="logo"
+          alt="TropicGo"
+          class="h-7 sm:h-9 w-auto"
+        />
       </RouterLink>
 
       <!-- 選單用 ml-auto 跟右邊的 icon 群組貼在一起靠右（原設計），不是跟 logo 平均分散 -->
@@ -113,7 +120,13 @@
 
         <!-- :to="false"：彈窗直接放在 header 裡，跟著 fixed 的 header 一起固定；
              放到 body 底下的話，捲動時每次都要重算位置，看起來會晃 -->
-        <n-popover v-model:show="cartOpen" trigger="click" placement="bottom-end" :width="280" :to="false">
+        <n-popover
+          v-model:show="cartOpen"
+          trigger="click"
+          placement="bottom-end"
+          :width="280"
+          :to="false"
+        >
           <template #trigger>
             <button
               type="button"
@@ -153,7 +166,10 @@
             <!-- 品項多時只有清單捲動（標題列黏在上方），總計和按鈕固定在下面。
                  table-fixed：數量、單價固定寬度，品名吃剩下的空間；一般表格的格子不遵守 max-width，
                  長品名或捲軸會把表格撐寬，出現橫向捲軸 -->
-            <div v-if="cartStore.items.length" class="max-h-[300px] overflow-y-auto">
+            <div
+              v-if="cartStore.items.length"
+              class="max-h-[300px] overflow-y-auto"
+            >
               <table class="w-full table-fixed text-sm">
                 <thead class="sticky top-0 bg-white">
                   <tr class="text-gray-400 text-xs border-b border-gray-100">
@@ -163,16 +179,28 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in cartStore.items" :key="item.tourId">
+                  <tr
+                    v-for="item in cartStore.items"
+                    :key="item.tourId"
+                  >
                     <!-- 品名被截斷時，滑鼠移上去才會跳出完整名稱 -->
-                    <td class="py-1 pr-2"><n-ellipsis>{{ item.title }}</n-ellipsis></td>
+                    <td class="py-1 pr-2">
+                      <n-ellipsis>{{ item.title }}</n-ellipsis>
+                    </td>
                     <td class="text-center py-1">{{ item.quantity }}</td>
-                    <td class="text-right py-1 whitespace-nowrap">{{ formatCurrency(item.price) }}</td>
+                    <td class="text-right py-1 whitespace-nowrap">
+                      {{ formatCurrency(item.price) }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p v-else class="text-gray-400 text-sm py-2">您尚未選擇任何行程喔！</p>
+            <p
+              v-else
+              class="text-gray-400 text-sm py-2"
+            >
+              您尚未選擇任何行程喔！
+            </p>
 
             <div
               v-if="cartStore.items.length"
@@ -206,7 +234,10 @@
       </div>
     </div>
 
-    <div v-if="mobileOpen" class="lg:hidden bg-white px-4 flex flex-col">
+    <div
+      v-if="mobileOpen"
+      class="lg:hidden bg-white px-4 flex flex-col"
+    >
       <RouterLink
         v-for="link in navLinks"
         :key="link.to"

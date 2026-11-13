@@ -10,7 +10,12 @@
        每張卡片下方固定留 24px（最後一排也有），所以用 mb-6，不用 grid 的 gap-y -->
   <div class="flex flex-col bg-white shadow-[0_2px_4px_0_rgba(0,0,0,0.075)] mb-6">
     <div class="h-[185px] overflow-hidden">
-      <img :src="tour.images[0]?.url" :alt="tour.title" loading="lazy" class="w-full h-full object-cover" />
+      <img
+        :src="tour.images[0]?.url"
+        :alt="tour.title"
+        loading="lazy"
+        class="w-full h-full object-cover"
+      />
     </div>
     <div class="p-5 flex-1 flex flex-col">
       <h5 class="text-[20px] font-medium leading-[1.2] mb-3">{{ tour.title }}</h5>
@@ -19,7 +24,9 @@
         <span class="text-[0.6rem] text-[#ccc] line-through">
           {{ formatCurrency(tour.origin_price) }}/{{ tour.unit }}
         </span>
-        <span class="text-[1.2rem] text-secondary">{{ formatCurrency(tour.price) }}/{{ tour.unit }}</span>
+        <span class="text-[1.2rem] text-secondary">
+          {{ formatCurrency(tour.price) }}/{{ tour.unit }}
+        </span>
       </p>
       <RouterLink
         :to="`/products/${tour.id}`"

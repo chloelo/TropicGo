@@ -19,7 +19,11 @@ function layoutTop(el: HTMLElement): number {
   }
   // 外層元素的 translateY 也要算進去（元素自己的 transform 是動畫本身，不算）。
   // 例如首頁地區卡用外層 translate 做上下交錯，往上移的兩張要比較早出現
-  for (let parent = el.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
+  for (
+    let parent = el.parentElement;
+    parent && parent !== document.body;
+    parent = parent.parentElement
+  ) {
     const { transform } = getComputedStyle(parent)
     if (transform !== 'none') top += new DOMMatrixReadOnly(transform).m42
   }

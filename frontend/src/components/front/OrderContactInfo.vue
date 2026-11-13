@@ -35,7 +35,10 @@
       class="flex justify-between items-center pt-[10px] border-t border-dashed border-[#dee2e6]"
     >
       <p class="mr-3">付款狀態</p>
-      <p class="font-bold" :class="paid ? 'text-secondary' : 'text-[#dc3545]'">
+      <p
+        class="font-bold"
+        :class="paid ? 'text-secondary' : 'text-[#dc3545]'"
+      >
         {{ paid ? '已付款' : '尚未付款' }}
       </p>
     </div>

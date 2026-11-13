@@ -51,7 +51,9 @@
         <span class="text-xs text-gray-400 line-through">
           {{ formatCurrency(tour.origin_price) }}/{{ tour.unit }}
         </span>
-        <span class="text-lg font-bold text-primary">{{ formatCurrency(tour.price) }}/{{ tour.unit }}</span>
+        <span class="text-lg font-bold text-primary">
+          {{ formatCurrency(tour.price) }}/{{ tour.unit }}
+        </span>
       </div>
     </div>
     <!-- 內文區 flex-1 撐滿、按鈕放最後：同一排卡片的按鈕都會對齊在底部 -->

@@ -40,7 +40,11 @@
           <p class="font-bold">訂單編號</p>
           <p>{{ order.order_number }}</p>
         </div>
-        <div v-for="item in items" :key="item.id" class="flex mb-4">
+        <div
+          v-for="item in items"
+          :key="item.id"
+          class="flex mb-4"
+        >
           <img
             v-if="item.image"
             :src="item.image"

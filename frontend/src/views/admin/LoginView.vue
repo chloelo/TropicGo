@@ -75,7 +75,12 @@
       </p>
       <form @submit.prevent="handleSubmit">
         <div class="mb-4">
-          <label for="login-email" class="block mb-2 text-africa">Email address</label>
+          <label
+            for="login-email"
+            class="block mb-2 text-africa"
+          >
+            Email address
+          </label>
           <input
             id="login-email"
             v-model="email"
@@ -86,7 +91,12 @@
           />
         </div>
         <div class="mb-4">
-          <label for="login-password" class="block mb-2 text-africa">Password</label>
+          <label
+            for="login-password"
+            class="block mb-2 text-africa"
+          >
+            Password
+          </label>
           <input
             id="login-password"
             v-model="password"

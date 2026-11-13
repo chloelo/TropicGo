@@ -82,9 +82,16 @@
 
 <template>
   <!-- 載入提示交給全域 loader，這裡只先撐住高度 -->
-  <main v-if="loading" class="min-h-screen" />
+  <main
+    v-if="loading"
+    class="min-h-screen"
+  />
 
-  <NotFoundView v-else-if="!tour" heading="找不到這個行程" message="這個行程可能已經下架，或是網址打錯了。" />
+  <NotFoundView
+    v-else-if="!tour"
+    heading="找不到這個行程"
+    message="這個行程可能已經下架，或是網址打錯了。"
+  />
 
   <main v-else>
     <section
@@ -102,8 +109,15 @@
         <div class="flex flex-wrap -mx-[15px]">
           <div class="w-full lg:w-7/12 px-[15px]">
             <div class="mt-[30px] lg:-mt-[70px] mb-4">
-              <img :src="activeImage" :alt="tour.title" class="w-full h-auto block" />
-              <div v-if="tour.images && tour.images.length > 1" class="flex gap-2 mt-3">
+              <img
+                :src="activeImage"
+                :alt="tour.title"
+                class="w-full h-auto block"
+              />
+              <div
+                v-if="tour.images && tour.images.length > 1"
+                class="flex gap-2 mt-3"
+              >
                 <button
                   v-for="(img, index) in tour.images"
                   :key="img.id"
@@ -111,7 +125,11 @@
                   :class="index === activeImageIndex ? 'border-secondary' : 'border-transparent'"
                   @click="activeImageIndex = index"
                 >
-                  <img :src="img.url" class="w-full h-full object-cover" alt="" />
+                  <img
+                    :src="img.url"
+                    class="w-full h-full object-cover"
+                    alt=""
+                  />
                 </button>
               </div>
             </div>
@@ -121,10 +139,18 @@
             <nav aria-label="breadcrumb">
               <ol class="flex flex-wrap mr-[4em] mb-4">
                 <li>
-                  <RouterLink to="/" class="text-[#495057] hover:text-america transition-colors">首頁</RouterLink>
+                  <RouterLink
+                    to="/"
+                    class="text-[#495057] hover:text-america transition-colors"
+                  >
+                    首頁
+                  </RouterLink>
                 </li>
                 <li class="pl-2 before:content-['/'] before:pr-2 before:text-[#6c757d]">
-                  <RouterLink to="/products" class="text-[#495057] hover:text-america transition-colors">
+                  <RouterLink
+                    to="/products"
+                    class="text-[#495057] hover:text-america transition-colors"
+                  >
                     產品列表
                   </RouterLink>
                 </li>
@@ -147,7 +173,10 @@
             <p class="leading-6 mb-4">{{ tour.content }}</p>
 
             <ul class="mb-4">
-              <li v-if="tour.is_popular" class="flex items-center mb-[10px]">
+              <li
+                v-if="tour.is_popular"
+                class="flex items-center mb-[10px]"
+              >
                 <span
                   class="w-[30px] h-[30px] rounded-full bg-alert text-white text-[16px] flex items-center justify-center mr-[10px] shrink-0"
                 >
@@ -177,7 +206,9 @@
               <del class="text-black/50">原價 {{ formatCurrency(tour.origin_price) }}</del>
               <div class="text-secondary">
                 特價
-                <span class="text-[24px] font-medium leading-[1.2]">{{ formatCurrency(tour.price) }}</span>
+                <span class="text-[24px] font-medium leading-[1.2]">
+                  {{ formatCurrency(tour.price) }}
+                </span>
               </div>
             </div>
 
@@ -250,16 +281,30 @@
       }"
     >
       <div class="bs-container">
-        <SectionTitle title="產品特色" tag="h3" class="mb-12" />
-        <div class="description" v-html="tour.description" />
+        <SectionTitle
+          title="產品特色"
+          tag="h3"
+          class="mb-12"
+        />
+        <div
+          class="description"
+          v-html="tour.description"
+        />
       </div>
     </section>
 
-    <section v-if="relatedTours.length" class="zones">
+    <section
+      v-if="relatedTours.length"
+      class="zones"
+    >
       <div class="bs-container">
         <h3 class="text-[28px] font-medium leading-[1.2] mb-6">猜您可能會喜歡...</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[30px]">
-          <TourLinkCard v-for="related in relatedTours" :key="related.id" :tour="related" />
+          <TourLinkCard
+            v-for="related in relatedTours"
+            :key="related.id"
+            :tour="related"
+          />
         </div>
       </div>
     </section>

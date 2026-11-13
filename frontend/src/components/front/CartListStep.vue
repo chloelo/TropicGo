@@ -87,7 +87,11 @@
           class="flex items-center bg-[#f8f9fa] mb-6"
         >
           <div class="pl-4">
-            <img :src="item.image" :alt="item.title" class="w-[120px] h-auto align-middle" />
+            <img
+              :src="item.image"
+              :alt="item.title"
+              class="w-[120px] h-auto align-middle"
+            />
           </div>
           <!-- min-w-0：數量輸入框有預設寬度，不加的話手機版這欄縮不下來，會超出卡片 -->
           <div class="relative w-full min-w-0 p-4">
@@ -163,7 +167,10 @@
           <span class="font-bold">商品總額</span>
           <span class="whitespace-nowrap">{{ formatCurrency(cartStore.totalPrice) }}</span>
         </div>
-        <form class="mt-4 flex" @submit.prevent="applyCoupon">
+        <form
+          class="mt-4 flex"
+          @submit.prevent="applyCoupon"
+        >
           <input
             v-model="couponCode"
             type="text"

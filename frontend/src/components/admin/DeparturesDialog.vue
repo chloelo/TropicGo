@@ -236,13 +236,21 @@
   >
     <p class="mb-3 text-sm">成團人數：{{ tour?.min_group_size }} 人</p>
     <!-- 產品下架後前台整個看不到，梯次狀態仍照梯次本身顯示，這裡提醒避免誤會 -->
-    <n-alert v-if="tour && !tour.is_enabled" type="warning" :show-icon="false" class="mb-3">
+    <n-alert
+      v-if="tour && !tour.is_enabled"
+      type="warning"
+      :show-icon="false"
+      class="mb-3"
+    >
       此產品已下架，前台看不到這些梯次
     </n-alert>
 
     <!-- 新增和編輯共用這一排；編輯時按鈕變成「儲存」，多一個「取消編輯」 -->
     <div class="flex flex-wrap items-end gap-3">
-      <n-form-item label="出發日期" :show-feedback="false">
+      <n-form-item
+        label="出發日期"
+        :show-feedback="false"
+      >
         <n-date-picker
           v-model:value="dateTimestamp"
           type="date"
@@ -251,7 +259,10 @@
           :disabled="authStore.isDemo || dateLocked"
         />
       </n-form-item>
-      <n-form-item label="名額" :show-feedback="false">
+      <n-form-item
+        label="名額"
+        :show-feedback="false"
+      >
         <n-input-number
           v-model:value="capacity"
           placeholder="人數"
@@ -269,9 +280,21 @@
           {{ editingId ? '儲存' : '新增梯次' }}
         </n-button>
       </DemoLock>
-      <n-button v-if="editingId" type="primary" ghost @click="resetForm">取消編輯</n-button>
+      <n-button
+        v-if="editingId"
+        type="primary"
+        ghost
+        @click="resetForm"
+      >
+        取消編輯
+      </n-button>
     </div>
-    <p v-if="dateLocked" class="mt-2 text-sm">已有人報名，出發日期不能修改</p>
+    <p
+      v-if="dateLocked"
+      class="mt-2 text-sm"
+    >
+      已有人報名，出發日期不能修改
+    </p>
 
     <n-data-table
       class="mt-4"
@@ -283,7 +306,13 @@
 
     <template #footer>
       <n-space justify="end">
-        <n-button type="primary" ghost @click="show = false">關閉</n-button>
+        <n-button
+          type="primary"
+          ghost
+          @click="show = false"
+        >
+          關閉
+        </n-button>
       </n-space>
     </template>
   </n-modal>

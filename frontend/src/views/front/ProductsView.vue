@@ -87,25 +87,46 @@
       <!-- 分類列往上疊 20px，壓到 KV 下緣一點點。每格固定 160px、不換行，手機寬度不夠時一起縮窄；
            按鈕寬是格子寬減 30px（手機減 3px），按鈕之間的間距是這樣來的，不是用 gap -->
       <div class="flex justify-center -mt-5 relative z-10 mb-10">
-        <div v-for="tab in tabs" :key="tab.colorKey" class="w-[160px] flex justify-center">
+        <div
+          v-for="tab in tabs"
+          :key="tab.colorKey"
+          class="w-[160px] flex justify-center"
+        >
           <button
             class="w-[calc(100%-3px)] p-[0.1rem] md:w-[calc(100%-30px)] md:p-[0.2rem] md:pt-[0.4rem] border border-transparent flex flex-col items-center justify-center shadow transition-colors"
             :class="tabClass(tab.slug, tab.colorKey)"
             @click="selectRegion(tab.slug)"
           >
-            <img :src="REGION_ICON[tab.colorKey]" :alt="tab.name" class="max-w-[40px] md:max-w-[50px]" />
+            <img
+              :src="REGION_ICON[tab.colorKey]"
+              :alt="tab.name"
+              class="max-w-[40px] md:max-w-[50px]"
+            />
             <h4 class="my-[5px] text-white text-[18px] leading-[1.2]">{{ tab.name }}</h4>
           </button>
         </div>
       </div>
 
       <!-- 載入提示交給全域 loader，這裡只先撐住高度 -->
-      <div v-if="loading" class="min-h-[400px]" />
-      <div v-else-if="tours.length === 0" class="text-center text-gray-400 py-12">
+      <div
+        v-if="loading"
+        class="min-h-[400px]"
+      />
+      <div
+        v-else-if="tours.length === 0"
+        class="text-center text-gray-400 py-12"
+      >
         目前沒有符合的行程
       </div>
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <TourCard v-for="tour in tours" :key="tour.id" :tour="tour" />
+      <div
+        v-else
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        <TourCard
+          v-for="tour in tours"
+          :key="tour.id"
+          :tour="tour"
+        />
       </div>
     </section>
   </main>

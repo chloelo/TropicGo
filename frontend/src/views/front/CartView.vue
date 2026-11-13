@@ -159,17 +159,30 @@
     </section>
 
     <!-- 從網址抓訂單時先撐住高度，不然會先閃一下空的購物車 -->
-    <div v-if="loadingOrder" class="min-h-[300px]" />
+    <div
+      v-if="loadingOrder"
+      class="min-h-[300px]"
+    />
 
     <!-- 確認清單 -->
-    <section v-else-if="step === 1" class="zones">
+    <section
+      v-else-if="step === 1"
+      class="zones"
+    >
       <div class="bs-container">
-        <CartListStep v-model:coupon="appliedCoupon" :payable="discountedTotal" @next="step = 2" />
+        <CartListStep
+          v-model:coupon="appliedCoupon"
+          :payable="discountedTotal"
+          @next="step = 2"
+        />
       </div>
     </section>
 
     <!-- 填寫資料（上方只留 30px） -->
-    <section v-else-if="step === 2" class="pt-[30px] pb-[60px]">
+    <section
+      v-else-if="step === 2"
+      class="pt-[30px] pb-[60px]"
+    >
       <div class="bs-container">
         <CheckoutFormStep
           v-model:form="form"
@@ -182,7 +195,10 @@
     </section>
 
     <!-- 確認付款 -->
-    <section v-else-if="step === 3 && createdOrder" class="zones">
+    <section
+      v-else-if="step === 3 && createdOrder"
+      class="zones"
+    >
       <div class="bs-container">
         <OrderConfirmStep
           :order="createdOrder"
@@ -194,7 +210,10 @@
     </section>
 
     <!-- 完成訂單 -->
-    <section v-else-if="step === 4 && createdOrder" class="zones">
+    <section
+      v-else-if="step === 4 && createdOrder"
+      class="zones"
+    >
       <div class="bs-container">
         <OrderCompleteStep :order="createdOrder" />
       </div>

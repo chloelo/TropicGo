@@ -14,7 +14,10 @@
     class="flex items-center justify-center font-medium leading-[1.2] text-primary"
     :class="tag === 'h2' ? 'text-[32px]' : 'text-[28px]'"
   >
-    <span class="w-[35px] h-[35px] rounded-full mr-4 shrink-0" :style="circleStyle" />
+    <span
+      class="w-[35px] h-[35px] rounded-full mr-4 shrink-0"
+      :style="circleStyle"
+    />
     {{ title }}
   </component>
 </template>

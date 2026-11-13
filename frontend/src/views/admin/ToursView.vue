@@ -263,7 +263,11 @@
   <n-card title="產品管理">
     <template #header-extra>
       <DemoLock>
-        <n-button type="primary" :disabled="authStore.isDemo" @click="openCreate">
+        <n-button
+          type="primary"
+          :disabled="authStore.isDemo"
+          @click="openCreate"
+        >
           新增產品
         </n-button>
       </DemoLock>
@@ -294,25 +298,54 @@
         :disabled="authStore.isDemo"
         :show-require-mark="!authStore.isDemo"
       >
-        <n-form-item label="產品名稱" path="title">
+        <n-form-item
+          label="產品名稱"
+          path="title"
+        >
           <n-input v-model:value="form.title" />
         </n-form-item>
-        <n-form-item label="地區" path="region_id">
-          <n-select v-model:value="form.region_id" :options="regionOptions" />
+        <n-form-item
+          label="地區"
+          path="region_id"
+        >
+          <n-select
+            v-model:value="form.region_id"
+            :options="regionOptions"
+          />
         </n-form-item>
-        <n-form-item label="摘要" path="summary">
+        <n-form-item
+          label="摘要"
+          path="summary"
+        >
           <n-input v-model:value="form.summary" />
         </n-form-item>
-        <n-form-item label="完整介紹" path="description">
-          <n-input v-model:value="form.description" type="textarea" :rows="4" />
+        <n-form-item
+          label="完整介紹"
+          path="description"
+        >
+          <n-input
+            v-model:value="form.description"
+            type="textarea"
+            :rows="4"
+          />
         </n-form-item>
-        <n-form-item label="費用包含" path="content">
-          <n-input v-model:value="form.content" type="textarea" :rows="2" />
+        <n-form-item
+          label="費用包含"
+          path="content"
+        >
+          <n-input
+            v-model:value="form.content"
+            type="textarea"
+            :rows="2"
+          />
         </n-form-item>
         <n-form-item label="單位">
           <n-input v-model:value="form.unit" />
         </n-form-item>
-        <n-form-item label="出發城市" path="departure_city">
+        <n-form-item
+          label="出發城市"
+          path="departure_city"
+        >
           <n-select
             v-model:value="form.departure_city"
             :options="departureCityOptions"
@@ -320,13 +353,25 @@
           />
         </n-form-item>
         <n-form-item label="成團人數">
-          <n-input-number v-model:value="form.min_group_size" :min="1" style="width: 100%" />
+          <n-input-number
+            v-model:value="form.min_group_size"
+            :min="1"
+            style="width: 100%"
+          />
         </n-form-item>
         <n-form-item label="原價">
-          <n-input-number v-model:value="form.origin_price" :min="0" style="width: 100%" />
+          <n-input-number
+            v-model:value="form.origin_price"
+            :min="0"
+            style="width: 100%"
+          />
         </n-form-item>
         <n-form-item label="優惠價">
-          <n-input-number v-model:value="form.price" :min="0" style="width: 100%" />
+          <n-input-number
+            v-model:value="form.price"
+            :min="0"
+            style="width: 100%"
+          />
         </n-form-item>
         <n-form-item label="圖片網址（每行一個）">
           <n-input
@@ -341,11 +386,17 @@
         <div class="grid grid-cols-2">
           <n-form-item :show-label="false">
             <span class="mr-3">熱門產品</span>
-            <n-switch v-model:value="form.is_popular" aria-label="熱門產品" />
+            <n-switch
+              v-model:value="form.is_popular"
+              aria-label="熱門產品"
+            />
           </n-form-item>
           <n-form-item :show-label="false">
             <span class="mr-3">上架</span>
-            <n-switch v-model:value="form.is_enabled" aria-label="上架" />
+            <n-switch
+              v-model:value="form.is_enabled"
+              aria-label="上架"
+            />
           </n-form-item>
         </div>
       </n-form>
@@ -353,17 +404,37 @@
       <template #footer>
         <n-space justify="end">
           <!-- 示範帳號：表單唯讀，只留關閉 -->
-          <n-button v-if="authStore.isDemo" type="primary" ghost @click="closeDialog">
+          <n-button
+            v-if="authStore.isDemo"
+            type="primary"
+            ghost
+            @click="closeDialog"
+          >
             關閉
           </n-button>
           <template v-else>
-            <n-button type="primary" ghost @click="closeDialog">取消</n-button>
-            <n-button type="primary" :loading="submitting" @click="handleSubmit">儲存</n-button>
+            <n-button
+              type="primary"
+              ghost
+              @click="closeDialog"
+            >
+              取消
+            </n-button>
+            <n-button
+              type="primary"
+              :loading="submitting"
+              @click="handleSubmit"
+            >
+              儲存
+            </n-button>
           </template>
         </n-space>
       </template>
     </n-modal>
 
-    <DeparturesDialog v-model:show="showDepartures" :tour="departuresTour" />
+    <DeparturesDialog
+      v-model:show="showDepartures"
+      :tour="departuresTour"
+    />
   </n-card>
 </template>

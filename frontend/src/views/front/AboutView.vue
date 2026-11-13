@@ -46,11 +46,19 @@
           <div class="w-full md:w-1/2 px-[15px]">
             <!-- z-[3]：讓照片疊在右邊文字區的米色底塊上面 -->
             <div class="relative z-[3]">
-              <img v-aos:fade-up :src="HERO_IMAGES.about.content[0]" alt="關於 TropicGo" class="max-w-full h-auto align-middle" />
+              <img
+                v-aos:fade-up
+                :src="HERO_IMAGES.about.content[0]"
+                alt="關於 TropicGo"
+                class="max-w-full h-auto align-middle"
+              />
             </div>
           </div>
           <div class="w-full md:w-1/2 px-[15px]">
-            <div v-aos:fade-down class="relative p-4">
+            <div
+              v-aos:fade-down
+              class="relative p-4"
+            >
               <!-- 米色底塊：桌機比文字區大 120%、往左延伸壓到照片底下，往下多 30px 形成高低差；
                    手機剛好包住文字，底線改在下方 -->
               <div
@@ -76,23 +84,48 @@
     <!-- 裝飾 banner。這頁的 img 都加 align-middle：圖片預設對齊文字 baseline，下方會多出約 6px 的空隙 -->
     <section class="pt-4">
       <div class="hidden md:block">
-        <img v-aos:fade-down :src="HERO_IMAGES.about.content[1]" alt="" class="max-w-full h-auto align-middle" />
+        <img
+          v-aos:fade-down
+          :src="HERO_IMAGES.about.content[1]"
+          alt=""
+          class="max-w-full h-auto align-middle"
+        />
       </div>
       <div class="md:hidden">
-        <img :src="HERO_IMAGES.about.content[2]" alt="" class="max-w-full h-auto align-middle" />
+        <img
+          :src="HERO_IMAGES.about.content[2]"
+          alt=""
+          class="max-w-full h-auto align-middle"
+        />
       </div>
     </section>
 
     <!-- TropicGo 成員：卡片高度跟著文字長度，不拉成一樣高 -->
     <section class="zones">
       <div class="bs-container">
-        <SectionTitle title="TropicGo 成員" class="mb-12" />
+        <SectionTitle
+          title="TropicGo 成員"
+          class="mb-12"
+        />
         <div class="flex flex-wrap items-start -mx-[15px]">
-          <div v-for="member in crew" :key="member.role" class="w-full md:w-1/2 lg:w-1/4 px-[15px]">
-            <div v-aos:zoom-in class="shadow-[0_0_6px_#dee2e6] mb-[30px]">
-              <img :src="member.photo" :alt="member.role" class="max-w-full h-auto align-middle" />
+          <div
+            v-for="member in crew"
+            :key="member.role"
+            class="w-full md:w-1/2 lg:w-1/4 px-[15px]"
+          >
+            <div
+              v-aos:zoom-in
+              class="shadow-[0_0_6px_#dee2e6] mb-[30px]"
+            >
+              <img
+                :src="member.photo"
+                :alt="member.role"
+                class="max-w-full h-auto align-middle"
+              />
               <div class="p-[15px]">
-                <h3 class="text-[24px] font-medium leading-[1.2] mb-2 pb-[10px] border-b border-[#dee2e6]">
+                <h3
+                  class="text-[24px] font-medium leading-[1.2] mb-2 pb-[10px] border-b border-[#dee2e6]"
+                >
                   {{ member.role }}
                 </h3>
                 <p class="mb-4">{{ member.text }}</p>
