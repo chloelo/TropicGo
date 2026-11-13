@@ -1,5 +1,7 @@
+const { MoreThan } = require('typeorm');
 const { dataSource } = require('../db/data-source');
 const appError = require('../utils/appError');
+const { getTaipeiToday } = require('../utils/departures');
 
 const toursController = {
   // GET /api/tours?region=asia
@@ -35,7 +37,26 @@ const toursController = {
       order: { images: { sort_order: 'ASC' } },
     });
     if (!tour) return next(appError(400, '行程不存在'));
-    res.json({ status: 'success', data: tour });
+
+    // 只列出還能報名的梯次（開放中、出發日期在今天之後），額滿的也列出來讓客人知道
+    const departures = await dataSource.getRepository('TourDeparture').find({
+      where: { tour: { id }, is_enabled: true, departure_date: MoreThan(getTaipeiToday()) },
+      order: { departure_date: 'ASC' },
+    });
+
+    res.json({
+      status: 'success',
+      data: {
+        ...tour,
+        // 只回傳前台需要的欄位，名額上限、已報名人數等內部數字不直接給
+        departures: departures.map((departure) => ({
+          id: departure.id,
+          departure_date: departure.departure_date,
+          remaining_seats: departure.capacity - departure.booked_count,
+          is_confirmed: departure.booked_count >= tour.min_group_size,
+        })),
+      },
+    });
   },
 };
 

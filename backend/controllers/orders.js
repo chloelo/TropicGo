@@ -3,6 +3,7 @@ const { dataSource } = require('../db/data-source');
 const appError = require('../utils/appError');
 const { isValidString, isNonNegativeInteger, isUuid } = require('../utils/validUtils');
 const { getTaipeiToday, lockDepartures } = require('../utils/departures');
+const { ORDER_RELATIONS, toOrderResponse } = require('../utils/orders');
 
 // 訂單編號不含容易看錯的字元（0/O、1/I/L），客服人工對單時比較不會唸錯、抄錯
 const generateOrderNumber = customAlphabet('23456789ABCDEFGHJKMNPQRSTUVWXYZ', 10);
@@ -132,10 +133,10 @@ const ordersController = {
       const orderRepo = dataSource.getRepository('Order');
       const fullOrder = await orderRepo.findOne({
         where: { id: savedOrder.id },
-        relations: { items: true, coupon: true },
+        relations: ORDER_RELATIONS,
       });
 
-      res.status(201).json({ status: 'success', data: fullOrder });
+      res.status(201).json({ status: 'success', data: toOrderResponse(fullOrder) });
     } catch (err) {
       return next(err.status ? err : appError(500, '訂單建立失敗'));
     }
@@ -147,10 +148,10 @@ const ordersController = {
     const orderRepo = dataSource.getRepository('Order');
     const order = await orderRepo.findOne({
       where: { id },
-      relations: { items: true, coupon: true },
+      relations: ORDER_RELATIONS,
     });
     if (!order) return next(appError(400, '訂單不存在'));
-    res.json({ status: 'success', data: order });
+    res.json({ status: 'success', data: toOrderResponse(order) });
   },
 
   // POST /api/orders/:id/pay
@@ -165,9 +166,9 @@ const ordersController = {
     await orderRepo.update(id, { status: 'PAID' });
     const updated = await orderRepo.findOne({
       where: { id },
-      relations: { items: true, coupon: true },
+      relations: ORDER_RELATIONS,
     });
-    res.json({ status: 'success', data: updated });
+    res.json({ status: 'success', data: toOrderResponse(updated) });
   },
 };
 

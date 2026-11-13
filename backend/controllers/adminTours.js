@@ -139,10 +139,11 @@ const adminToursController = {
     if (!existing) return next(appError(400, '行程不存在'));
 
     try {
-      // 包在 transaction 裡：產品因為有訂單關聯刪不掉時，前面刪掉的圖片也會一起 rollback，
+      // 包在 transaction 裡：產品因為有訂單關聯刪不掉時，前面刪掉的圖片、梯次也會一起 rollback，
       // 不會留下「產品還在、圖片被清空」的狀態
       await dataSource.transaction(async (manager) => {
         await manager.getRepository('TourImage').delete({ tour: { id } });
+        await manager.getRepository('TourDeparture').delete({ tour: { id } });
         await manager.getRepository('Tour').delete(id);
       });
     } catch {

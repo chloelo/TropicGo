@@ -18,6 +18,7 @@ const couponsRouter = require('./routes/coupons');
 const adminCouponsRouter = require('./routes/adminCoupons');
 const ordersRouter = require('./routes/orders');
 const adminOrdersRouter = require('./routes/adminOrders');
+const adminDeparturesRouter = require('./routes/adminDepartures');
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use('/api/coupons', couponsRouter);
 app.use('/api/admin/coupons', adminCouponsRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/admin/orders', adminOrdersRouter);
+app.use('/api/admin/departures', adminDeparturesRouter);
 
 // 404
 app.use((req, res, next) => {

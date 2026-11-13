@@ -1,6 +1,7 @@
 const { dataSource } = require('../db/data-source');
 const appError = require('../utils/appError');
 const { lockDepartures } = require('../utils/departures');
+const { ORDER_RELATIONS, toOrderResponse } = require('../utils/orders');
 
 const PAGE_SIZE = 10;
 const VALID_STATUSES = ['PENDING', 'PAID', 'CANCELLED', 'COMPLETED'];
@@ -37,7 +38,7 @@ const adminOrdersController = {
     const orderRepo = dataSource.getRepository('Order');
 
     const [orders, total] = await orderRepo.findAndCount({
-      relations: { items: true, coupon: true },
+      relations: ORDER_RELATIONS,
       order: { created_at: 'DESC' },
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
@@ -45,7 +46,7 @@ const adminOrdersController = {
 
     res.json({
       status: 'success',
-      data: orders,
+      data: orders.map(toOrderResponse),
       meta: { page, pageSize: PAGE_SIZE, total, totalPages: Math.ceil(total / PAGE_SIZE) },
     });
   },
@@ -84,10 +85,10 @@ const adminOrdersController = {
     const orderRepo = dataSource.getRepository('Order');
     const updated = await orderRepo.findOne({
       where: { id },
-      relations: { items: true, coupon: true },
+      relations: ORDER_RELATIONS,
     });
 
-    res.json({ status: 'success', data: updated });
+    res.json({ status: 'success', data: toOrderResponse(updated) });
   },
 };
 
