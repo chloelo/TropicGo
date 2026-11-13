@@ -56,6 +56,70 @@ export interface Tour {
   images: TourImage[]
 }
 
+export type TourDetail = Tour & {
+  departures: TourDepartureOption[]
+}
+
+export interface TourDepartureOption {
+  /** @format uuid */
+  id: string
+  /**
+   * @format date
+   * @example "2027-01-15"
+   */
+  departure_date: string
+  /** 剩餘名額，0 代表額滿 */
+  remaining_seats: number
+  /** 已報名人數達到成團人數 */
+  is_confirmed: boolean
+}
+
+export interface TourDeparture {
+  /** @format uuid */
+  id: string
+  /**
+   * @format date
+   * @example "2027-01-15"
+   */
+  departure_date: string
+  /** 名額上限 */
+  capacity: number
+  /** 已報名人數 */
+  booked_count: number
+  /** 是否開放報名 */
+  is_enabled: boolean
+  /** @format date-time */
+  created_at: string
+  /** @format date-time */
+  updated_at: string
+}
+
+export interface TourDepartureInput {
+  /**
+   * 必須晚於今天（台灣時間），同一個行程同一天只能有一個梯次
+   * @format date
+   */
+  departure_date: string
+  /** @min 1 */
+  capacity: number
+  /** @default true */
+  is_enabled?: boolean
+}
+
+export interface TourDepartureUpdate {
+  /**
+   * 已有人報名時不能修改
+   * @format date
+   */
+  departure_date?: string
+  /**
+   * 不能少於已報名人數
+   * @min 1
+   */
+  capacity?: number
+  is_enabled?: boolean
+}
+
 export interface TourInput {
   title: string
   /** @format uuid */
@@ -110,6 +174,12 @@ export interface OrderItem {
   unit_price_snapshot: number
   quantity: number
   subtotal: number
+  departure: {
+    /** @format uuid */
+    id: string
+    /** @format date */
+    departure_date: string
+  } | null
 }
 
 export interface Order {
@@ -140,7 +210,7 @@ export interface OrderInput {
   coupon_code?: string
   items: {
     /** @format uuid */
-    tour_id: string
+    departure_id: string
     /**
      * @min 1
      * @max 20
@@ -402,13 +472,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Tours
      * @name GetTour
-     * @summary 取得單一行程詳情
+     * @summary 取得單一行程詳情（含還能報名的梯次）
      * @request GET:/tours/{id}
      */
     getTour: (id: string, params: RequestParams = {}) =>
       this.request<
         SuccessResponse & {
-          data: Tour
+          data: TourDetail
         },
         ErrorResponse
       >({
@@ -691,6 +761,97 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     adminDeleteTour: (id: string, params: RequestParams = {}) =>
       this.request<SuccessResponse, ErrorResponse>({
         path: `/admin/tours/${id}`,
+        method: 'DELETE',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Admin Departures
+     * @name AdminGetDepartures
+     * @summary 某個行程的所有梯次（依出發日期排序，含已出發、已關閉）
+     * @request GET:/admin/tours/{id}/departures
+     * @secure
+     */
+    adminGetDepartures: (id: string, params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data: TourDeparture[]
+        },
+        ErrorResponse
+      >({
+        path: `/admin/tours/${id}/departures`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Admin Departures
+     * @name AdminCreateDeparture
+     * @summary 新增梯次
+     * @request POST:/admin/tours/{id}/departures
+     * @secure
+     */
+    adminCreateDeparture: (id: string, data: TourDepartureInput, params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data: TourDeparture
+        },
+        ErrorResponse
+      >({
+        path: `/admin/tours/${id}/departures`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Admin Departures
+     * @name AdminUpdateDeparture
+     * @summary 修改梯次（只送要改的欄位）
+     * @request PATCH:/admin/departures/{id}
+     * @secure
+     */
+    adminUpdateDeparture: (id: string, data: TourDepartureUpdate, params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data: TourDeparture
+        },
+        ErrorResponse
+      >({
+        path: `/admin/departures/${id}`,
+        method: 'PATCH',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Admin Departures
+     * @name AdminDeleteDeparture
+     * @summary 刪除梯次（已有人報名或有訂單紀錄則會被擋下，可改為關閉報名）
+     * @request DELETE:/admin/departures/{id}
+     * @secure
+     */
+    adminDeleteDeparture: (id: string, params: RequestParams = {}) =>
+      this.request<SuccessResponse, ErrorResponse>({
+        path: `/admin/departures/${id}`,
         method: 'DELETE',
         secure: true,
         format: 'json',

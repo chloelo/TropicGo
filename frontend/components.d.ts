@@ -17,6 +17,7 @@ declare module 'vue' {
     CartSteps: typeof import('./src/components/front/CartSteps.vue')['default']
     CheckoutFormStep: typeof import('./src/components/front/CheckoutFormStep.vue')['default']
     DemoLock: typeof import('./src/components/admin/DemoLock.vue')['default']
+    DeparturesDialog: typeof import('./src/components/admin/DeparturesDialog.vue')['default']
     HeroBanner: typeof import('./src/components/front/HeroBanner.vue')['default']
     NAlert: typeof import('naive-ui')['NAlert']
     NButton: typeof import('naive-ui')['NButton']

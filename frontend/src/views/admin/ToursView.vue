@@ -16,6 +16,7 @@
   import { useAdminAuthStore } from '@/stores/admin-auth'
   import type { Region, Tour, TourInput } from '@/api/tropicgo-api'
   import DemoLock from '@/components/admin/DemoLock.vue'
+  import DeparturesDialog from '@/components/admin/DeparturesDialog.vue'
   import { useDialog } from '@/composables/use-dialog'
   import { useTable } from '@/composables/use-table'
   import { DEPARTURE_CITIES, isDepartureCity, type DepartureCity } from '@/utils/departure-city'
@@ -156,6 +157,15 @@
     }
   }
 
+  // 梯次管理另外開一個彈窗，示範帳號也可以打開檢視
+  const departuresTour = ref<Tour | null>(null)
+  const showDepartures = ref(false)
+
+  function openDepartures(tour: Tour) {
+    departuresTour.value = tour
+    showDepartures.value = true
+  }
+
   function handleDelete(tour: Tour) {
     // 刪除不能復原：用「危險」類型（紅色圖示和刪除鈕）；取消鈕維持灰色，畫面上只有刪除鈕有顏色
     // （灰色的焦點、hover 樣式在 utils/naive-theme.ts）
@@ -217,6 +227,11 @@
               NButton,
               { size: 'small', type: 'primary', ghost: true, onClick: () => openEdit(row) },
               { default: () => (authStore.isDemo ? '檢視' : '編輯') },
+            ),
+            h(
+              NButton,
+              { size: 'small', type: 'primary', ghost: true, onClick: () => openDepartures(row) },
+              { default: () => '梯次' },
             ),
             h(DemoLock, null, {
               default: () =>
@@ -348,5 +363,7 @@
         </n-space>
       </template>
     </n-modal>
+
+    <DeparturesDialog v-model:show="showDepartures" :tour="departuresTour" />
   </n-card>
 </template>

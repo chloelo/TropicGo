@@ -7,13 +7,20 @@ const SHOW_SERVER_MESSAGE = [403, 429]
  * 取得要顯示給使用者的錯誤訊息：示範帳號不能修改（403）、請求太頻繁（429）時顯示後端回傳的說明；
  * 登入逾時（401）用固定的說明（後端依原因分成過期、無效等，對使用者來說都是要重新登入）；
  * 其他錯誤用呼叫端傳入的預設文字
+ * @param showServerMessageFor 另外要顯示後端說明的狀態碼。例如梯次的 400 是「名額不能少於已報名人數」
+ *   這類業務規則，預設文字說不清楚原因
  */
-export function apiErrorMessage(error: unknown, fallback: string): string {
+export function apiErrorMessage(
+  error: unknown,
+  fallback: string,
+  showServerMessageFor: number[] = [],
+): string {
   if (isAxiosError<{ message?: unknown }>(error)) {
     const status = error.response?.status
     if (status === 401) return '登入已逾時，請重新登入'
     const message = error.response?.data?.message
-    if (status && SHOW_SERVER_MESSAGE.includes(status) && typeof message === 'string') {
+    const statuses = [...SHOW_SERVER_MESSAGE, ...showServerMessageFor]
+    if (status && statuses.includes(status) && typeof message === 'string') {
       return message
     }
   }
