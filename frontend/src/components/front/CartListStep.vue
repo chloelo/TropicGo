@@ -123,6 +123,7 @@
                 </button>
                 <input
                   :value="item.quantity"
+                  name="quantity"
                   type="number"
                   min="1"
                   :max="MAX_QUANTITY"
@@ -174,6 +175,7 @@
         >
           <input
             v-model="couponCode"
+            name="coupon"
             type="text"
             class="flex-1 min-w-0 px-2 py-1 text-[14px] border border-secondary text-[#495057] outline-none placeholder:text-[#adb5bd]"
             placeholder="請輸入折扣碼"

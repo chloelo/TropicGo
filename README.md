@@ -58,6 +58,7 @@
 **前台**
 
 - 產品列表（依地區篩選）、產品詳情、相關產品推薦
+- 選擇出發日期報名：顯示剩餘名額、是否已成團，額滿無法選擇
 - 我的收藏（存在瀏覽器，不需登入）
 - 購物車與結帳流程：購物車 → 填寫資料 → 確認訂單並付款（模擬）→ 完成，可使用優惠碼
 - 未付款的訂單會記在瀏覽器，可從購物車選單繼續付款
@@ -67,7 +68,8 @@
 
 - JWT 登入，token 過期自動導回登入頁，登入後回到原本的頁面
 - 產品管理、優惠券管理（新增、編輯、刪除）
-- 訂單管理（查看訂單、更新訂單狀態）
+- 梯次管理：新增出發日期與名額、開關報名；有人報名後鎖定日期，名額不能低於已報名人數
+- 訂單管理（查看訂單、更新訂單狀態；取消訂單時釋出名額）
 - 兩種角色：管理員（完整權限）、示範帳號（唯讀，後端也會擋下寫入請求）
 
 ## v1 → v2
@@ -95,6 +97,7 @@
 
 - Node.js + Express 5
 - TypeORM + PostgreSQL，資料表結構以 migration 管理
+- 建立訂單在 transaction 內以 `SELECT ... FOR UPDATE` 依固定順序鎖定梯次再檢查名額，同時下單也不會超賣
 - JWT 驗證、bcrypt 密碼加密
 - OpenAPI 3 規格（[backend/openapi.yaml](backend/openapi.yaml)），以 Swagger UI 提供線上 API 文件
 
@@ -136,7 +139,7 @@ API 文件在正式環境預設關閉，以環境變數 `API_DOCS_ENABLED` 開�
 
 ## 開發方式
 
-本專案使用 AI 程式助理（Claude Code）協作開發，commit 中標示為共同作者。
+本專案使用 AI 程式助理（Claude Code）協作開發。
 
 我負責的部分：
 
@@ -163,9 +166,10 @@ cp frontend/.env.example frontend/.env
 npm --prefix backend ci
 npm --prefix frontend ci
 
-# 4. 建立初始資料（地區、優惠券、帳號）和產品範例資料
+# 4. 建立初始資料（地區、優惠券、帳號）、產品範例資料和梯次
 npm --prefix backend run seed
 npm --prefix backend run seed:tours
+npm --prefix backend run seed:departures
 
 # 5. 分別啟動後端和前端
 npm --prefix backend run dev
