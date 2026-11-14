@@ -47,13 +47,15 @@
       </span>
     </div>
     <div class="p-4 pb-2 bg-gray-100 flex-1">
-      <h3 class="font-bold text-gray-800 line-clamp-1">{{ tour.title }}</h3>
+      <h3 class="font-bold text-[#495057] leading-[1.5] min-h-[3em] line-clamp-2">
+        {{ tour.title }}
+      </h3>
       <p class="mt-1 text-sm text-gray-500 line-clamp-2">{{ tour.summary }}</p>
       <div class="mt-3 flex items-baseline justify-between">
         <span class="text-xs text-gray-400 line-through">
           {{ formatCurrency(tour.origin_price) }}/{{ tour.unit }}
         </span>
-        <span class="text-lg font-bold text-primary">
+        <span class="text-lg font-bold text-secondary">
           {{ formatCurrency(tour.price) }}/{{ tour.unit }}
         </span>
       </div>

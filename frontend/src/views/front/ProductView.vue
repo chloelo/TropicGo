@@ -307,33 +307,42 @@
 
             <!-- 人數加減、立即報名各佔一半，手機上下堆疊 -->
             <div class="mt-4 grid grid-cols-1 md:grid-cols-2 md:gap-x-[10px]">
-              <div class="mb-4 flex h-[38px]">
-                <button
-                  type="button"
-                  class="px-3 border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors disabled:opacity-65 disabled:pointer-events-none"
-                  :disabled="!departures.length || quantity <= 1"
-                  @click="quantity = Math.max(1, quantity - 1)"
+              <div class="mb-4">
+                <div class="flex h-[38px]">
+                  <button
+                    type="button"
+                    class="px-3 border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors disabled:opacity-65 disabled:pointer-events-none"
+                    :disabled="!departures.length || quantity <= 1"
+                    @click="quantity = Math.max(1, quantity - 1)"
+                  >
+                    <span class="i-fa6-minus" />
+                  </button>
+                  <input
+                    v-model.number="quantity"
+                    type="number"
+                    min="1"
+                    :max="maxQuantity"
+                    :disabled="!departures.length"
+                    class="flex-1 min-w-0 -mx-px border border-secondary text-secondary text-center bg-white outline-none disabled:opacity-65 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    aria-label="人數"
+                    @blur="normalizeQuantity"
+                  />
+                  <button
+                    type="button"
+                    class="px-3 border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors disabled:opacity-65 disabled:pointer-events-none"
+                    :disabled="!departures.length || quantity >= maxQuantity"
+                    @click="quantity = Math.min((Number(quantity) || 0) + 1, maxQuantity)"
+                  >
+                    <span class="i-fa6-plus" />
+                  </button>
+                </div>
+                <!-- 人數上限一直顯示，不等加到上限才出現（避免下方跳動） -->
+                <p
+                  v-if="departures.length"
+                  class="mt-1 text-[14px] text-primary"
                 >
-                  <span class="i-fa6-minus" />
-                </button>
-                <input
-                  v-model.number="quantity"
-                  type="number"
-                  min="1"
-                  :max="maxQuantity"
-                  :disabled="!departures.length"
-                  class="flex-1 min-w-0 -mx-px border border-secondary text-secondary text-center bg-white outline-none disabled:opacity-65 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                  aria-label="人數"
-                  @blur="normalizeQuantity"
-                />
-                <button
-                  type="button"
-                  class="px-3 border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors disabled:opacity-65 disabled:pointer-events-none"
-                  :disabled="!departures.length || quantity >= maxQuantity"
-                  @click="quantity = Math.min((Number(quantity) || 0) + 1, maxQuantity)"
-                >
-                  <span class="i-fa6-plus" />
-                </button>
+                  ※ 每筆訂單最多 {{ MAX_QUANTITY }} 人
+                </p>
               </div>
               <div class="mb-4">
                 <button

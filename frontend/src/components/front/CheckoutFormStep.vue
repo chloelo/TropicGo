@@ -227,7 +227,7 @@
           <div class="flex justify-between items-center mb-[30px]">
             <button
               type="button"
-              class="text-secondary hover:text-secondary-link transition-colors"
+              class="inline-flex items-center gap-1 text-secondary hover:text-secondary-link transition-colors"
               @click="emit('back')"
             >
               <span class="i-fa6-chevron-left" />

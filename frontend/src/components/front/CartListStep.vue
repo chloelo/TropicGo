@@ -66,14 +66,14 @@
         <div class="flex justify-between items-center mb-4">
           <RouterLink
             to="/products"
-            class="text-secondary hover:text-secondary-link transition-colors"
+            class="inline-flex items-center gap-1 text-secondary hover:text-secondary-link transition-colors"
           >
             <span class="i-fa6-chevron-left" />
             繼續購物
           </RouterLink>
           <button
             type="button"
-            class="px-3 py-[6px] text-[14px] text-[#adb5bd] hover:bg-[#f8f9fa] hover:text-[#212529] transition-colors"
+            class="inline-flex items-center gap-1 px-3 py-[6px] text-[14px] text-[#adb5bd] hover:bg-[#f8f9fa] hover:text-[#212529] transition-colors"
             @click="clearCart"
           >
             <span class="i-fa6-trash-can" />
@@ -152,7 +152,7 @@
         <div class="border-b border-[#dee2e6] my-2 py-2">
           <RouterLink
             to="/products"
-            class="text-secondary hover:text-secondary-link transition-colors"
+            class="inline-flex items-center gap-1 text-secondary hover:text-secondary-link transition-colors"
           >
             <span class="i-fa6-chevron-left" />
             繼續購物
@@ -198,7 +198,7 @@
         </div>
         <button
           type="button"
-          class="mt-4 w-full px-3 py-[6px] border border-secondary bg-secondary text-white hover:bg-secondary-dark hover:border-secondary-dark transition-colors disabled:opacity-65 disabled:pointer-events-none"
+          class="mt-4 w-full flex items-center justify-center gap-1 px-3 py-[6px] border border-secondary bg-secondary text-white hover:bg-secondary-dark hover:border-secondary-dark transition-colors disabled:opacity-65 disabled:pointer-events-none"
           :disabled="!cartStore.items.length"
           @click="emit('next')"
         >

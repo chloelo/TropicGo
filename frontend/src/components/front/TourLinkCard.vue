@@ -18,7 +18,11 @@
       />
     </div>
     <div class="p-5 flex-1 flex flex-col">
-      <h5 class="text-[20px] font-medium leading-[1.2] mb-3">{{ tour.title }}</h5>
+      <h5
+        class="text-[20px] font-bold text-[#495057] leading-[1.2] min-h-[2.4em] line-clamp-2 mb-3"
+      >
+        {{ tour.title }}
+      </h5>
       <p class="leading-6 line-clamp-2 mb-4">{{ tour.content }}</p>
       <p class="flex justify-between items-center">
         <span class="text-[0.6rem] text-[#ccc] line-through">
