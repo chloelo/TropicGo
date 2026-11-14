@@ -163,41 +163,47 @@
           <div class="flex flex-wrap -mx-[5px]">
             <n-form-item
               label="聯絡人姓名"
+              :label-props="{ for: 'checkout-name' }"
               path="name"
               class="w-full md:w-1/2 px-[5px]"
             >
               <n-input
+                :input-props="{ id: 'checkout-name' }"
                 v-model:value="form.name"
                 placeholder="請輸入聯絡人姓名"
               />
             </n-form-item>
             <n-form-item
               label="電話"
+              :label-props="{ for: 'checkout-tel' }"
               path="tel"
               class="w-full md:w-1/2 px-[5px]"
             >
               <n-input
                 v-model:value="form.tel"
-                :input-props="{ type: 'tel' }"
+                :input-props="{ id: 'checkout-tel', type: 'tel' }"
                 placeholder="請輸入電話"
               />
             </n-form-item>
           </div>
           <n-form-item
             label="E-mail"
+            :label-props="{ for: 'checkout-email' }"
             path="email"
           >
             <n-input
               v-model:value="form.email"
-              :input-props="{ type: 'email' }"
+              :input-props="{ id: 'checkout-email', type: 'email' }"
               placeholder="請輸入 E-mail"
             />
           </n-form-item>
           <n-form-item
             label="聯絡人地址"
+            :label-props="{ for: 'checkout-address' }"
             path="address"
           >
             <n-input
+              :input-props="{ id: 'checkout-address' }"
               v-model:value="form.address"
               placeholder="請輸入聯絡人地址"
             />
@@ -214,9 +220,11 @@
           </n-form-item>
           <n-form-item
             label="備註留言"
+            :label-props="{ for: 'checkout-message' }"
             path="message"
           >
             <n-input
+              :input-props="{ id: 'checkout-message' }"
               v-model:value="form.message"
               type="textarea"
               :rows="3"

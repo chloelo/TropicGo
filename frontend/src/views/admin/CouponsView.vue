@@ -229,21 +229,31 @@
       >
         <n-form-item
           label="名稱"
+          :label-props="{ for: 'coupon-title' }"
           path="title"
         >
-          <n-input v-model:value="form.title" />
+          <n-input
+            :input-props="{ id: 'coupon-title' }"
+            v-model:value="form.title"
+          />
         </n-form-item>
         <n-form-item
           label="優惠碼"
+          :label-props="{ for: 'coupon-code' }"
           path="code"
         >
-          <n-input v-model:value="form.code" />
+          <n-input
+            :input-props="{ id: 'coupon-code' }"
+            v-model:value="form.code"
+          />
         </n-form-item>
         <n-form-item
           label="折扣（要付的百分比，90 代表打 9 折）"
+          :label-props="{ for: 'coupon-percent' }"
           path="percent"
         >
           <n-input-number
+            :input-props="{ id: 'coupon-percent' }"
             v-model:value="form.percent"
             :min="1"
             :max="100"

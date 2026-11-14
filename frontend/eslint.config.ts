@@ -14,4 +14,12 @@ export default defineConfigWithVueTs(
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
   skipFormatting,
+
+  {
+    name: 'app/rules',
+    rules: {
+      // <button> 沒寫 type 時預設是 submit，放進 <form> 會變成送出表單
+      'vue/html-button-has-type': 'error',
+    },
+  },
 )

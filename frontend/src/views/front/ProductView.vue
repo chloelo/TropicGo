@@ -174,10 +174,13 @@
                 class="flex gap-2 mt-3"
               >
                 <button
+                  type="button"
                   v-for="(img, index) in tour.images"
                   :key="img.id"
                   class="w-16 h-16 overflow-hidden border-2 shrink-0"
                   :class="index === activeImageIndex ? 'border-secondary' : 'border-transparent'"
+                  :aria-label="`第 ${index + 1} 張圖`"
+                  :aria-pressed="index === activeImageIndex"
                   @click="activeImageIndex = index"
                 >
                   <img
@@ -218,11 +221,11 @@
               </ol>
             </nav>
 
-            <h2
-              class="text-[32px] font-medium leading-[1.2] mb-6 pt-[10px] border-t-2 border-dotted border-africa/40 lg:mb-4 lg:pt-0 lg:border-t-0"
+            <h1
+              class="text-primary text-[32px] font-medium leading-[1.2] mb-6 pt-[10px] border-t-2 border-dotted border-africa/40 lg:mb-4 lg:pt-0 lg:border-t-0"
             >
               {{ tour.title }}
-            </h2>
+            </h1>
             <!-- 摘要跟列表卡片上的那句相同，進詳情頁先看到同一句，內容才接得上 -->
             <p class="text-[18px] leading-[1.5] text-[#495057] mb-3">{{ tour.summary }}</p>
             <p class="leading-6 mb-4">{{ tour.content }}</p>
@@ -313,6 +316,7 @@
                     type="button"
                     class="px-3 border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors disabled:opacity-65 disabled:pointer-events-none"
                     :disabled="!departures.length || quantity <= 1"
+                    aria-label="減少人數"
                     @click="quantity = Math.max(1, quantity - 1)"
                   >
                     <span class="i-fa6-minus" />
@@ -331,6 +335,7 @@
                     type="button"
                     class="px-3 border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors disabled:opacity-65 disabled:pointer-events-none"
                     :disabled="!departures.length || quantity >= maxQuantity"
+                    aria-label="增加人數"
                     @click="quantity = Math.min((Number(quantity) || 0) + 1, maxQuantity)"
                   >
                     <span class="i-fa6-plus" />

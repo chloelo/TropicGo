@@ -261,9 +261,11 @@
       </n-form-item>
       <n-form-item
         label="名額"
+        :label-props="{ for: 'departure-capacity' }"
         :show-feedback="false"
       >
         <n-input-number
+          :input-props="{ id: 'departure-capacity' }"
           v-model:value="capacity"
           placeholder="人數"
           :min="minCapacity"

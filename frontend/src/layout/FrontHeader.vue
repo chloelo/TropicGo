@@ -1,13 +1,12 @@
 <script setup lang="ts">
   import { computed, ref, watch } from 'vue'
-  import { useRoute, useRouter } from 'vue-router'
+  import { useRoute } from 'vue-router'
   import { useWindowScroll } from '@vueuse/core'
   import logo from '@/assets/images/logo.png'
   import { useCartStore } from '@/stores/cart'
   import { formatCurrency, formatDate } from '@/utils/format'
 
   const route = useRoute()
-  const router = useRouter()
   const cartStore = useCartStore()
   const mobileOpen = ref(false)
   // 捲動超過 10px 才變白底加陰影；沒捲動時透明，疊在 Hero 圖上
@@ -49,7 +48,7 @@
     return scrolled.value ? 'text-sun' : 'text-sun lg:text-white lg:hover:text-white/80'
   }
 
-  // 彈窗自己控制開關：點彈窗裡的按鈕換頁時要收起來，不然 header 不會重新渲染，彈窗會一直開著
+  // 彈窗自己控制開關：點彈窗裡的連結換頁時要收起來，不然 header 不會重新渲染，彈窗會一直開著
   const cartOpen = ref(false)
 
   // 換頁時把手機選單和購物車彈窗都收起來，不管是點連結、logo 還是瀏覽器上一頁
@@ -61,16 +60,13 @@
     },
   )
 
-  function goToCart() {
-    cartOpen.value = false
-    router.push(cartStore.items.length ? '/cart' : '/products')
-  }
+  const cartLink = computed(() => (cartStore.items.length ? '/cart' : '/products'))
 
   // 有送出但還沒付款的訂單：帶訂單 id 回購物車頁，會直接顯示確認付款那一步
-  function goToPayment() {
-    cartOpen.value = false
-    router.push({ path: '/cart', query: { order: cartStore.pendingOrderId } })
-  }
+  const paymentLink = computed(() => ({
+    path: '/cart',
+    query: { order: cartStore.pendingOrderId },
+  }))
 </script>
 
 <template>
@@ -151,14 +147,15 @@
               class="flex items-center justify-between gap-2 mb-3 p-2 bg-[#f8f9fa] text-sm"
             >
               <span class="text-gray-700">您有一筆訂單尚未付款</span>
-              <button
-                type="button"
+              <!-- 點擊時收起彈窗：已在目標頁時網址不變，換頁的 watch 不會觸發 -->
+              <RouterLink
+                :to="paymentLink"
                 class="flex items-center gap-1 shrink-0 text-primary hover:text-africa-link transition-colors"
-                @click="goToPayment"
+                @click="cartOpen = false"
               >
                 前往付款
                 <span class="i-fa6-chevron-right text-xs" />
-              </button>
+              </RouterLink>
             </div>
 
             <p class="font-bold text-sm text-gray-700 mb-2">已選擇行程</p>
@@ -211,13 +208,14 @@
               <span class="text-primary">{{ formatCurrency(cartStore.totalPrice) }}</span>
             </div>
 
-            <button
+            <RouterLink
+              :to="cartLink"
               class="w-full mt-3 flex items-center justify-center gap-2 bg-primary text-white px-4 py-2 hover:bg-primary-dark transition-colors"
-              @click="goToCart"
+              @click="cartOpen = false"
             >
               {{ cartStore.items.length ? '查看購物車' : '前去逛逛' }}
               <span class="i-fa6-chevron-right text-xs" />
-            </button>
+            </RouterLink>
           </div>
         </n-popover>
 

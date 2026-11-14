@@ -72,14 +72,14 @@
         <div class="max-w-[360px] md:max-w-[504px] lg:max-w-[720px]">
           <!-- 句子中間夾著 <span>，拆成多行會在「熱情」前後多出空格 -->
           <!-- prettier-ignore -->
-          <h2
+          <h1
             v-aos:zoom-in
             data-aos-duration="1000"
             data-aos-delay="50"
             class="text-white text-[30px] md:text-[42px] lg:text-[60px] font-bold leading-tight"
           >
             藏在回歸線裡的<span class="text-sun">熱情</span>面紗，等你來一探究竟！
-          </h2>
+          </h1>
           <div
             v-aos:fade-up
             data-aos-delay="500"

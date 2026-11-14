@@ -93,6 +93,7 @@
           class="w-[160px] flex justify-center"
         >
           <button
+            type="button"
             class="w-[calc(100%-3px)] p-[0.1rem] md:w-[calc(100%-30px)] md:p-[0.2rem] md:pt-[0.4rem] border border-transparent flex flex-col items-center justify-center shadow transition-colors"
             :class="tabClass(tab.slug, tab.colorKey)"
             @click="selectRegion(tab.slug)"
@@ -102,7 +103,9 @@
               :alt="tab.name"
               class="max-w-[40px] md:max-w-[50px]"
             />
-            <h4 class="my-[5px] text-white text-[18px] leading-[1.2]">{{ tab.name }}</h4>
+            <span class="block my-[5px] text-white text-[18px] font-bold leading-[1.2]">
+              {{ tab.name }}
+            </span>
           </button>
         </div>
       </div>

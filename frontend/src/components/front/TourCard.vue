@@ -60,14 +60,14 @@
         </span>
       </div>
     </div>
-    <!-- 內文區 flex-1 撐滿、按鈕放最後：同一排卡片的按鈕都會對齊在底部 -->
-    <button
-      type="button"
+    <!-- 內文區 flex-1 撐滿、按鈕放最後：同一排卡片的按鈕都會對齊在底部。
+         卡片本身是連結，裡面不能放 button，改用 div -->
+    <div
       class="w-full py-2 bg-secondary text-white flex items-center justify-center gap-2 hover:bg-secondary-dark transition-colors"
       @click.prevent.stop="goToBooking"
     >
       <span class="i-fa6-cart-shopping" />
       我要報名
-    </button>
+    </div>
   </RouterLink>
 </template>

@@ -48,12 +48,12 @@
       <div class="bs-container">
         <div class="flex justify-end -mx-[15px]">
           <div class="w-full md:w-1/2 px-[15px]">
-            <h2
+            <h1
               class="mb-2 text-white text-[30px] md:text-[42px] lg:text-[60px] font-bold leading-[1.2]"
               :class="align === 'right' ? 'text-right' : ''"
             >
               {{ title }}
-            </h2>
+            </h1>
           </div>
         </div>
       </div>

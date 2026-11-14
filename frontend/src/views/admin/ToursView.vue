@@ -300,9 +300,13 @@
       >
         <n-form-item
           label="產品名稱"
+          :label-props="{ for: 'tour-title' }"
           path="title"
         >
-          <n-input v-model:value="form.title" />
+          <n-input
+            :input-props="{ id: 'tour-title' }"
+            v-model:value="form.title"
+          />
         </n-form-item>
         <n-form-item
           label="地區"
@@ -315,15 +319,21 @@
         </n-form-item>
         <n-form-item
           label="摘要"
+          :label-props="{ for: 'tour-summary' }"
           path="summary"
         >
-          <n-input v-model:value="form.summary" />
+          <n-input
+            :input-props="{ id: 'tour-summary' }"
+            v-model:value="form.summary"
+          />
         </n-form-item>
         <n-form-item
           label="完整介紹"
+          :label-props="{ for: 'tour-description' }"
           path="description"
         >
           <n-input
+            :input-props="{ id: 'tour-description' }"
             v-model:value="form.description"
             type="textarea"
             :rows="4"
@@ -331,16 +341,24 @@
         </n-form-item>
         <n-form-item
           label="費用包含"
+          :label-props="{ for: 'tour-content' }"
           path="content"
         >
           <n-input
+            :input-props="{ id: 'tour-content' }"
             v-model:value="form.content"
             type="textarea"
             :rows="2"
           />
         </n-form-item>
-        <n-form-item label="單位">
-          <n-input v-model:value="form.unit" />
+        <n-form-item
+          label="單位"
+          :label-props="{ for: 'tour-unit' }"
+        >
+          <n-input
+            :input-props="{ id: 'tour-unit' }"
+            v-model:value="form.unit"
+          />
         </n-form-item>
         <n-form-item
           label="出發城市"
@@ -352,29 +370,45 @@
             placeholder="請選擇"
           />
         </n-form-item>
-        <n-form-item label="成團人數">
+        <n-form-item
+          label="成團人數"
+          :label-props="{ for: 'tour-min-group-size' }"
+        >
           <n-input-number
+            :input-props="{ id: 'tour-min-group-size' }"
             v-model:value="form.min_group_size"
             :min="1"
             style="width: 100%"
           />
         </n-form-item>
-        <n-form-item label="原價">
+        <n-form-item
+          label="原價"
+          :label-props="{ for: 'tour-origin-price' }"
+        >
           <n-input-number
+            :input-props="{ id: 'tour-origin-price' }"
             v-model:value="form.origin_price"
             :min="0"
             style="width: 100%"
           />
         </n-form-item>
-        <n-form-item label="優惠價">
+        <n-form-item
+          label="優惠價"
+          :label-props="{ for: 'tour-price' }"
+        >
           <n-input-number
+            :input-props="{ id: 'tour-price' }"
             v-model:value="form.price"
             :min="0"
             style="width: 100%"
           />
         </n-form-item>
-        <n-form-item label="圖片網址（每行一個）">
+        <n-form-item
+          label="圖片網址（每行一個）"
+          :label-props="{ for: 'tour-images' }"
+        >
           <n-input
+            :input-props="{ id: 'tour-images' }"
             v-model:value="imagesText"
             type="textarea"
             :rows="3"
