@@ -12,7 +12,7 @@ const generateOrderNumber = customAlphabet('23456789ABCDEFGHJKMNPQRSTUVWXYZ', 10
 // 跟 openapi.yaml 的 OrderInput.payment_method enum 要一致
 const PAYMENT_METHODS = ['Credit', 'LinePay', 'ApplePay', 'GooglePay', 'ATM', 'CVS'];
 
-// 每個產品一次最多報名的人數，跟前端 stores/cart.ts 的 MAX_QUANTITY、openapi.yaml 要一致
+// 每筆訂單裡同一個梯次最多報名的人數，跟前端 stores/cart.ts 的 MAX_QUANTITY、openapi.yaml 要一致
 const MAX_QUANTITY = 20;
 
 function validateOrderInput(body) {
@@ -28,7 +28,7 @@ function validateOrderInput(body) {
   for (const item of items) {
     if (!isUuid(item.departure_id)) return '請選擇出發日期';
     if (!isNonNegativeInteger(item.quantity) || item.quantity <= 0) return '數量格式錯誤';
-    if (item.quantity > MAX_QUANTITY) return `每個產品最多報名 ${MAX_QUANTITY} 人`;
+    if (item.quantity > MAX_QUANTITY) return `同一個梯次最多報名 ${MAX_QUANTITY} 人`;
   }
   // 同一個梯次分成多筆會繞過每筆的人數上限，要求合併成一筆
   const departureIds = items.map((item) => item.departure_id);
