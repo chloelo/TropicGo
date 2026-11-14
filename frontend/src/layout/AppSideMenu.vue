@@ -18,5 +18,8 @@
 </script>
 
 <template>
-  <n-menu :value="route.path" :options="menuOptions" />
+  <n-menu
+    :value="route.path"
+    :options="menuOptions"
+  />
 </template>

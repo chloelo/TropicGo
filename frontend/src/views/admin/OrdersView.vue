@@ -7,7 +7,7 @@
   import type { Order } from '@/api/tropicgo-api'
   import { useDialog } from '@/composables/use-dialog'
   import { useTable } from '@/composables/use-table'
-  import { formatCurrency, formatDateTime } from '@/utils/format'
+  import { formatCurrency, formatDate, formatDateTime } from '@/utils/format'
   import { paymentLabel } from '@/utils/payment'
 
   type OrderStatus = 'PENDING' | 'PAID' | 'CANCELLED' | 'COMPLETED'
@@ -28,6 +28,13 @@
 
   const STATUS_OPTIONS: SelectOption[] = (Object.keys(STATUS_LABEL) as OrderStatus[]).map(
     (status) => ({ label: STATUS_LABEL[status], value: status }),
+  )
+
+  // 已取消的訂單已經釋出名額，不能改回其他狀態（後端也會擋），其他選項設成不能選
+  const statusOptions = computed(() =>
+    dialogOptions.value.data?.status === 'CANCELLED'
+      ? STATUS_OPTIONS.map((option) => ({ ...option, disabled: option.value !== 'CANCELLED' }))
+      : STATUS_OPTIONS,
   )
 
   const message = useMessage()
@@ -56,6 +63,13 @@
     openDialog({ title: `訂單明細 - ${order.order_number}`, data: order })
   }
 
+  // 組成一個字串再放進畫面：寫在 template 裡會被排版斷行，全形括號前多出空白。
+  // 加入梯次功能前的舊訂單沒有梯次，不顯示出發日期
+  function itemLabel(item: Order['items'][number]) {
+    const date = item.departure ? `（${formatDate(item.departure.departure_date)} 出發）` : ''
+    return `${item.title_snapshot} × ${item.quantity}${date}`
+  }
+
   async function handleUpdateStatus() {
     const order = dialogOptions.value.data
     if (!order?.id) return
@@ -67,7 +81,8 @@
       closeDialog()
       await load(page.value)
     } catch (error) {
-      message.error(apiErrorMessage(error, '更新失敗'))
+      // 400 是「已取消的訂單不能改回其他狀態」這類規則，顯示後端的說明
+      message.error(apiErrorMessage(error, '更新失敗', [400]))
     } finally {
       updating.value = false
     }
@@ -131,7 +146,12 @@
       content-scrollable
     >
       <template v-if="dialogOptions.data">
-        <n-descriptions :column="1" label-placement="left" bordered size="small">
+        <n-descriptions
+          :column="1"
+          label-placement="left"
+          bordered
+          size="small"
+        >
           <n-descriptions-item label="客戶">
             {{ dialogOptions.data.customer_name }}
           </n-descriptions-item>
@@ -144,13 +164,22 @@
           <n-descriptions-item label="地址">
             {{ dialogOptions.data.customer_address }}
           </n-descriptions-item>
-          <n-descriptions-item v-if="dialogOptions.data.payment_method" label="付款方式">
+          <n-descriptions-item
+            v-if="dialogOptions.data.payment_method"
+            label="付款方式"
+          >
             {{ paymentLabel(dialogOptions.data.payment_method) }}
           </n-descriptions-item>
-          <n-descriptions-item v-if="dialogOptions.data.message" label="備註">
+          <n-descriptions-item
+            v-if="dialogOptions.data.message"
+            label="備註"
+          >
             {{ dialogOptions.data.message }}
           </n-descriptions-item>
-          <n-descriptions-item v-if="dialogOptions.data.coupon" label="使用優惠券">
+          <n-descriptions-item
+            v-if="dialogOptions.data.coupon"
+            label="使用優惠券"
+          >
             {{ dialogOptions.data.coupon.title }}（{{ dialogOptions.data.coupon.code }}）
           </n-descriptions-item>
         </n-descriptions>
@@ -162,7 +191,9 @@
             :key="item.id"
             class="flex justify-between py-1 border-b border-gray-100 text-sm"
           >
-            <span>{{ item.title_snapshot }} × {{ item.quantity }}</span>
+            <span>
+              {{ itemLabel(item) }}
+            </span>
             <span>{{ formatCurrency(item.subtotal) }}</span>
           </li>
         </ul>
@@ -171,10 +202,13 @@
           <span>{{ formatCurrency(dialogOptions.data.total_amount) }}</span>
         </div>
 
-        <n-form-item label="訂單狀態" label-placement="left">
+        <n-form-item
+          label="訂單狀態"
+          label-placement="left"
+        >
           <n-select
             v-model:value="selectedStatus"
-            :options="STATUS_OPTIONS"
+            :options="statusOptions"
             :disabled="authStore.isDemo"
           />
         </n-form-item>
@@ -183,12 +217,27 @@
       <template #footer>
         <n-space justify="end">
           <!-- 示範帳號：訂單狀態唯讀，只留關閉 -->
-          <n-button v-if="authStore.isDemo" type="primary" ghost @click="closeDialog">
+          <n-button
+            v-if="authStore.isDemo"
+            type="primary"
+            ghost
+            @click="closeDialog"
+          >
             關閉
           </n-button>
           <template v-else>
-            <n-button type="primary" ghost @click="closeDialog">取消</n-button>
-            <n-button type="primary" :loading="updating" @click="handleUpdateStatus">
+            <n-button
+              type="primary"
+              ghost
+              @click="closeDialog"
+            >
+              取消
+            </n-button>
+            <n-button
+              type="primary"
+              :loading="updating"
+              @click="handleUpdateStatus"
+            >
               更新狀態
             </n-button>
           </template>

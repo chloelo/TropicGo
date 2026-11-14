@@ -48,5 +48,14 @@ module.exports = new EntitySchema({
       },
       nullable: false,
     },
+    // 報名的梯次；加入梯次功能前建立的訂單沒有梯次，所以允許空值
+    departure: {
+      type: 'many-to-one',
+      target: 'TourDeparture',
+      joinColumn: {
+        name: 'departure_id',
+      },
+      nullable: true,
+    },
   },
 });

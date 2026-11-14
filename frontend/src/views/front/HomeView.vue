@@ -70,28 +70,34 @@
       <!-- 留白和寬度限制分兩層：padding 放在 max-width 裡會吃掉可用寬度，標題會提早換行 -->
       <div class="relative z-10 text-white px-4 md:px-12 lg:px-[120px]">
         <div class="max-w-[360px] md:max-w-[504px] lg:max-w-[720px]">
-          <h2
+          <!-- 句子中間夾著 <span>，拆成多行會在「熱情」前後多出空格 -->
+          <!-- prettier-ignore -->
+          <h1
             v-aos:zoom-in
             data-aos-duration="1000"
             data-aos-delay="50"
             class="text-white text-[30px] md:text-[42px] lg:text-[60px] font-bold leading-tight"
           >
             藏在回歸線裡的<span class="text-sun">熱情</span>面紗，等你來一探究竟！
-          </h2>
-          <div v-aos:fade-up data-aos-delay="500" class="mt-6 w-full flex justify-around gap-4">
-          <button
-            type="button"
-            class="w-[48%] py-2 border border-white font-bold opacity-90 hover:opacity-100 transition-opacity"
-            @click="showPromoModal = true"
+          </h1>
+          <div
+            v-aos:fade-up
+            data-aos-delay="500"
+            class="mt-6 w-full flex justify-around gap-4"
           >
-            查優惠
-          </button>
-          <RouterLink
-            to="/products"
-            class="w-[48%] py-2 text-center bg-white text-africa font-bold opacity-90 hover:opacity-100 transition-opacity"
-          >
-            找行程
-          </RouterLink>
+            <button
+              type="button"
+              class="w-[48%] py-2 border border-white font-bold opacity-90 hover:opacity-100 transition-opacity"
+              @click="showPromoModal = true"
+            >
+              查優惠
+            </button>
+            <RouterLink
+              to="/products"
+              class="w-[48%] py-2 text-center bg-white text-africa font-bold opacity-90 hover:opacity-100 transition-opacity"
+            >
+              找行程
+            </RouterLink>
           </div>
         </div>
       </div>
@@ -112,7 +118,9 @@
               v-for="region in regions"
               :key="region.id"
               class="w-full md:w-1/2 lg:w-1/4 px-[15px] md:mb-[15px] lg:mb-0"
-              :class="region.slug === 'asia' || region.slug === 'africa' ? 'md:-translate-y-[50px]' : ''"
+              :class="
+                region.slug === 'asia' || region.slug === 'africa' ? 'md:-translate-y-[50px]' : ''
+              "
             >
               <RouterLink
                 v-aos:zoom-in
@@ -120,7 +128,11 @@
                 class="h-full p-[15px] text-center text-white flex flex-col items-center shadow transition-transform hover:-translate-y-1"
                 :class="REGION_BG[region.slug] ?? 'bg-gray-400'"
               >
-                <img :src="REGION_ICON[region.slug]" :alt="region.name" class="w-16" />
+                <img
+                  :src="REGION_ICON[region.slug]"
+                  :alt="region.name"
+                  class="w-16"
+                />
                 <h3
                   class="my-4 pb-[15px] w-full text-[28px] font-medium leading-[1.2] border-b-2 border-dotted border-white/60"
                 >
@@ -143,24 +155,37 @@
     <!-- 特別精選 -->
     <section
       class="relative zones bg-no-repeat bg-center"
-      :style="{ backgroundColor: '#fffbf9', backgroundImage: `url(${HERO_IMAGES.index.zoneSelectedBg})` }"
+      :style="{
+        backgroundColor: '#fffbf9',
+        backgroundImage: `url(${HERO_IMAGES.index.zoneSelectedBg})`,
+      }"
     >
       <div class="bs-container">
         <SectionTitle title="特別精選" />
 
-        <div v-if="pickMexico" class="flex flex-wrap items-center -mx-[15px] mt-[56px]">
+        <div
+          v-if="pickMexico"
+          class="flex flex-wrap items-center -mx-[15px] mt-[56px]"
+        >
           <div class="w-full md:w-1/2 px-[15px]">
             <!-- 裝飾線比欄位再長 35px，超出的部分由外層 overflow-hidden 裁掉；
                  數字用 inline-block，底線才會貼在數字色塊的下緣 -->
             <div class="relative overflow-hidden mb-[30px]">
-              <span class="text-[32px] lg:text-[56px] inline-block text-white bg-africa px-[10px]">01</span>
+              <span class="text-[32px] lg:text-[56px] inline-block text-white bg-africa px-[10px]">
+                01
+              </span>
               <span class="absolute left-0 bottom-[5px] w-[calc(100%+35px)] h-[5px] bg-africa" />
             </div>
             <div class="flex flex-wrap -mx-[15px]">
               <div class="w-full lg:w-5/12 px-[15px]">
-                <h3 class="text-[32px] lg:text-[56px] font-medium leading-[1.2] mb-2 text-primary">墨西哥</h3>
+                <h3 class="text-[32px] lg:text-[56px] font-medium leading-[1.2] mb-2 text-primary">
+                  墨西哥
+                </h3>
               </div>
-              <div v-aos:zoom-in class="w-full lg:w-7/12 px-[15px]">
+              <div
+                v-aos:zoom-in
+                class="w-full lg:w-7/12 px-[15px]"
+              >
                 <p class="mb-4">一生必去墨西哥的三大理由：</p>
                 <ul class="list-disc pl-5 mb-4">
                   <li>
@@ -186,26 +211,46 @@
             </div>
           </div>
           <div class="w-full md:w-1/2 px-[15px]">
-            <img v-aos:zoom-in :src="HERO_IMAGES.index.pickMexico" alt="墨西哥" class="w-full" />
+            <img
+              v-aos:zoom-in
+              :src="HERO_IMAGES.index.pickMexico"
+              alt="墨西哥"
+              class="w-full"
+            />
           </div>
         </div>
 
         <!-- 刻意不垂直置中（原設計）：這排圖文都靠上對齊，跟墨西哥那排不同 -->
-        <div v-if="pickEgypt" class="flex flex-wrap -mx-[15px] mt-12">
+        <div
+          v-if="pickEgypt"
+          class="flex flex-wrap -mx-[15px] mt-12"
+        >
           <!-- 桌機圖在左、文在右；手機用 order 讓圖片排到最後 -->
           <div class="w-full md:w-1/2 px-[15px] order-2 md:order-1">
-            <img v-aos:zoom-in :src="HERO_IMAGES.index.pickEgypt" alt="埃及" class="w-full" />
+            <img
+              v-aos:zoom-in
+              :src="HERO_IMAGES.index.pickEgypt"
+              alt="埃及"
+              class="w-full"
+            />
           </div>
           <div class="w-full md:w-1/2 px-[15px] order-1 md:order-2">
             <div class="relative overflow-hidden mb-[30px]">
-              <span class="text-[32px] lg:text-[56px] inline-block text-white bg-africa px-[10px]">02</span>
+              <span class="text-[32px] lg:text-[56px] inline-block text-white bg-africa px-[10px]">
+                02
+              </span>
               <span class="absolute left-0 bottom-[5px] w-[calc(100%+35px)] h-[5px] bg-africa" />
             </div>
             <div class="flex flex-wrap -mx-[15px]">
               <div class="w-full lg:w-5/12 px-[15px]">
-                <h3 class="text-[32px] lg:text-[56px] font-medium leading-[1.2] mb-2 text-primary">埃及</h3>
+                <h3 class="text-[32px] lg:text-[56px] font-medium leading-[1.2] mb-2 text-primary">
+                  埃及
+                </h3>
               </div>
-              <div v-aos:zoom-in class="w-full lg:w-7/12 px-[15px]">
+              <div
+                v-aos:zoom-in
+                class="w-full lg:w-7/12 px-[15px]"
+              >
                 <p class="mb-4">
                   神秘而多樣化的金字塔，乃至奇幻的紅海風光；夢想中的尼羅河乘船泛遊，更有那三千年歷史的阿布辛貝世界級遺跡！TropicGo
                   精心安排搭配多段埃及國內線班機，省卻艷陽下長途行車或搭乘夜間火車之苦，讓您的埃及之旅於輕鬆悠閒中，絕無遺珠之憾！
@@ -239,7 +284,11 @@
           v-aos:zoom-in
           class="border border-white py-8 px-4 text-center text-white"
         >
-          <img :src="item.icon" :alt="item.label" class="max-w-[100px] mx-auto" />
+          <img
+            :src="item.icon"
+            :alt="item.label"
+            class="max-w-[100px] mx-auto"
+          />
           <p class="mt-3 text-lg">{{ item.label }}</p>
         </div>
       </div>
@@ -247,7 +296,10 @@
 
     <!-- 旅客怎麼說 -->
     <section class="bs-container zones">
-      <SectionTitle title="旅客怎麼說" class="mb-12" />
+      <SectionTitle
+        title="旅客怎麼說"
+        class="mb-12"
+      />
 
       <!-- 照片和引言無間距拼貼；手機和桌機只有第一組照片、引言的順序對調，用 order 控制 -->
       <div class="grid grid-cols-2 md:grid-cols-12 gap-0">
@@ -324,7 +376,11 @@
         :bordered="false"
         @close="showPromoModal = false"
       >
-        <img :src="HERO_IMAGES.index.modal" alt="最新優惠" class="w-full" />
+        <img
+          :src="HERO_IMAGES.index.modal"
+          alt="最新優惠"
+          class="w-full"
+        />
       </n-card>
     </n-modal>
   </main>

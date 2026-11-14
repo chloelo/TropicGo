@@ -44,13 +44,26 @@
         <div class="flex flex-wrap justify-center -mx-[15px]">
           <div class="w-full md:w-2/3 px-[15px]">
             <!-- 載入提示交給全域 loader，這裡只先撐住高度 -->
-            <div v-if="loading" class="min-h-[300px]" />
+            <div
+              v-if="loading"
+              class="min-h-[300px]"
+            />
 
             <template v-else-if="favoriteTours.length">
-              <h3 class="text-[28px] font-medium leading-[1.2] border-b border-[#dee2e6] pb-4 mb-4">收藏清單列表</h3>
-              <div v-for="tour in favoriteTours" :key="tour.id" class="flex items-center bg-[#f8f9fa] mb-6">
+              <h3 class="text-[28px] font-medium leading-[1.2] border-b border-[#dee2e6] pb-4 mb-4">
+                收藏清單列表
+              </h3>
+              <div
+                v-for="tour in favoriteTours"
+                :key="tour.id"
+                class="flex items-center bg-[#f8f9fa] mb-6"
+              >
                 <div class="pl-4">
-                  <img :src="tour.images[0]?.url" :alt="tour.title" class="w-[120px] h-auto align-middle" />
+                  <img
+                    :src="tour.images[0]?.url"
+                    :alt="tour.title"
+                    class="w-[120px] h-auto align-middle"
+                  />
                 </div>
                 <div class="relative w-full p-4">
                   <button
@@ -103,11 +116,22 @@
     </section>
 
     <!-- 熱門推薦用 TourLinkCard：TourCard 帶有「熱門」標籤，放在推薦區每張都會標示 -->
-    <section v-if="!loading && popularTours.length" class="pb-[60px]">
+    <section
+      v-if="!loading && popularTours.length"
+      class="pb-[60px]"
+    >
       <div class="bs-container">
-        <SectionTitle title="熱門推薦" tag="h3" class="mb-12" />
+        <SectionTitle
+          title="熱門推薦"
+          tag="h3"
+          class="mb-12"
+        />
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[30px]">
-          <TourLinkCard v-for="tour in popularTours" :key="tour.id" :tour="tour" />
+          <TourLinkCard
+            v-for="tour in popularTours"
+            :key="tour.id"
+            :tour="tour"
+          />
         </div>
       </div>
     </section>

@@ -355,6 +355,7 @@ async function seed() {
   const currentTitles = TOURS.map((item) => baseTitle(item.title));
   const allTours = await tourRepo.find();
   const orderItemRepo = dataSource.getRepository('OrderItem');
+  const departureRepo = dataSource.getRepository('TourDeparture');
   for (const tour of allTours) {
     if (currentTitles.includes(baseTitle(tour.title))) continue;
     const refCount = await orderItemRepo.count({ where: { tour: { id: tour.id } } });
@@ -362,6 +363,8 @@ async function seed() {
       console.log(`! 保留(有訂單引用,未刪除): ${tour.title}`);
       continue;
     }
+    // 梯次有外鍵連到產品，要先刪；有訂單的產品已在上面保留，這裡的梯次不會有訂單
+    await departureRepo.delete({ tour: { id: tour.id } });
     await tourImageRepo.delete({ tour: { id: tour.id } });
     await tourRepo.delete(tour.id);
     console.log(`- 已從資料集移除,刪除: ${tour.title}`);

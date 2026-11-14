@@ -25,3 +25,12 @@ export function formatDateTime(value?: string | number | null): string {
 export function toLocalDateString(timestamp: number): string {
   return dayjs(timestamp).format('YYYY-MM-DD')
 }
+
+/**
+ * 台灣的今天（YYYY-MM-DD），跟後端判斷「出發當天停止報名」用同一個標準。
+ * 不用瀏覽器的時區：人在國外時，當地日期可能跟台灣差一天。
+ * en-CA 語系的日期格式剛好是 YYYY-MM-DD
+ */
+export function getTaipeiToday(): string {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei' }).format(new Date())
+}

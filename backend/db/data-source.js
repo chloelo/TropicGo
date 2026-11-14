@@ -5,6 +5,7 @@ const config = require('../config');
 const Region = require('../entities/Region');
 const Tour = require('../entities/Tour');
 const TourImage = require('../entities/TourImage');
+const TourDeparture = require('../entities/TourDeparture');
 const Coupon = require('../entities/Coupon');
 const Admin = require('../entities/Admin');
 const Order = require('../entities/Order');
@@ -20,7 +21,7 @@ const dataSource = new DataSource({
   // 資料表結構由 migration 管理，不讓 TypeORM 依 entity 自動同步（可能刪掉欄位、遺失資料）
   synchronize: config.get('db.synchronize'),
   ssl: config.get('db.ssl'),
-  entities: [Region, Tour, TourImage, Coupon, Admin, Order, OrderItem],
+  entities: [Region, Tour, TourImage, TourDeparture, Coupon, Admin, Order, OrderItem],
   migrations: [path.join(__dirname, 'migrations', '*.js')],
   // 連線時自動執行還沒跑過的 migration：部署後第一次啟動、npm run seed 前都不用另外下指令
   migrationsRun: true,

@@ -10,6 +10,7 @@
 - [環境變數](#環境變數)
 - [常用指令](#常用指令)
 - [資料庫 migration](#資料庫-migration)
+- [梯次的規則](#梯次的規則)
 - [API 規格與 Swagger](#api-規格與-swagger)
 - [帳號與密碼](#帳號與密碼)
 - [正式環境](#正式環境)
@@ -34,6 +35,7 @@ npm --prefix frontend ci
 
 npm --prefix backend run seed
 npm --prefix backend run seed:tours
+npm --prefix backend run seed:departures
 ```
 
 `.env` 的帳號密碼可以自行修改，但 `frontend/.env` 的 `VITE_DEMO_*` 要和 `backend/.env` 的 `DEMO_*` 一致，否則登入頁的「使用示範帳號登入」會失敗。
@@ -107,8 +109,10 @@ docker compose up -d --build backend
 | `start` | 以一般模式啟動，修改程式不會自動重啟 |
 | `seed` | 建立初始資料：地區、優惠券、管理員和示範帳號。已存在的資料不會改動 |
 | `seed:tours` | 同步產品範例資料。**會覆蓋既有產品、刪除不在範例裡的產品**，見下方說明 |
+| `seed:departures` | 幫上架中的產品補上未來 6 個月的梯次，見下方說明 |
 | `reset-password -- admin`／`-- demo` | 把帳號密碼重設成 `.env` 裡的值 |
 | `seed:neon` | 對正式資料庫執行 `seed`，見[正式環境](#正式環境) |
+| `seed:departures:neon` | 對正式資料庫執行 `seed:departures`，見[正式環境](#正式環境) |
 | `reset-password:neon -- admin`／`-- demo` | 重設正式環境的帳號密碼，見[正式環境](#正式環境) |
 | `migration:generate -- db/migrations/<名稱>` | 依 entity 的變更產生 migration |
 | `migration:run` | 執行還沒跑過的 migration |
@@ -136,6 +140,16 @@ docker compose up -d --build backend
 
 因此在後台新增或修改過的產品，執行後都會不見。連到本機以外的資料庫時，指令會拒絕執行；必須加上 `--allow-remote` 才會執行，正式環境上線後不應再使用。
 
+### seed:departures 的說明
+
+`seed:departures` 會幫上架中的產品補上梯次，範圍是下個月起的 6 個月，每個月 1 團：
+
+- 出發日在週三到週六輪流，名額在 20、25、30 人輪流，每個產品固定同一組
+- 只新增，不修改或刪除；某個月份已經有梯次（包含後台新增、關閉報名的），就跳過那個月
+- 可以重複執行，每隔幾個月執行一次，就會補滿到 6 個月後
+
+不想讓某個月出團時，在後台把那一團改成「關閉報名」，不要刪除；刪除後那個月沒有梯次，下次執行又會補回來。
+
 ## 資料庫 migration
 
 資料表結構由 migration 管理（`DB_SYNCHRONIZE=false`）。後端連線資料庫時會自動執行還沒跑過的 migration（`migrationsRun: true`），所以部署和 seed 前都不用另外執行。
@@ -153,6 +167,25 @@ docker compose up -d --build backend
 3. 檢查產生的檔案內容是否正確
 4. 重新啟動後端，migration 會自動執行
 5. commit entity 和 migration 檔案，部署後正式環境也會自動執行
+
+## 梯次的規則
+
+梯次是同一個產品的不同出發日期，各自有名額。客人下單時選的是梯次。
+
+**報名與名額**
+
+- 已報名人數存在梯次的 `booked_count`，建立訂單時累加；下單時用 `SELECT ... FOR UPDATE` 鎖住梯次再檢查名額，同時下單也不會超賣
+- 未付款的訂單也會占名額；後台把訂單改成「已取消」時釋出名額，已取消的訂單不能改回其他狀態
+- 每筆訂單裡同一個梯次最多 20 人，也不能超過剩餘名額
+- 出發當天起（台灣時間）停止報名；前台只顯示開放中、出發日期在今天之後的梯次，額滿的也會顯示
+- 已報名人數達到產品的成團人數時，前台顯示「已成團」
+
+**後台管理**
+
+- 有人報名後，不能改出發日期、不能刪除，名額不能改得比已報名人數少
+- 不想再收報名時，改成「關閉報名」
+- 有訂單紀錄的梯次（包含已取消的訂單）無法刪除
+- 刪除產品時會一併刪除它的梯次；有訂單的產品無法刪除
 
 ## API 規格與 Swagger
 
@@ -242,6 +275,7 @@ ADMIN_EMAIL、ADMIN_PASSWORD、DEMO_EMAIL、DEMO_PASSWORD
 | 指令（在 `backend/` 執行） | 說明 |
 | --- | --- |
 | `npm run seed:neon` | 建立缺少的初始資料，不會改動已存在的資料 |
+| `npm run seed:departures:neon` | 幫上架中的產品補上未來 6 個月的梯次，已有梯次的月份跳過。梯次功能上線後要先執行一次，正式站才有梯次可以報名；之後每隔幾個月執行一次 |
 | `npm run reset-password:neon -- admin` | 把正式環境的管理員密碼重設成 `.env.neon.local` 裡的值 |
 
 注意事項：

@@ -66,7 +66,10 @@
         payment_method: paymentMethod,
         message: form.value.message || undefined,
         coupon_code: appliedCoupon.value?.code,
-        items: cartStore.items.map((item) => ({ tour_id: item.tourId, quantity: item.quantity })),
+        items: cartStore.items.map((item) => ({
+          departure_id: item.departureId,
+          quantity: item.quantity,
+        })),
       })
       createdOrder.value = data.data
       orderedItems.value = [...cartStore.items]
@@ -76,7 +79,8 @@
       // 訂單 id 放進網址：離開再回來、重新整理，都能用下面的 watch 把訂單抓回來
       router.replace({ query: { order: data.data.id } })
     } catch (error) {
-      toast.push(apiErrorMessage(error, '建立訂單失敗'), 'danger')
+      // 400 是「名額不足，剩 N 位」「已截止報名」這類原因，顯示後端的說明，客人才知道要改什麼
+      toast.push(apiErrorMessage(error, '建立訂單失敗', [400]), 'danger')
     } finally {
       submitting.value = false
     }
@@ -159,17 +163,30 @@
     </section>
 
     <!-- 從網址抓訂單時先撐住高度，不然會先閃一下空的購物車 -->
-    <div v-if="loadingOrder" class="min-h-[300px]" />
+    <div
+      v-if="loadingOrder"
+      class="min-h-[300px]"
+    />
 
     <!-- 確認清單 -->
-    <section v-else-if="step === 1" class="zones">
+    <section
+      v-else-if="step === 1"
+      class="zones"
+    >
       <div class="bs-container">
-        <CartListStep v-model:coupon="appliedCoupon" :payable="discountedTotal" @next="step = 2" />
+        <CartListStep
+          v-model:coupon="appliedCoupon"
+          :payable="discountedTotal"
+          @next="step = 2"
+        />
       </div>
     </section>
 
     <!-- 填寫資料（上方只留 30px） -->
-    <section v-else-if="step === 2" class="pt-[30px] pb-[60px]">
+    <section
+      v-else-if="step === 2"
+      class="pt-[30px] pb-[60px]"
+    >
       <div class="bs-container">
         <CheckoutFormStep
           v-model:form="form"
@@ -182,7 +199,10 @@
     </section>
 
     <!-- 確認付款 -->
-    <section v-else-if="step === 3 && createdOrder" class="zones">
+    <section
+      v-else-if="step === 3 && createdOrder"
+      class="zones"
+    >
       <div class="bs-container">
         <OrderConfirmStep
           :order="createdOrder"
@@ -194,7 +214,10 @@
     </section>
 
     <!-- 完成訂單 -->
-    <section v-else-if="step === 4 && createdOrder" class="zones">
+    <section
+      v-else-if="step === 4 && createdOrder"
+      class="zones"
+    >
       <div class="bs-container">
         <OrderCompleteStep :order="createdOrder" />
       </div>

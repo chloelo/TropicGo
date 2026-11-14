@@ -1,7 +1,9 @@
 const { customAlphabet } = require('nanoid');
 const { dataSource } = require('../db/data-source');
 const appError = require('../utils/appError');
-const { isValidString, isNonNegativeInteger } = require('../utils/validUtils');
+const { isValidString, isNonNegativeInteger, isUuid } = require('../utils/validUtils');
+const { getTaipeiToday, lockDepartures } = require('../utils/departures');
+const { ORDER_RELATIONS, toOrderResponse } = require('../utils/orders');
 
 // 訂單編號不含容易看錯的字元（0/O、1/I/L），客服人工對單時比較不會唸錯、抄錯
 const generateOrderNumber = customAlphabet('23456789ABCDEFGHJKMNPQRSTUVWXYZ', 10);
@@ -10,7 +12,7 @@ const generateOrderNumber = customAlphabet('23456789ABCDEFGHJKMNPQRSTUVWXYZ', 10
 // 跟 openapi.yaml 的 OrderInput.payment_method enum 要一致
 const PAYMENT_METHODS = ['Credit', 'LinePay', 'ApplePay', 'GooglePay', 'ATM', 'CVS'];
 
-// 每個產品一次最多報名的人數，跟前端 stores/cart.ts 的 MAX_QUANTITY、openapi.yaml 要一致
+// 每筆訂單裡同一個梯次最多報名的人數，跟前端 stores/cart.ts 的 MAX_QUANTITY、openapi.yaml 要一致
 const MAX_QUANTITY = 20;
 
 function validateOrderInput(body) {
@@ -24,10 +26,13 @@ function validateOrderInput(body) {
   if (!Array.isArray(items) || items.length === 0) return '購物車是空的';
 
   for (const item of items) {
-    if (!isValidString(item.tour_id)) return '行程資料錯誤';
+    if (!isUuid(item.departure_id)) return '請選擇出發日期';
     if (!isNonNegativeInteger(item.quantity) || item.quantity <= 0) return '數量格式錯誤';
-    if (item.quantity > MAX_QUANTITY) return `每個產品最多報名 ${MAX_QUANTITY} 人`;
+    if (item.quantity > MAX_QUANTITY) return `同一個梯次最多報名 ${MAX_QUANTITY} 人`;
   }
+  // 同一個梯次分成多筆會繞過每筆的人數上限，要求合併成一筆
+  const departureIds = items.map((item) => item.departure_id);
+  if (new Set(departureIds).size !== departureIds.length) return '同一個梯次請合併成一筆';
   return null;
 }
 
@@ -45,25 +50,47 @@ const ordersController = {
     try {
       // 整個建立訂單的過程包在 transaction 裡：中途任何一步丟錯，前面存的資料都會一起 rollback
       const savedOrder = await dataSource.transaction(async (manager) => {
-        const tourRepo = manager.getRepository('Tour');
+        const departureRepo = manager.getRepository('TourDeparture');
         const orderRepo = manager.getRepository('Order');
         const orderItemRepo = manager.getRepository('OrderItem');
         const couponRepo = manager.getRepository('Coupon');
 
-        // 1. 逐一查詢產品目前的價格，組成訂單明細（價格快照）
+        // 1. 鎖住訂單裡的梯次：其他同時下單的人要等這筆訂單完成，才讀得到更新後的已報名人數，不會超賣
+        const departures = await lockDepartures(
+          manager,
+          items.map((item) => item.departure_id),
+        );
+        const today = getTaipeiToday();
+
+        // 2. 逐一檢查梯次和名額，用產品目前的價格組成訂單明細（價格快照）
         const orderItemsData = [];
         let rawTotal = 0;
 
         for (const item of items) {
-          const tour = await tourRepo.findOneBy({ id: item.tour_id, is_enabled: true });
-          if (!tour) {
-            // 丟出錯誤會讓整個 transaction rollback
-            throw appError(400, `行程不存在或已下架:${item.tour_id}`);
+          const departure = departures.get(item.departure_id);
+          // 丟出錯誤會讓整個 transaction rollback，前面扣的名額也會還原
+          if (!departure || !departure.is_enabled || !departure.tour.is_enabled) {
+            throw appError(400, '行程或出發日期已停止報名，請重新選擇');
           }
+          const { tour } = departure;
+          const label = `「${tour.title}」${departure.departure_date} 出發`;
+          if (departure.departure_date <= today) {
+            throw appError(400, `${label}已截止報名`);
+          }
+          const remaining = departure.capacity - departure.booked_count;
+          if (item.quantity > remaining) {
+            throw appError(400, `${label}名額不足，剩 ${remaining} 位`);
+          }
+
+          await departureRepo.update(departure.id, {
+            booked_count: departure.booked_count + item.quantity,
+          });
+
           const subtotal = tour.price * item.quantity;
           rawTotal += subtotal;
           orderItemsData.push({
             tour: { id: tour.id },
+            departure: { id: departure.id },
             title_snapshot: tour.title,
             unit_price_snapshot: tour.price,
             quantity: item.quantity,
@@ -71,7 +98,7 @@ const ordersController = {
           });
         }
 
-        // 2. 有帶優惠碼的話，驗證後套用折扣（percent 90 代表打 9 折，付原價的 90%）
+        // 3. 有帶優惠碼的話，驗證後套用折扣（percent 90 代表打 9 折，付原價的 90%）
         let coupon = null;
         let totalAmount = rawTotal;
         if (coupon_code) {
@@ -82,7 +109,7 @@ const ordersController = {
           totalAmount = Math.round((rawTotal * coupon.percent) / 100);
         }
 
-        // 3. 建立訂單主檔
+        // 4. 建立訂單主檔
         const order = await orderRepo.save({
           order_number: generateOrderNumber(),
           customer_name,
@@ -95,7 +122,7 @@ const ordersController = {
           total_amount: totalAmount,
         });
 
-        // 4. 建立訂單明細，關聯回訂單
+        // 5. 建立訂單明細，關聯回訂單
         await orderItemRepo.save(
           orderItemsData.map((item) => ({ ...item, order: { id: order.id } })),
         );
@@ -106,10 +133,10 @@ const ordersController = {
       const orderRepo = dataSource.getRepository('Order');
       const fullOrder = await orderRepo.findOne({
         where: { id: savedOrder.id },
-        relations: { items: true, coupon: true },
+        relations: ORDER_RELATIONS,
       });
 
-      res.status(201).json({ status: 'success', data: fullOrder });
+      res.status(201).json({ status: 'success', data: toOrderResponse(fullOrder) });
     } catch (err) {
       return next(err.status ? err : appError(500, '訂單建立失敗'));
     }
@@ -121,10 +148,10 @@ const ordersController = {
     const orderRepo = dataSource.getRepository('Order');
     const order = await orderRepo.findOne({
       where: { id },
-      relations: { items: true, coupon: true },
+      relations: ORDER_RELATIONS,
     });
     if (!order) return next(appError(400, '訂單不存在'));
-    res.json({ status: 'success', data: order });
+    res.json({ status: 'success', data: toOrderResponse(order) });
   },
 
   // POST /api/orders/:id/pay
@@ -139,9 +166,9 @@ const ordersController = {
     await orderRepo.update(id, { status: 'PAID' });
     const updated = await orderRepo.findOne({
       where: { id },
-      relations: { items: true, coupon: true },
+      relations: ORDER_RELATIONS,
     });
-    res.json({ status: 'success', data: updated });
+    res.json({ status: 'success', data: toOrderResponse(updated) });
   },
 };
 

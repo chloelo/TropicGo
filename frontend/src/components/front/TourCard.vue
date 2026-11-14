@@ -1,15 +1,17 @@
 <script setup lang="ts">
+  import { useRouter } from 'vue-router'
   import type { Tour } from '@/api/tropicgo-api'
-  import { useCartStore } from '@/stores/cart'
   import { formatCurrency } from '@/utils/format'
   import { REGION_BG } from '@/utils/region'
 
   const props = defineProps<{ tour: Tour }>()
 
-  const cartStore = useCartStore()
+  const router = useRouter()
 
-  function addToCart() {
-    cartStore.addItem(props.tour, 1)
+  // 報名要先選出發日期，卡片上沒有地方選：點卡片停在產品頁最上方看介紹，
+  // 點「我要報名」則帶到產品頁的報名區（#booking），直接選日期
+  function goToBooking() {
+    router.push({ path: `/products/${props.tour.id}`, hash: '#booking' })
   }
 </script>
 
@@ -45,23 +47,27 @@
       </span>
     </div>
     <div class="p-4 pb-2 bg-gray-100 flex-1">
-      <h3 class="font-bold text-gray-800 line-clamp-1">{{ tour.title }}</h3>
+      <h3 class="font-bold text-[#495057] leading-[1.5] min-h-[3em] line-clamp-2">
+        {{ tour.title }}
+      </h3>
       <p class="mt-1 text-sm text-gray-500 line-clamp-2">{{ tour.summary }}</p>
       <div class="mt-3 flex items-baseline justify-between">
         <span class="text-xs text-gray-400 line-through">
           {{ formatCurrency(tour.origin_price) }}/{{ tour.unit }}
         </span>
-        <span class="text-lg font-bold text-primary">{{ formatCurrency(tour.price) }}/{{ tour.unit }}</span>
+        <span class="text-lg font-bold text-secondary">
+          {{ formatCurrency(tour.price) }}/{{ tour.unit }}
+        </span>
       </div>
     </div>
-    <!-- 內文區 flex-1 撐滿、按鈕放最後：同一排卡片的按鈕都會對齊在底部 -->
-    <button
-      type="button"
+    <!-- 內文區 flex-1 撐滿、按鈕放最後：同一排卡片的按鈕都會對齊在底部。
+         卡片本身是連結，裡面不能放 button，改用 div -->
+    <div
       class="w-full py-2 bg-secondary text-white flex items-center justify-center gap-2 hover:bg-secondary-dark transition-colors"
-      @click.prevent.stop="addToCart"
+      @click.prevent.stop="goToBooking"
     >
       <span class="i-fa6-cart-shopping" />
       我要報名
-    </button>
+    </div>
   </RouterLink>
 </template>

@@ -192,7 +192,11 @@
   <n-card title="優惠券管理">
     <template #header-extra>
       <DemoLock>
-        <n-button type="primary" :disabled="authStore.isDemo" @click="openCreate">
+        <n-button
+          type="primary"
+          :disabled="authStore.isDemo"
+          @click="openCreate"
+        >
           新增優惠券
         </n-button>
       </DemoLock>
@@ -223,17 +227,45 @@
         :disabled="authStore.isDemo"
         :show-require-mark="!authStore.isDemo"
       >
-        <n-form-item label="名稱" path="title">
-          <n-input v-model:value="form.title" />
+        <n-form-item
+          label="名稱"
+          :label-props="{ for: 'coupon-title' }"
+          path="title"
+        >
+          <n-input
+            :input-props="{ id: 'coupon-title' }"
+            v-model:value="form.title"
+          />
         </n-form-item>
-        <n-form-item label="優惠碼" path="code">
-          <n-input v-model:value="form.code" />
+        <n-form-item
+          label="優惠碼"
+          :label-props="{ for: 'coupon-code' }"
+          path="code"
+        >
+          <n-input
+            :input-props="{ id: 'coupon-code' }"
+            v-model:value="form.code"
+          />
         </n-form-item>
-        <n-form-item label="折扣（要付的百分比，90 代表打 9 折）" path="percent">
-          <n-input-number v-model:value="form.percent" :min="1" :max="100" style="width: 100%" />
+        <n-form-item
+          label="折扣（要付的百分比，90 代表打 9 折）"
+          :label-props="{ for: 'coupon-percent' }"
+          path="percent"
+        >
+          <n-input-number
+            :input-props="{ id: 'coupon-percent' }"
+            v-model:value="form.percent"
+            :min="1"
+            :max="100"
+            style="width: 100%"
+          />
         </n-form-item>
         <n-form-item label="到期日">
-          <n-date-picker v-model:value="dueDateTimestamp" type="date" style="width: 100%" />
+          <n-date-picker
+            v-model:value="dueDateTimestamp"
+            type="date"
+            style="width: 100%"
+          />
         </n-form-item>
         <n-form-item label="啟用">
           <n-switch v-model:value="form.is_enabled" />
@@ -243,12 +275,29 @@
       <template #footer>
         <n-space justify="end">
           <!-- 示範帳號：表單唯讀，只留關閉 -->
-          <n-button v-if="authStore.isDemo" type="primary" ghost @click="closeDialog">
+          <n-button
+            v-if="authStore.isDemo"
+            type="primary"
+            ghost
+            @click="closeDialog"
+          >
             關閉
           </n-button>
           <template v-else>
-            <n-button type="primary" ghost @click="closeDialog">取消</n-button>
-            <n-button type="primary" :loading="submitting" @click="handleSubmit">儲存</n-button>
+            <n-button
+              type="primary"
+              ghost
+              @click="closeDialog"
+            >
+              取消
+            </n-button>
+            <n-button
+              type="primary"
+              :loading="submitting"
+              @click="handleSubmit"
+            >
+              儲存
+            </n-button>
           </template>
         </n-space>
       </template>

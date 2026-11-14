@@ -1,9 +1,16 @@
 <script setup lang="ts">
+  import { dateZhTW, zhTW } from 'naive-ui'
   import { themeOverrides } from '@/utils/naive-theme'
 </script>
 
 <template>
-  <n-config-provider :theme-overrides="themeOverrides">
+  <!-- locale：元件內建文字（無資料、確認按鈕、分頁）；date-locale：日期選擇器的月份、星期。
+       網站只有繁體中文，固定用 zhTW -->
+  <n-config-provider
+    :theme-overrides="themeOverrides"
+    :locale="zhTW"
+    :date-locale="dateZhTW"
+  >
     <n-message-provider>
       <n-dialog-provider>
         <router-view />

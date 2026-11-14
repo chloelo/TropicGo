@@ -15,6 +15,7 @@ tags:
   - name: Orders
   - name: Admin Auth
   - name: Admin Tours
+  - name: Admin Departures
   - name: Admin Coupons
   - name: Admin Orders
 
@@ -85,6 +86,63 @@ components:
           type: array
           items: { $ref: '#/components/schemas/TourImage' }
 
+    # 前台行程詳情：多帶還能報名的梯次
+    TourDetail:
+      allOf:
+        - $ref: '#/components/schemas/Tour'
+        - type: object
+          required: [departures]
+          properties:
+            departures:
+              type: array
+              items: { $ref: '#/components/schemas/TourDepartureOption' }
+
+    # 前台看到的梯次：只有剩餘名額和是否成團，不含名額上限、已報名人數
+    TourDepartureOption:
+      type: object
+      required: [id, departure_date, remaining_seats, is_confirmed]
+      properties:
+        id: { type: string, format: uuid }
+        departure_date: { type: string, format: date, example: '2027-01-15' }
+        remaining_seats: { type: integer, description: 剩餘名額，0 代表額滿 }
+        is_confirmed: { type: boolean, description: 已報名人數達到成團人數 }
+
+    # 後台看到的梯次
+    TourDeparture:
+      type: object
+      required:
+        [id, departure_date, capacity, booked_count, is_enabled, created_at, updated_at]
+      properties:
+        id: { type: string, format: uuid }
+        departure_date: { type: string, format: date, example: '2027-01-15' }
+        capacity: { type: integer, description: 名額上限 }
+        booked_count: { type: integer, description: 已報名人數 }
+        is_enabled: { type: boolean, description: 是否開放報名 }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+
+    TourDepartureInput:
+      type: object
+      required: [departure_date, capacity]
+      properties:
+        departure_date:
+          type: string
+          format: date
+          description: 必須晚於今天（台灣時間），同一個行程同一天只能有一個梯次
+        capacity: { type: integer, minimum: 1 }
+        is_enabled: { type: boolean, default: true }
+
+    # 修改梯次：只送要改的欄位
+    TourDepartureUpdate:
+      type: object
+      properties:
+        departure_date:
+          type: string
+          format: date
+          description: 已有人報名時不能修改
+        capacity: { type: integer, minimum: 1, description: 不能少於已報名人數 }
+        is_enabled: { type: boolean }
+
     TourInput:
       type: object
       required:
@@ -146,13 +204,21 @@ components:
 
     OrderItem:
       type: object
-      required: [id, title_snapshot, unit_price_snapshot, quantity, subtotal]
+      required: [id, title_snapshot, unit_price_snapshot, quantity, subtotal, departure]
       properties:
         id: { type: string, format: uuid }
         title_snapshot: { type: string }
         unit_price_snapshot: { type: integer }
         quantity: { type: integer }
         subtotal: { type: integer }
+        # 加入梯次功能前建立的訂單沒有梯次，值是 null
+        departure:
+          type: object
+          nullable: true
+          required: [id, departure_date]
+          properties:
+            id: { type: string, format: uuid }
+            departure_date: { type: string, format: date }
 
     Order:
       type: object
@@ -213,9 +279,10 @@ components:
           type: array
           items:
             type: object
-            required: [tour_id, quantity]
+            # 同一個梯次只能有一筆
+            required: [departure_id, quantity]
             properties:
-              tour_id: { type: string, format: uuid }
+              departure_id: { type: string, format: uuid }
               quantity: { type: integer, minimum: 1, maximum: 20 }
 
     PaginationMeta:
@@ -328,7 +395,7 @@ paths:
     get:
       tags: [Tours]
       operationId: getTour
-      summary: 取得單一行程詳情
+      summary: 取得單一行程詳情（含還能報名的梯次）
       parameters:
         - name: id
           in: path
@@ -345,7 +412,7 @@ paths:
                   - type: object
                     required: [data]
                     properties:
-                      data: { $ref: '#/components/schemas/Tour' }
+                      data: { $ref: '#/components/schemas/TourDetail' }
         '400': { $ref: '#/components/responses/BadRequest' }
 
   /coupons/check:
@@ -623,6 +690,117 @@ paths:
       tags: [Admin Tours]
       operationId: adminDeleteTour
       summary: 刪除行程（已有訂單關聯則會被擋下）
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: 刪除成功
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SuccessResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /admin/tours/{id}/departures:
+    get:
+      tags: [Admin Departures]
+      operationId: adminGetDepartures
+      summary: 某個行程的所有梯次（依出發日期排序，含已出發、已關閉）
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 行程 id
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    required: [data]
+                    properties:
+                      data:
+                        type: array
+                        items: { $ref: '#/components/schemas/TourDeparture' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      tags: [Admin Departures]
+      operationId: adminCreateDeparture
+      summary: 新增梯次
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 行程 id
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TourDepartureInput' }
+      responses:
+        '201':
+          description: 建立成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    required: [data]
+                    properties:
+                      data: { $ref: '#/components/schemas/TourDeparture' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /admin/departures/{id}:
+    patch:
+      tags: [Admin Departures]
+      operationId: adminUpdateDeparture
+      summary: 修改梯次（只送要改的欄位）
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TourDepartureUpdate' }
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    required: [data]
+                    properties:
+                      data: { $ref: '#/components/schemas/TourDeparture' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    delete:
+      tags: [Admin Departures]
+      operationId: adminDeleteDeparture
+      summary: 刪除梯次（已有人報名或有訂單紀錄則會被擋下，可改為關閉報名）
       security: [{ bearerAuth: [] }]
       parameters:
         - name: id

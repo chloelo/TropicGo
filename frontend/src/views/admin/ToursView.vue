@@ -16,6 +16,7 @@
   import { useAdminAuthStore } from '@/stores/admin-auth'
   import type { Region, Tour, TourInput } from '@/api/tropicgo-api'
   import DemoLock from '@/components/admin/DemoLock.vue'
+  import DeparturesDialog from '@/components/admin/DeparturesDialog.vue'
   import { useDialog } from '@/composables/use-dialog'
   import { useTable } from '@/composables/use-table'
   import { DEPARTURE_CITIES, isDepartureCity, type DepartureCity } from '@/utils/departure-city'
@@ -156,6 +157,15 @@
     }
   }
 
+  // 梯次管理另外開一個彈窗，示範帳號也可以打開檢視
+  const departuresTour = ref<Tour | null>(null)
+  const showDepartures = ref(false)
+
+  function openDepartures(tour: Tour) {
+    departuresTour.value = tour
+    showDepartures.value = true
+  }
+
   function handleDelete(tour: Tour) {
     // 刪除不能復原：用「危險」類型（紅色圖示和刪除鈕）；取消鈕維持灰色，畫面上只有刪除鈕有顏色
     // （灰色的焦點、hover 樣式在 utils/naive-theme.ts）
@@ -218,6 +228,11 @@
               { size: 'small', type: 'primary', ghost: true, onClick: () => openEdit(row) },
               { default: () => (authStore.isDemo ? '檢視' : '編輯') },
             ),
+            h(
+              NButton,
+              { size: 'small', type: 'primary', ghost: true, onClick: () => openDepartures(row) },
+              { default: () => '梯次' },
+            ),
             h(DemoLock, null, {
               default: () =>
                 h(
@@ -248,7 +263,11 @@
   <n-card title="產品管理">
     <template #header-extra>
       <DemoLock>
-        <n-button type="primary" :disabled="authStore.isDemo" @click="openCreate">
+        <n-button
+          type="primary"
+          :disabled="authStore.isDemo"
+          @click="openCreate"
+        >
           新增產品
         </n-button>
       </DemoLock>
@@ -279,42 +298,117 @@
         :disabled="authStore.isDemo"
         :show-require-mark="!authStore.isDemo"
       >
-        <n-form-item label="產品名稱" path="title">
-          <n-input v-model:value="form.title" />
+        <n-form-item
+          label="產品名稱"
+          :label-props="{ for: 'tour-title' }"
+          path="title"
+        >
+          <n-input
+            :input-props="{ id: 'tour-title' }"
+            v-model:value="form.title"
+          />
         </n-form-item>
-        <n-form-item label="地區" path="region_id">
-          <n-select v-model:value="form.region_id" :options="regionOptions" />
+        <n-form-item
+          label="地區"
+          path="region_id"
+        >
+          <n-select
+            v-model:value="form.region_id"
+            :options="regionOptions"
+          />
         </n-form-item>
-        <n-form-item label="摘要" path="summary">
-          <n-input v-model:value="form.summary" />
+        <n-form-item
+          label="摘要"
+          :label-props="{ for: 'tour-summary' }"
+          path="summary"
+        >
+          <n-input
+            :input-props="{ id: 'tour-summary' }"
+            v-model:value="form.summary"
+          />
         </n-form-item>
-        <n-form-item label="完整介紹" path="description">
-          <n-input v-model:value="form.description" type="textarea" :rows="4" />
+        <n-form-item
+          label="完整介紹"
+          :label-props="{ for: 'tour-description' }"
+          path="description"
+        >
+          <n-input
+            :input-props="{ id: 'tour-description' }"
+            v-model:value="form.description"
+            type="textarea"
+            :rows="4"
+          />
         </n-form-item>
-        <n-form-item label="費用包含" path="content">
-          <n-input v-model:value="form.content" type="textarea" :rows="2" />
+        <n-form-item
+          label="費用包含"
+          :label-props="{ for: 'tour-content' }"
+          path="content"
+        >
+          <n-input
+            :input-props="{ id: 'tour-content' }"
+            v-model:value="form.content"
+            type="textarea"
+            :rows="2"
+          />
         </n-form-item>
-        <n-form-item label="單位">
-          <n-input v-model:value="form.unit" />
+        <n-form-item
+          label="單位"
+          :label-props="{ for: 'tour-unit' }"
+        >
+          <n-input
+            :input-props="{ id: 'tour-unit' }"
+            v-model:value="form.unit"
+          />
         </n-form-item>
-        <n-form-item label="出發城市" path="departure_city">
+        <n-form-item
+          label="出發城市"
+          path="departure_city"
+        >
           <n-select
             v-model:value="form.departure_city"
             :options="departureCityOptions"
             placeholder="請選擇"
           />
         </n-form-item>
-        <n-form-item label="成團人數">
-          <n-input-number v-model:value="form.min_group_size" :min="1" style="width: 100%" />
+        <n-form-item
+          label="成團人數"
+          :label-props="{ for: 'tour-min-group-size' }"
+        >
+          <n-input-number
+            :input-props="{ id: 'tour-min-group-size' }"
+            v-model:value="form.min_group_size"
+            :min="1"
+            style="width: 100%"
+          />
         </n-form-item>
-        <n-form-item label="原價">
-          <n-input-number v-model:value="form.origin_price" :min="0" style="width: 100%" />
+        <n-form-item
+          label="原價"
+          :label-props="{ for: 'tour-origin-price' }"
+        >
+          <n-input-number
+            :input-props="{ id: 'tour-origin-price' }"
+            v-model:value="form.origin_price"
+            :min="0"
+            style="width: 100%"
+          />
         </n-form-item>
-        <n-form-item label="優惠價">
-          <n-input-number v-model:value="form.price" :min="0" style="width: 100%" />
+        <n-form-item
+          label="優惠價"
+          :label-props="{ for: 'tour-price' }"
+        >
+          <n-input-number
+            :input-props="{ id: 'tour-price' }"
+            v-model:value="form.price"
+            :min="0"
+            style="width: 100%"
+          />
         </n-form-item>
-        <n-form-item label="圖片網址（每行一個）">
+        <n-form-item
+          label="圖片網址（每行一個）"
+          :label-props="{ for: 'tour-images' }"
+        >
           <n-input
+            :input-props="{ id: 'tour-images' }"
             v-model:value="imagesText"
             type="textarea"
             :rows="3"
@@ -326,11 +420,17 @@
         <div class="grid grid-cols-2">
           <n-form-item :show-label="false">
             <span class="mr-3">熱門產品</span>
-            <n-switch v-model:value="form.is_popular" aria-label="熱門產品" />
+            <n-switch
+              v-model:value="form.is_popular"
+              aria-label="熱門產品"
+            />
           </n-form-item>
           <n-form-item :show-label="false">
             <span class="mr-3">上架</span>
-            <n-switch v-model:value="form.is_enabled" aria-label="上架" />
+            <n-switch
+              v-model:value="form.is_enabled"
+              aria-label="上架"
+            />
           </n-form-item>
         </div>
       </n-form>
@@ -338,15 +438,37 @@
       <template #footer>
         <n-space justify="end">
           <!-- 示範帳號：表單唯讀，只留關閉 -->
-          <n-button v-if="authStore.isDemo" type="primary" ghost @click="closeDialog">
+          <n-button
+            v-if="authStore.isDemo"
+            type="primary"
+            ghost
+            @click="closeDialog"
+          >
             關閉
           </n-button>
           <template v-else>
-            <n-button type="primary" ghost @click="closeDialog">取消</n-button>
-            <n-button type="primary" :loading="submitting" @click="handleSubmit">儲存</n-button>
+            <n-button
+              type="primary"
+              ghost
+              @click="closeDialog"
+            >
+              取消
+            </n-button>
+            <n-button
+              type="primary"
+              :loading="submitting"
+              @click="handleSubmit"
+            >
+              儲存
+            </n-button>
           </template>
         </n-space>
       </template>
     </n-modal>
+
+    <DeparturesDialog
+      v-model:show="showDepartures"
+      :tour="departuresTour"
+    />
   </n-card>
 </template>

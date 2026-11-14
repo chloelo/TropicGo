@@ -3,7 +3,7 @@
   import type { Order } from '@/api/tropicgo-api'
   import OrderContactInfo from '@/components/front/OrderContactInfo.vue'
   import type { CartItem } from '@/stores/cart'
-  import { formatCurrency } from '@/utils/format'
+  import { formatCurrency, formatDate } from '@/utils/format'
 
   // orderedItems：送出訂單前購物車的內容（送出後購物車就清空了）。
   // 訂單明細沒有圖片和單位，用產品名稱從這裡對回來
@@ -40,7 +40,11 @@
           <p class="font-bold">訂單編號</p>
           <p>{{ order.order_number }}</p>
         </div>
-        <div v-for="item in items" :key="item.id" class="flex mb-4">
+        <div
+          v-for="item in items"
+          :key="item.id"
+          class="flex mb-4"
+        >
           <img
             v-if="item.image"
             :src="item.image"
@@ -52,6 +56,12 @@
               <p class="mr-2 font-bold">{{ item.title_snapshot }}</p>
               <p class="text-right whitespace-nowrap">{{ formatCurrency(item.subtotal) }}</p>
             </div>
+            <p
+              v-if="item.departure"
+              class="text-[14px] text-[#6c757d]"
+            >
+              {{ formatDate(item.departure.departure_date) }} 出發
+            </p>
             <p class="font-bold">{{ item.quantity }} {{ item.unit }}</p>
           </div>
         </div>

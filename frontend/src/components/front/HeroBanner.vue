@@ -35,19 +35,25 @@
       class="absolute inset-0 bg-no-repeat md:hidden"
       :style="{ backgroundImage: `url(${bgMobile})`, backgroundPosition: mobilePosition }"
     />
-    <div class="absolute inset-0 bg-black" :style="{ opacity: overlay }" />
-    <div class="absolute inset-x-0" :style="{ bottom: titleBottom }">
+    <div
+      class="absolute inset-0 bg-black"
+      :style="{ opacity: overlay }"
+    />
+    <div
+      class="absolute inset-x-0"
+      :style="{ bottom: titleBottom }"
+    >
       <!-- 標題只佔容器右半欄，字放不下時自然折成兩行。text-[60px] 這類任意值只設字級、不帶行高，
            所以自己補 leading；mb-2 補回 base.css 歸零的標題下邊距 -->
       <div class="bs-container">
         <div class="flex justify-end -mx-[15px]">
           <div class="w-full md:w-1/2 px-[15px]">
-            <h2
+            <h1
               class="mb-2 text-white text-[30px] md:text-[42px] lg:text-[60px] font-bold leading-[1.2]"
               :class="align === 'right' ? 'text-right' : ''"
             >
               {{ title }}
-            </h2>
+            </h1>
           </div>
         </div>
       </div>

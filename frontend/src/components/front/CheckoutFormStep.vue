@@ -2,7 +2,7 @@
   import { ref } from 'vue'
   import type { FormInst, FormRules, GlobalThemeOverrides } from 'naive-ui'
   import { useCartStore } from '@/stores/cart'
-  import { formatCurrency } from '@/utils/format'
+  import { formatCurrency, formatDate } from '@/utils/format'
   import { PAYMENT_LABEL, type PaymentMethod } from '@/utils/payment'
 
   export interface CheckoutForm {
@@ -113,13 +113,22 @@
   <div class="flex flex-wrap flex-row-reverse -mx-[15px]">
     <div class="w-full md:w-1/2 lg:w-1/3 px-[15px]">
       <div class="p-4 mb-12 border border-[#dee2e6]">
-        <div v-for="item in cartStore.items" :key="item.tourId" class="flex mb-4">
-          <img :src="item.image" :alt="item.title" class="w-12 h-12 object-cover shrink-0 mr-2" />
+        <div
+          v-for="item in cartStore.items"
+          :key="item.departureId"
+          class="flex mb-4"
+        >
+          <img
+            :src="item.image"
+            :alt="item.title"
+            class="w-12 h-12 object-cover shrink-0 mr-2"
+          />
           <div class="w-full">
             <div class="flex justify-between">
               <p class="mr-2 font-bold">{{ item.title }}</p>
               <p class="whitespace-nowrap">{{ formatCurrency(item.price) }}</p>
             </div>
+            <p class="text-[14px] text-[#6c757d]">{{ formatDate(item.departureDate) }} 出發</p>
             <p class="font-bold">x {{ item.quantity }}</p>
           </div>
         </div>
@@ -140,7 +149,10 @@
       >
         客戶訂單資訊
       </h3>
-      <n-config-provider abstract :theme-overrides="formTheme">
+      <n-config-provider
+        abstract
+        :theme-overrides="formTheme"
+      >
         <n-form
           ref="formRef"
           :model="form"
@@ -149,42 +161,81 @@
           @submit.prevent="handleSubmit"
         >
           <div class="flex flex-wrap -mx-[5px]">
-            <n-form-item label="聯絡人姓名" path="name" class="w-full md:w-1/2 px-[5px]">
-              <n-input v-model:value="form.name" placeholder="請輸入聯絡人姓名" />
+            <n-form-item
+              label="聯絡人姓名"
+              :label-props="{ for: 'checkout-name' }"
+              path="name"
+              class="w-full md:w-1/2 px-[5px]"
+            >
+              <n-input
+                :input-props="{ id: 'checkout-name' }"
+                v-model:value="form.name"
+                placeholder="請輸入聯絡人姓名"
+              />
             </n-form-item>
-            <n-form-item label="電話" path="tel" class="w-full md:w-1/2 px-[5px]">
+            <n-form-item
+              label="電話"
+              :label-props="{ for: 'checkout-tel' }"
+              path="tel"
+              class="w-full md:w-1/2 px-[5px]"
+            >
               <n-input
                 v-model:value="form.tel"
-                :input-props="{ type: 'tel' }"
+                :input-props="{ id: 'checkout-tel', type: 'tel' }"
                 placeholder="請輸入電話"
               />
             </n-form-item>
           </div>
-          <n-form-item label="E-mail" path="email">
+          <n-form-item
+            label="E-mail"
+            :label-props="{ for: 'checkout-email' }"
+            path="email"
+          >
             <n-input
               v-model:value="form.email"
-              :input-props="{ type: 'email' }"
+              :input-props="{ id: 'checkout-email', type: 'email' }"
               placeholder="請輸入 E-mail"
             />
           </n-form-item>
-          <n-form-item label="聯絡人地址" path="address">
-            <n-input v-model:value="form.address" placeholder="請輸入聯絡人地址" />
+          <n-form-item
+            label="聯絡人地址"
+            :label-props="{ for: 'checkout-address' }"
+            path="address"
+          >
+            <n-input
+              :input-props="{ id: 'checkout-address' }"
+              v-model:value="form.address"
+              placeholder="請輸入聯絡人地址"
+            />
           </n-form-item>
-          <n-form-item label="購買方式" path="payment">
+          <n-form-item
+            label="購買方式"
+            path="payment"
+          >
             <n-select
               v-model:value="form.payment"
               :options="paymentOptions"
               placeholder="請選擇付款方式"
             />
           </n-form-item>
-          <n-form-item label="備註留言" path="message">
-            <n-input v-model:value="form.message" type="textarea" :rows="3" placeholder="" />
+          <n-form-item
+            label="備註留言"
+            :label-props="{ for: 'checkout-message' }"
+            path="message"
+          >
+            <n-input
+              :input-props="{ id: 'checkout-message' }"
+              v-model:value="form.message"
+              type="textarea"
+              :rows="3"
+              placeholder=""
+            />
           </n-form-item>
 
           <div class="flex justify-between items-center mb-[30px]">
             <button
               type="button"
-              class="text-secondary hover:text-secondary-link transition-colors"
+              class="inline-flex items-center gap-1 text-secondary hover:text-secondary-link transition-colors"
               @click="emit('back')"
             >
               <span class="i-fa6-chevron-left" />
