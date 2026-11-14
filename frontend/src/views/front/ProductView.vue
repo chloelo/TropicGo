@@ -281,7 +281,8 @@
                 v-if="departures.length"
                 ref="departureSelectRef"
                 v-model="departureId"
-                class="w-full h-[38px] px-3 border border-secondary text-secondary bg-white outline-none transition-shadow focus:shadow-[0_0_0_0.2rem_rgba(98,125,82,0.25)]"
+                name="departure"
+                class="w-full h-[38px] px-3 border cursor-pointer border-secondary text-secondary bg-white outline-none transition-shadow focus:shadow-[0_0_0_0.2rem_rgba(98,125,82,0.25)]"
                 aria-label="出發日期"
               >
                 <option
@@ -323,6 +324,7 @@
                   </button>
                   <input
                     v-model.number="quantity"
+                    name="quantity"
                     type="number"
                     min="1"
                     :max="maxQuantity"
