@@ -4,7 +4,6 @@ const { lockDepartures } = require('../utils/departures');
 const { ORDER_RELATIONS, toOrderResponse } = require('../utils/orders');
 
 const PAGE_SIZE = 10;
-const VALID_STATUSES = ['PENDING', 'PAID', 'CANCELLED', 'COMPLETED'];
 
 /**
  * 訂單取消後，把明細報名的人數從梯次的已報名人數扣回去。
@@ -55,10 +54,6 @@ const adminOrdersController = {
   async updateStatus(req, res, next) {
     const { id } = req.params;
     const { status } = req.body;
-
-    if (!VALID_STATUSES.includes(status)) {
-      return next(appError(400, `狀態必須是 ${VALID_STATUSES.join('/')} 其中之一`));
-    }
 
     try {
       await dataSource.transaction(async (manager) => {

@@ -22,7 +22,6 @@ export interface Region {
 export interface TourImage {
   /** @format uuid */
   id: string
-  /** @format uri */
   url: string
   sort_order: number
 }
@@ -100,7 +99,10 @@ export interface TourDepartureInput {
    * @format date
    */
   departure_date: string
-  /** @min 1 */
+  /**
+   * @format int32
+   * @min 1
+   */
   capacity: number
   /** @default true */
   is_enabled?: boolean
@@ -114,6 +116,7 @@ export interface TourDepartureUpdate {
   departure_date?: string
   /**
    * 不能少於已報名人數
+   * @format int32
    * @min 1
    */
   capacity?: number
@@ -121,24 +124,50 @@ export interface TourDepartureUpdate {
 }
 
 export interface TourInput {
+  /**
+   * @minLength 1
+   * @maxLength 100
+   */
   title: string
   /** @format uuid */
   region_id: string
+  /**
+   * @minLength 1
+   * @maxLength 255
+   */
   summary: string
+  /** @minLength 1 */
   description: string
-  /** 費用包含（簡短條列） */
+  /**
+   * 費用包含（簡短條列）
+   * @minLength 1
+   */
   content: string
+  /**
+   * @minLength 1
+   * @maxLength 10
+   */
   unit: string
   departure_city: '台北' | '桃園' | '台中' | '高雄'
   /**
    * 成團人數
+   * @format int32
    * @min 1
    */
   min_group_size: number
+  /**
+   * @format int32
+   * @min 0
+   */
   origin_price: number
+  /**
+   * @format int32
+   * @min 0
+   */
   price: number
   is_popular?: boolean
   is_enabled?: boolean
+  /** @minItems 1 */
   images: string[]
 }
 
@@ -155,7 +184,15 @@ export interface Coupon {
 }
 
 export interface CouponInput {
+  /**
+   * @minLength 1
+   * @maxLength 100
+   */
   title: string
+  /**
+   * @minLength 1
+   * @maxLength 50
+   */
   code: string
   /**
    * @min 1
@@ -201,13 +238,31 @@ export interface Order {
 }
 
 export interface OrderInput {
+  /**
+   * @minLength 1
+   * @maxLength 50
+   */
   customer_name: string
+  /**
+   * @format email
+   * @maxLength 100
+   */
   customer_email: string
+  /**
+   * 8～10 碼數字
+   * @pattern ^\d{8,10}$
+   */
   customer_phone: string
+  /**
+   * @minLength 1
+   * @maxLength 255
+   */
   customer_address: string
   payment_method: 'Credit' | 'LinePay' | 'ApplePay' | 'GooglePay' | 'ATM' | 'CVS'
-  message?: string
-  coupon_code?: string
+  message?: string | null
+  /** @maxLength 50 */
+  coupon_code?: string | null
+  /** @minItems 1 */
   items: {
     /** @format uuid */
     departure_id: string
@@ -499,6 +554,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     checkCoupon: (
       data: {
+        /** @minLength 1 */
         code: string
       },
       params: RequestParams = {},
@@ -524,7 +580,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   }
   orders = {
     /**
-     * No description
+     * @description 名額不足、出發日期已截止（出發當天起，台灣時間）、梯次或行程已關閉報名時回 400
      *
      * @tags Orders
      * @name CreateOrder
@@ -601,6 +657,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       data: {
         /** @format email */
         email: string
+        /** @minLength 1 */
         password: string
       },
       params: RequestParams = {},
@@ -750,7 +807,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * No description
+     * @description 會一併刪除這個行程的梯次
      *
      * @tags Admin Tours
      * @name AdminDeleteTour
@@ -989,7 +1046,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * No description
+     * @description 改成已取消時會釋出名額；已取消的訂單不能改回其他狀態（回 400）
      *
      * @tags Admin Orders
      * @name AdminUpdateOrderStatus

@@ -42,7 +42,8 @@ components:
       required: [id, url, sort_order]
       properties:
         id: { type: string, format: uuid }
-        url: { type: string, format: uri }
+        # 圖片網址，也可以是前端 public 底下的路徑，例如 /images/products/bali-01.jpg
+        url: { type: string }
         sort_order: { type: integer }
 
     Tour:
@@ -129,7 +130,7 @@ components:
           type: string
           format: date
           description: 必須晚於今天（台灣時間），同一個行程同一天只能有一個梯次
-        capacity: { type: integer, minimum: 1 }
+        capacity: { type: integer, format: int32, minimum: 1 }
         is_enabled: { type: boolean, default: true }
 
     # 修改梯次：只送要改的欄位
@@ -140,7 +141,7 @@ components:
           type: string
           format: date
           description: 已有人報名時不能修改
-        capacity: { type: integer, minimum: 1, description: 不能少於已報名人數 }
+        capacity: { type: integer, format: int32, minimum: 1, description: 不能少於已報名人數 }
         is_enabled: { type: boolean }
 
     TourInput:
@@ -160,24 +161,27 @@ components:
           images,
         ]
       properties:
-        title: { type: string }
+        # 字串會去掉前後空白，長度上限跟資料庫欄位一致
+        title: { type: string, minLength: 1, maxLength: 100 }
         region_id: { type: string, format: uuid }
-        summary: { type: string }
-        description: { type: string }
-        content: { type: string, description: 費用包含（簡短條列） }
-        unit: { type: string }
-        # 跟 backend/controllers/adminTours.js 的 DEPARTURE_CITIES 要一致
+        summary: { type: string, minLength: 1, maxLength: 255 }
+        description: { type: string, minLength: 1 }
+        content: { type: string, minLength: 1, description: 費用包含（簡短條列） }
+        unit: { type: string, minLength: 1, maxLength: 10 }
+        # 跟 backend/schemas/tour.js 的 DEPARTURE_CITIES 要一致
         departure_city:
           type: string
           enum: [台北, 桃園, 台中, 高雄]
-        min_group_size: { type: integer, minimum: 1, description: 成團人數 }
-        origin_price: { type: integer }
-        price: { type: integer }
+        min_group_size: { type: integer, format: int32, minimum: 1, description: 成團人數 }
+        origin_price: { type: integer, format: int32, minimum: 0 }
+        price: { type: integer, format: int32, minimum: 0 }
         is_popular: { type: boolean }
         is_enabled: { type: boolean }
         images:
           type: array
-          items: { type: string, format: uri }
+          minItems: 1
+          # 圖片網址，也可以是前端 public 底下的路徑，例如 /images/products/bali-01.jpg
+          items: { type: string, minLength: 1, maxLength: 2048 }
 
     Coupon:
       type: object
@@ -196,8 +200,8 @@ components:
       type: object
       required: [title, code, percent, due_date]
       properties:
-        title: { type: string }
-        code: { type: string }
+        title: { type: string, minLength: 1, maxLength: 100 }
+        code: { type: string, minLength: 1, maxLength: 50 }
         percent: { type: integer, minimum: 1, maximum: 100 }
         due_date: { type: string, format: date }
         is_enabled: { type: boolean }
@@ -264,25 +268,29 @@ components:
       type: object
       required: [customer_name, customer_email, customer_phone, customer_address, payment_method, items]
       properties:
-        customer_name: { type: string }
-        customer_email: { type: string }
-        customer_phone: { type: string }
-        customer_address: { type: string }
-        # 跟 backend/controllers/orders.js 的 PAYMENT_METHODS 要一致
+        # 字串會去掉前後空白，長度上限跟資料庫欄位一致
+        customer_name: { type: string, minLength: 1, maxLength: 50 }
+        customer_email: { type: string, format: email, maxLength: 100 }
+        # 跟前端 CheckoutFormStep.vue 的規則一致
+        customer_phone: { type: string, pattern: '^\d{8,10}$', description: 8～10 碼數字 }
+        customer_address: { type: string, minLength: 1, maxLength: 255 }
+        # 跟 backend/schemas/order.js 的 PAYMENT_METHODS 要一致
         payment_method:
           type: string
           # Credit 信用卡、LinePay、ApplePay、GooglePay、ATM 轉帳、CVS 超商代碼繳費
           enum: [Credit, LinePay, ApplePay, GooglePay, ATM, CVS]
-        message: { type: string }
-        coupon_code: { type: string }
+        message: { type: string, nullable: true }
+        coupon_code: { type: string, nullable: true, maxLength: 50 }
         items:
           type: array
+          minItems: 1
           items:
             type: object
             # 同一個梯次只能有一筆
             required: [departure_id, quantity]
             properties:
               departure_id: { type: string, format: uuid }
+              # 跟 backend/schemas/order.js 的 MAX_QUANTITY 要一致
               quantity: { type: integer, minimum: 1, maximum: 20 }
 
     PaginationMeta:
@@ -428,7 +436,7 @@ paths:
               type: object
               required: [code]
               properties:
-                code: { type: string }
+                code: { type: string, minLength: 1 }
       responses:
         '200':
           description: 優惠碼有效
@@ -539,7 +547,7 @@ paths:
               required: [email, password]
               properties:
                 email: { type: string, format: email }
-                password: { type: string }
+                password: { type: string, minLength: 1 }
       responses:
         '200':
           description: 登入成功，回傳 JWT

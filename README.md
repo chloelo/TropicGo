@@ -98,6 +98,7 @@
 - Node.js + Express 5
 - TypeORM + PostgreSQL，資料表結構以 migration 管理
 - 建立訂單在 transaction 內以 `SELECT ... FOR UPDATE` 依固定順序鎖定梯次再檢查名額，同時下單也不會超賣
+- Zod 驗證請求內容（必填、長度、格式），錯誤訊息回傳繁體中文
 - JWT 驗證、bcrypt 密碼加密
 - OpenAPI 3 規格（[backend/openapi.yaml](backend/openapi.yaml)），以 Swagger UI 提供線上 API 文件
 
@@ -130,7 +131,7 @@ API 規格採 spec-first：先寫 `backend/openapi.yaml`，前端用它產生型
 - **CORS 白名單**：只允許指定的前端網域呼叫 API
 - **Rate limit**：登入每 15 分鐘 5 次；建立訂單、驗證優惠碼每分鐘 20 次
 - **角色權限**：示範帳號的寫入請求由後端回 403，不只是前端隱藏按鈕
-- **輸入檢查**：路由參數 UUID 格式檢查、訂單人數上限、欄位驗證
+- **輸入檢查**：路由參數 UUID 格式檢查；請求內容以 Zod schema 驗證 Email、電話、UUID 格式、字串長度與訂單人數上限，長度上限對齊資料庫欄位，不合格的輸入回 400 而不是寫入資料庫時才失敗
 - **錯誤處理**：預期外的錯誤只寫入 log，不把資料庫細節回傳給前端
 - **環境變數檢查**：正式環境缺少必要設定（例如 JWT 密鑰少於 32 字元）時，伺服器直接拒絕啟動
 - **帳號密碼不進版控**：管理員帳密由環境變數提供，repo 中只有範例值
@@ -191,6 +192,7 @@ TropicGo/
 │   ├── entities/        TypeORM 資料表定義
 │   ├── middlewares/     驗證、權限、rate limit
 │   ├── routes/          路由
+│   ├── schemas/         請求內容的驗證規則（Zod）
 │   ├── scripts/         seed、重設密碼
 │   ├── openapi.yaml     API 規格
 │   └── Dockerfile
