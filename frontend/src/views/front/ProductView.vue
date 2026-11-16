@@ -13,6 +13,7 @@
   import { formatCurrency, formatDate } from '@/utils/format'
   import { HERO_IMAGES } from '@/utils/hero-images'
   import { setPageTitle } from '@/utils/page-title'
+  import { sanitizeHtml } from '@/utils/sanitize-html'
 
   const route = useRoute()
   const cartStore = useCartStore()
@@ -32,6 +33,7 @@
 
   const activeImage = computed(() => tour.value?.images[activeImageIndex.value]?.url)
   const coverImage = computed(() => tour.value?.images[0]?.url)
+  const safeDescription = computed(() => sanitizeHtml(tour.value?.description ?? ''))
   const subtotal = computed(() => (Number(quantity.value) || 0) * (tour.value?.price ?? 0))
 
   const departures = computed(() => tour.value?.departures ?? [])
@@ -399,7 +401,7 @@
         />
         <div
           class="description"
-          v-html="tour.description"
+          v-html="safeDescription"
         />
       </div>
     </section>
