@@ -1,33 +1,7 @@
 const { dataSource } = require('../db/data-source');
 const appError = require('../utils/appError');
-const { isValidString, isNonNegativeInteger } = require('../utils/validUtils');
 
 const PAGE_SIZE = 10;
-
-// 出發城市的選項，跟 openapi.yaml 的 TourInput.departure_city enum 要一致
-const DEPARTURE_CITIES = ['台北', '桃園', '台中', '高雄'];
-
-function validateTourInput(body) {
-  const {
-    title, region_id, summary, description, content,
-    unit, departure_city, min_group_size, origin_price, price, images,
-  } = body;
-
-  if (!isValidString(title)) return '請輸入行程名稱';
-  if (!isValidString(region_id)) return '請選擇地區';
-  if (!isValidString(summary)) return '請輸入行程摘要';
-  if (!isValidString(description)) return '請輸入行程介紹';
-  if (!isValidString(content)) return '請輸入費用包含說明';
-  if (!isValidString(unit)) return '請輸入單位';
-  if (!DEPARTURE_CITIES.includes(departure_city)) return '請選擇出發城市';
-  if (!isNonNegativeInteger(min_group_size) || min_group_size < 1) return '成團人數格式錯誤';
-  if (!isNonNegativeInteger(origin_price)) return '原價格式錯誤';
-  if (!isNonNegativeInteger(price)) return '優惠價格式錯誤';
-  if (!Array.isArray(images) || images.length === 0 || !images.every(isValidString)) {
-    return '請至少提供一張圖片';
-  }
-  return null;
-}
 
 const adminToursController = {
   // GET /api/admin/tours?page=1
@@ -60,9 +34,6 @@ const adminToursController = {
 
   // POST /api/admin/tours
   async postTour(req, res, next) {
-    const errorMessage = validateTourInput(req.body);
-    if (errorMessage) return next(appError(400, errorMessage));
-
     const {
       title, region_id, summary, description, content, unit, departure_city, min_group_size,
       origin_price, price, is_popular, is_enabled, images,
@@ -98,9 +69,6 @@ const adminToursController = {
     const tourRepo = dataSource.getRepository('Tour');
     const existing = await tourRepo.findOneBy({ id });
     if (!existing) return next(appError(400, '行程不存在'));
-
-    const errorMessage = validateTourInput(req.body);
-    if (errorMessage) return next(appError(400, errorMessage));
 
     const {
       title, region_id, summary, description, content, unit, departure_city, min_group_size,

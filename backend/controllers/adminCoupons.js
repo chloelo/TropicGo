@@ -1,18 +1,7 @@
 const { dataSource } = require('../db/data-source');
 const appError = require('../utils/appError');
-const { isValidString, isInteger } = require('../utils/validUtils');
 
 const PAGE_SIZE = 10;
-
-function validateCouponInput(body) {
-  const { title, code, percent, due_date } = body;
-
-  if (!isValidString(title)) return '請輸入優惠券名稱';
-  if (!isValidString(code)) return '請輸入優惠碼';
-  if (!isInteger(percent) || percent <= 0 || percent > 100) return '折扣百分比須為 1~100 的整數';
-  if (!isValidString(due_date) || Number.isNaN(Date.parse(due_date))) return '請輸入正確的到期日';
-  return null;
-}
 
 const adminCouponsController = {
   // GET /api/admin/coupons?page=1
@@ -35,9 +24,6 @@ const adminCouponsController = {
 
   // POST /api/admin/coupons
   async postCoupon(req, res, next) {
-    const errorMessage = validateCouponInput(req.body);
-    if (errorMessage) return next(appError(400, errorMessage));
-
     const { title, code, percent, due_date, is_enabled } = req.body;
 
     const couponRepo = dataSource.getRepository('Coupon');
@@ -61,9 +47,6 @@ const adminCouponsController = {
     const couponRepo = dataSource.getRepository('Coupon');
     const existing = await couponRepo.findOneBy({ id });
     if (!existing) return next(appError(400, '優惠券不存在'));
-
-    const errorMessage = validateCouponInput(req.body);
-    if (errorMessage) return next(appError(400, errorMessage));
 
     const { title, code, percent, due_date, is_enabled } = req.body;
 

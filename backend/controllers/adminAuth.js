@@ -3,16 +3,11 @@ const jwt = require('jsonwebtoken');
 const { dataSource } = require('../db/data-source');
 const config = require('../config');
 const appError = require('../utils/appError');
-const { isValidString } = require('../utils/validUtils');
 
 const adminAuthController = {
   // POST /api/admin/auth/login
   async login(req, res, next) {
     const { email, password } = req.body;
-
-    if (!isValidString(email) || !isValidString(password)) {
-      return next(appError(400, '請輸入帳號密碼'));
-    }
 
     const adminRepo = dataSource.getRepository('Admin');
     const admin = await adminRepo.findOneBy({ email });

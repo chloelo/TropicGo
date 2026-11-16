@@ -1,12 +1,10 @@
 const { dataSource } = require('../db/data-source');
 const appError = require('../utils/appError');
-const { isValidString } = require('../utils/validUtils');
 
 const couponsController = {
   // POST /api/coupons/check  { code }
   async checkCoupon(req, res, next) {
     const { code } = req.body;
-    if (!isValidString(code)) return next(appError(400, '請輸入優惠碼'));
 
     const couponRepo = dataSource.getRepository('Coupon');
     const coupon = await couponRepo.findOneBy({ code });

@@ -1,47 +1,15 @@
 const { customAlphabet } = require('nanoid');
 const { dataSource } = require('../db/data-source');
 const appError = require('../utils/appError');
-const { isValidString, isNonNegativeInteger, isUuid } = require('../utils/validUtils');
 const { getTaipeiToday, lockDepartures } = require('../utils/departures');
 const { ORDER_RELATIONS, toOrderResponse } = require('../utils/orders');
 
 // 訂單編號不含容易看錯的字元（0/O、1/I/L），客服人工對單時比較不會唸錯、抄錯
 const generateOrderNumber = customAlphabet('23456789ABCDEFGHJKMNPQRSTUVWXYZ', 10);
 
-// 付款方式的選項（存英文代碼，畫面上的中文由前端 utils/payment.ts 對應），
-// 跟 openapi.yaml 的 OrderInput.payment_method enum 要一致
-const PAYMENT_METHODS = ['Credit', 'LinePay', 'ApplePay', 'GooglePay', 'ATM', 'CVS'];
-
-// 每筆訂單裡同一個梯次最多報名的人數，跟前端 stores/cart.ts 的 MAX_QUANTITY、openapi.yaml 要一致
-const MAX_QUANTITY = 20;
-
-function validateOrderInput(body) {
-  const { customer_name, customer_email, customer_phone, customer_address, payment_method, items } = body;
-
-  if (!isValidString(customer_name)) return '請輸入姓名';
-  if (!isValidString(customer_email)) return '請輸入 Email';
-  if (!isValidString(customer_phone)) return '請輸入電話';
-  if (!isValidString(customer_address)) return '請輸入地址';
-  if (!PAYMENT_METHODS.includes(payment_method)) return '請選擇付款方式';
-  if (!Array.isArray(items) || items.length === 0) return '購物車是空的';
-
-  for (const item of items) {
-    if (!isUuid(item.departure_id)) return '請選擇出發日期';
-    if (!isNonNegativeInteger(item.quantity) || item.quantity <= 0) return '數量格式錯誤';
-    if (item.quantity > MAX_QUANTITY) return `同一個梯次最多報名 ${MAX_QUANTITY} 人`;
-  }
-  // 同一個梯次分成多筆會繞過每筆的人數上限，要求合併成一筆
-  const departureIds = items.map((item) => item.departure_id);
-  if (new Set(departureIds).size !== departureIds.length) return '同一個梯次請合併成一筆';
-  return null;
-}
-
 const ordersController = {
   // POST /api/orders
   async postOrder(req, res, next) {
-    const errorMessage = validateOrderInput(req.body);
-    if (errorMessage) return next(appError(400, errorMessage));
-
     const {
       customer_name, customer_email, customer_phone, customer_address,
       payment_method, message, coupon_code, items,
